@@ -1,5 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Boot Online" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files/Java/jdk-24" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <classpathModifications>
       <entry path="D:\Nib\nib-java-demo-apps\cics-webservices\target\classes" />
       <entry path="C:\Nib\nib-java-demo-apps\cics-webservices\target\classes" />
