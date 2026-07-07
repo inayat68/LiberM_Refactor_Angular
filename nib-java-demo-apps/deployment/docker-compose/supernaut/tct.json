@@ -1,0 +1,41 @@
+{
+  "TCT": [
+    {
+      "id": "VIRT",
+      "group": "TEST",
+      "Type": "Virtual"
+    },
+    {
+      "id": "VIR0",
+      "Group": "TEST",
+      "Type": "Virtual"
+    },
+    {
+      "id": "VIR1",
+      "Group": "TEST",
+      "Type": "Virtual"
+    },
+    {
+      "id": "VIR2",
+      "Group": "TEST",
+      "Type": "Virtual"
+    },
+    {
+      "id": "PRT0",
+      "Group": "TEST",
+      "Type": "Printer"
+    },
+    {
+      "id": "TN00",
+      "Group": "TEST",
+      "Type": "Tn3270",
+      "Netname": "NYNNAME"
+    },
+    {
+      "id": "TN01",
+      "Group": "FAVA",
+      "Type": "Tn3270",
+      "IpAddress": "192.168.1.0/24"
+    } 
+  ]
+}

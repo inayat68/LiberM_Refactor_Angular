@@ -1,0 +1,5 @@
+   DEFINE GENERATIONDATAGROUP -                                         
+   (NAME(AWS.M2.CARDDEMO.DALYREJS) -                                    
+    LIMIT(5) -                                                          
+    SCRATCH -                                                           
+   )                                                                    

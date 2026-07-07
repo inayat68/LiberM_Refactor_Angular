@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;" charset="utf-8">
+	<title>NIB 3270 Angular Platform</title>
+	<base href="/nibservice/">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<meta http-equiv="PRAGMA" content="NO-CACHE">
+	<meta name="generator" content="NIB 3270">
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+	<script type="text/javascript" src="assets/js/etpbms_keymap.js"></script>
+	<script type="text/javascript" src="assets/js/etpbms_interaction.js"></script>
+	<script type="text/javascript" src="assets/js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/maskedinput.js"></script>
+	<script type="text/javascript" src="assets/js/autonumeric.js"></script>
+	<script type="text/javascript" src="assets/js/utils.js"></script>
+	<script type="text/javascript" src="assets/js/websocket.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/css/default3270.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<script type="text/javascript">
+	(function () {
+	const params = new URLSearchParams(window.location.search);
+	const isNib = params.has('nib');
+	//alert("isNib=" + isNib);
+	const head = document.head;
+
+	function addCss(href) {
+	  const link = document.createElement('link');
+	  link.rel = 'stylesheet';
+	  link.type = 'text/css';
+	  link.href = href;
+	  head.appendChild(link);
+	}
+
+	if (isNib) {
+	  addCss('assets/css/etpbms_stylesheet_nib.css');
+	  addCss('assets/css/etpbms_stylesheet_common.css');
+	  addCss('assets/css/etpbms_stylesheet_nibext.css');
+	} else {
+	  addCss('assets/css/etpbms_stylesheet_mainframe.css');
+	  addCss('assets/css/etpbms_stylesheet_common.css');
+	}
+	})();
+
+	function switchStyle(){
+		let url = window.location.href;
+		let pos = url.indexOf('?');
+		if (url.indexOf('?') > -1) {
+			url = url.substr(0, pos)
+		} else {
+			url += '?nib'
+		}
+		//alert("New URL=" + url);
+		window.location.href = url;
+	}
+	</script>
+<link rel="stylesheet" href="/nibservice/styles-RSS4LJ6U.css"></head>
+
+<body>
+	<app-root></app-root>
+<script src="/nibservice/polyfills-DOYHMSTV.js" type="module"></script><script src="/nibservice/main-WH2RST5N.js" type="module"></script></body>
+</html>

@@ -1,0 +1,4 @@
+com\aws\carddemo\angular\AwsServiceApplication.class
+com\aws\carddemo\angular\StaticResourcesAutoConfiguration.class
+com\aws\carddemo\angular\WebConfig.class
+com\aws\carddemo\angular\ObjectVarargsArgumentResolver.class

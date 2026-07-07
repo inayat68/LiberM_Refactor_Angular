@@ -1,0 +1,13 @@
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\AccountInfo.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\CustomerRecord.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\rest\RestWebServicesController.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\soap\AccountInfoEndpoint.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\soap\NP100001Endpoint.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\soap\SoapWebServicesConfig.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\src\main\java\org\sample\online\webservices\soap\WsdlConfig.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\AccountInfoRequest.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\AccountInfoResponse.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\NP100001Request.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\NP100001Response.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\ObjectFactory.java
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\cics-webservices\target\generated-sources\jaxb\org\sample\online\webservices\soap\package-info.java

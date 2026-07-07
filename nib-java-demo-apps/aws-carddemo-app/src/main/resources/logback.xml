@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [START logging_logback_config] -->
+<!DOCTYPE xml>
+<configuration>
+	<statusListener
+		class="ch.qos.logback.core.status.NopStatusListener" />
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<!-- Optional : filter logs at or above a level -->
+		<encoder>
+			<!-- <pattern>[%date{ISO8601}][%-24t][%-5level][%-40logger] %msg%n</pattern> 
+				<pattern>[%date{ISO8601}][%-4t][%-5level][%class{0}] %msg%n</pattern> -->
+			<pattern>[%-5level] %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="com.nib.batch.BatchActivator"
+		additivity="false" level="debug">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.springframework.context.support"
+		additivity="false" level="warn">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.springframework.beans.factory.xml"
+		additivity="false" level="warn">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger
+		name="org.springframework.beans.factory.support.DefaultListableBeanFactory"
+		additivity="false" level="warn">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger
+		name="org.springframework.batch.core.jsr.configuration.xml.JsrXmlApplicationContext"
+		additivity="false" level="warn">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger
+		name="org.springframework.batch.core.jsr.configuration.support.JsrAutowiredAnnotationBeanPostProcessor"
+		additivity="false" level="warn">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
+<!-- [END logging_logback_config] -->

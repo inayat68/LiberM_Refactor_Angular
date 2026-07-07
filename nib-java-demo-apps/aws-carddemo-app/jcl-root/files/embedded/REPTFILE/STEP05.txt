@@ -1,0 +1,4 @@
+   DEFINE GENERATIONDATAGROUP -                                         
+   (NAME(AWS.M2.CARDDEMO.TRANREPT) -                                    
+    LIMIT(10) -                                                         
+   )                                                                    

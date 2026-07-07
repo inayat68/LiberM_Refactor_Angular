@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: JESAWSCD
+  profiles:
+    active: NodeA
+  cloud:
+    config:
+      enabled: false
+    function:
+      scan:
+        packages: "com.nib.motorhead"
+  lifecycle:
+    timeout-per-shutdown-phase: "10s"
+
+server:
+  shutdown: graceful
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      cluster: ${spring.application.name}
+      environment: "test"
+#server:
+#  port: 7777
+logging:
+  config: file:./config/batch/logback-motorhead.xml
+#  file:
+#    path: D:/tmp/motorhead
+motorhead:
+  cluster:
+    name: ${spring.application.name}
+    # admin: http://host.docker.internal:8081
+    admin: http://localhost:8081
+    classes:
+      enabled: "A,B,C,X"
+      disabled: "D,E"
+      default: "A"
+
+  node:
+    name: NodeA
+    classes: "A"
+
+  scripts:
+    allowMultiple: false
+    lockDatasets: true
+    path: >
+      ./aws-carddemo-app/src/main/groovy
+    classpath: >
+      ./aws-carddemo-app/target/classes
+    dependencies:
+    config: ./config/batch/nibbatch.json
+
+  redis:
+      config: file:./config/batch/redisson-localhost.yaml

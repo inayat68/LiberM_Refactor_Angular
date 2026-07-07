@@ -1,0 +1,6 @@
+   DELETE AWS.M2.CARDDEMO.CARDDATA.VSAM.KSDS -                          
+          CLUSTER                                                       
+   IF MAXCC LE 08 THEN SET MAXCC = 0                                    
+   DELETE AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX -                           
+          ALTERNATEINDEX                                                
+   IF MAXCC LE 08 THEN SET MAXCC = 0                                    

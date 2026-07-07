@@ -1,0 +1,46 @@
+### AccountInfo
+POST http://localhost:8080/ws/soap12/accountInfo
+Content-Type: application/soap+xml
+
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+                  xmlns:ci="http://www.soap.webservices.online.sample.org">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ci:AccountInfoRequest>
+            <ci:id>50</ci:id>
+        </ci:AccountInfoRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+> {%
+    client.test("accountInfo web service success", function () {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### NP100001
+POST http://localhost:8080/ws/soap12/np100001
+Content-Type: application/soap+xml
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:aig="http://www.soap.webservices.online.sample.org">
+    <soap:Header/>
+    <soap:Body>
+        <aig:NP100001Request>
+            <aig:w02e_np100001_in>
+                <aig:entete_username/>
+                <aig:entete_grpname/>
+                <aig:entete_terminal/>
+                <aig:entete_igd>G02EDRF5</aig:entete_igd>
+                <aig:entete_service>NP100001</aig:entete_service>
+                <aig:f02e_action>FHISLOT</aig:f02e_action>
+            </aig:w02e_np100001_in>
+        </aig:NP100001Request>
+    </soap:Body>
+</soap:Envelope>
+
+> {%
+    client.test("NP100001 web service success", function () {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}

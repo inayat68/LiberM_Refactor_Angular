@@ -1,0 +1,2 @@
+ /F CICSAWSA,'CEMT SET FIL(CARDDAT ) CLO'                               
+ /F CICSAWSA,'CEMT SET FIL(CARDAIX ) CLO'                               

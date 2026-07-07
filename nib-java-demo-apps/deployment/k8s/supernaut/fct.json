@@ -1,0 +1,44 @@
+{
+  "FCT": [
+    {
+      "id": "ACCTDAT",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.ACCTDATA.VSAM.KSDS"
+    },
+    {
+      "id": "CARDAIX",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX.PATH"
+    },
+    {
+      "id": "CARDDAT",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.CARDDATA.VSAM.KSDS"
+    },
+    {
+      "id": "CCXREF",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.CARDXREF.VSAM.KSDS"
+    },
+    {
+      "id": "CUSTDAT",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.CUSTDATA.VSAM.KSDS"
+    },
+    {
+      "id": "CXACAIX",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.CARDXREF.VSAM.AIX.PATH"
+    },
+    {
+      "id": "TRANSACT",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS"
+    },
+    {
+      "id": "USRSEC",
+      "group": "CARDDEMO",
+      "dsn": "AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS"
+    }
+  ]
+}

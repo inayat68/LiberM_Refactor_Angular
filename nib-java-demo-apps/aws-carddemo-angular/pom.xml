@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.nib</groupId>
+        <artifactId>nib-java-demo-apps</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>aws-carddemo-angular</artifactId>
+    <description>AWS Demo App for Angular</description>
+    <properties>
+        <!--
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        -->
+        <contextPath>/nibservice</contextPath>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nib</groupId>
+            <artifactId>nib-angular</artifactId>
+            <version>${nib.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <profiles>
+        <profile>
+            <id>bootstrap-angular</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/app-angular/package.json</missing>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+
+                    <!-- Messages + copy/bootstrap tasks -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>print-bootstrap-message</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="Bootstrapping Angular environment: installing Node and npm..." />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Node/npm tasks only -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.15.1</version>
+                        <configuration>
+                            <nodeVersion>v22.14.0</nodeVersion>
+                            <npmVersion>10.9.2</npmVersion>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                            <installDirectory>${project.basedir}/target</installDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>bootstrap-install-node-and-npm</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>bootstrap-create-angular-app</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${project.basedir}</workingDirectory>
+                                    <arguments>exec --yes -- @angular/cli@21.0.0 new app-angular --defaults --skip-git --package-manager=npm</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>bootstrap-add-build-angular</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${project.basedir}/app-angular</workingDirectory>
+                                    <arguments>install -D @angular-devkit/build-angular@^21.0.0</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>bootstrap-add-runtime-deps</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${project.basedir}/app-angular</workingDirectory>
+                                    <arguments>install zone.js ngx-spinner@21.0.0 --save</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>bootstrap-robocopy</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>robocopy</executable>
+                                    <arguments>
+                                        <argument>${project.basedir}\app-angular_sources</argument>
+                                        <argument>${project.basedir}\app-angular</argument>
+                                        <argument>/E</argument>
+                                    </arguments>
+                                    <!-- robocopy exit codes 0-7 are usually success-ish -->
+                                    <successCodes>
+                                        <successCode>0</successCode>
+                                        <successCode>1</successCode>
+                                        <successCode>2</successCode>
+                                        <successCode>3</successCode>
+                                        <successCode>4</successCode>
+                                        <successCode>5</successCode>
+                                        <successCode>6</successCode>
+                                        <successCode>7</successCode>
+                                    </successCodes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <build>
+        <resources>
+            <!-- Include all backend resources (templates/, application.yml, static/, etc.) -->
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <!-- If you truly need extra resources from app-angular/src/main/resources -->
+            <resource>
+                <directory>${basedir}/app-angular/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+        <!-- Control the final war name, and also the base context path for the application when is deployed to a server -->
+        <!-- If you change the name and want to update eclipse settings to run with new context path, you need to reimport it -->
+        <!-- and also update references on angular services and application.properties -->
+        <finalName>nibservice</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+            <plugin>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-clean-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/app-angular</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/resources/static</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/target</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.1</version>
+                <configuration>
+                    <nodeVersion>v22.14.0</nodeVersion>
+                    <npmVersion>10.9.2</npmVersion>
+                    <srcdir>${basedir}/app-angular</srcdir>
+                    <workingDirectory>${basedir}/app-angular</workingDirectory>
+                    <installDirectory>${basedir}/target</installDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>npm run build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/app-angular</workingDirectory>
+                            <arguments>run build  -- --configuration=production --base-href ${contextPath}/ --deploy-url ${contextPath}/</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.6</version> <!-- Use here your Spring Boot version -->
+                <configuration>
+                    <mainClass>com.cvshealth.angular.service.CvsServiceApplication</mainClass> <!-- main class -->
+                    <includeSystemScope>true</includeSystemScope>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-angular-dist-into-classes</id>
+                        <phase>prepare-package</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <!-- Put files straight into classes/static so Spring Boot packs them -->
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!-- Angular 16+/17+ default output path (adjust if yours differs) -->
+                                    <directory>${basedir}/app-angular/dist</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

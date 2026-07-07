@@ -1,0 +1,4 @@
+   DELETE AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS -                          
+          CLUSTER                                                       
+   IF MAXCC LE 08 -                                                     
+   THEN SET MAXCC = 0                                                   

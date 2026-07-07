@@ -1,0 +1,36 @@
+server:
+  servlet:
+    context-path: /nibservice
+  port: 8088
+management:
+  zipkin:
+    tracing:
+      export:
+        enabled: false
+angular:
+  service:
+    address: "localhost"
+    port: 8080
+    connectContext: "jsonTerminal"
+    auth:
+      userId: "lemmy"
+      password: "rockout"
+    ssl:
+      enabled: false
+      keystore: ""
+      password: ""
+  admin:
+    address: "127.0.0.1"
+    port: 8081
+  protocol:
+    termType: "IBM-3278-2-E"
+    uppercase: false
+    timeout: 0
+  mandatoryResources:
+    WELCOME: "WELCOME"
+    ERROR: "WELCOME"
+  terminal:
+    address: "127.0.0.1"
+  logging:
+    level: "DEBUG"
+

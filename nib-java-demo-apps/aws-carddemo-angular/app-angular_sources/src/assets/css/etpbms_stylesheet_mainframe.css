@@ -1,0 +1,43 @@
+/* stylesheet for rendering BMS maps */
+/*  mainframe style, black background, multi-color text  */
+
+
+/* SANTIX - Screen background color */
+:root {
+	/* Mainframe style */ 
+	--screen-background: #3f3f3f;
+	--screen-forecolor: white;
+}
+
+#logo {
+	background: url('../images/logo.png') no-repeat;
+	float: left;
+	height: 61px;
+	width: 113px;
+}
+
+
+h2 {
+  color: #696969;
+  font-family: 'RobotoDraft', 'Roboto', sans-serif;
+  font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+textarea.screenarea {
+	position: relative;
+	border-style: outset;
+	/* SANTIX */
+	background-color: white;
+	color: #696969;
+	margin: 0px;
+	padding: 0px;
+	font-family: 'PT Mono', 'Courier New';
+	font-size: 10pt;
+	width: 49.2em;
+	height: 21.4em;
+	border-width: 1px;
+	border-color: #696969;
+	resize: none;
+}

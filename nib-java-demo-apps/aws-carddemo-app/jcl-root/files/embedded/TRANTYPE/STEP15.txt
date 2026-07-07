@@ -1,0 +1,1 @@
+   REPRO INFILE(TRANTYPE) OUTFILE(TTYPVSAM)                             

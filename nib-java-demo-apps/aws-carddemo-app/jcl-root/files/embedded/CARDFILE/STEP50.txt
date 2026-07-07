@@ -1,0 +1,3 @@
+  DEFINE PATH                                           -               
+   (NAME(AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX.PATH)        -               
+    PATHENTRY(AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX))                       

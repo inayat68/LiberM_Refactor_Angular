@@ -1,0 +1,9 @@
+{
+  "DCT": [
+    {
+      "Id": "TDI0",
+      "Group": "TEST",
+      "Type": "IntraPartitioned"
+    }
+  ]
+}

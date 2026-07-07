@@ -1,0 +1,24 @@
+### REST WSCUST01
+POST http://localhost:8080/cics/services/wscust01
+Content-Type: application/json
+
+{
+  "id": 50,
+  "firstName": "Aniya",
+  "middleName": "Alba",
+  "lastName": "Von",
+  "dateOfBirth": "1960-12-01",
+  "address": "1588 Nienow Cape",
+  "state": "OR",
+  "country": "USA",
+  "active": true
+}
+
+> {%
+    client.test("Response status is 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+    client.test("Response has id=50", function() {
+        client.assert(response.body.firstName === "Aniya", "Expected firtName='Aniya'");
+    });
+%}

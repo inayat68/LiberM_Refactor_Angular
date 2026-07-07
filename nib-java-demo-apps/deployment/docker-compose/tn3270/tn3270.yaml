@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: aws-carddemo-tn3270-server
+  profiles:
+    active: dev
+
+tn3270:
+  service:
+    address: "0.0.0.0"
+    port: 3270
+    ssl:
+      enabled: false
+      keystore: ""
+      password: ""
+  protocol:
+    welcome: true
+    # set false for rumba
+    tn3270e: false
+    uppercase: false
+    timeout: 0
+    # codepage: "classpath:./codepage/ENUS-370.tbl"
+  regions:
+    default: "http://supernaut:8080/tn3270"
+logging:
+  level:
+    com.nib: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    enable:
+      tomcat: false
+      jvm: true
+      process: true
+      hikaricp: false
+      system: true
+      jdbc: false
+      http: true
+      logback: true
+    tags:
+      tn3270: ${spring.application.name}
+      environment: "test"
+  #    distribution:
+  #      percentiles-histogram:
+  #        http:
+  #          server:
+  #            requests=true:
+  tracing:
+    enabled: true
+    sampling:
+      probability=: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans

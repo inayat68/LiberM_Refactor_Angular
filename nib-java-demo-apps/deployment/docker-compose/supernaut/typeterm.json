@@ -1,0 +1,39 @@
+{
+  "TypeTerm": [
+    {
+      "Id": "N%03d",
+      "Group": "TEST",
+      "Size": 32,
+      "Type": "Tn3270",
+      "IpAddress": "192.168.0.0/16"
+    },
+    {
+      "Id": "O%03d",
+      "Group": "TEST",
+      "Size": 32,
+      "Type": "Tn3270",
+      "IpAddress": "192.168.192.0/16"
+    },
+    {
+      "Id": "W%03d",
+      "Group": "TEST",
+      "Size": 32,
+      "Type": "Tn3270",
+      "IpAddress": "127.0.0.1/24"
+    },
+    {
+      "Id": "D%03d",
+      "Group": "TEST",
+      "Size": 32,
+      "Type": "Tn3270",
+      "IpAddress": "172.0.0.0/8"
+    },
+    {
+      "Id": "L%03d",
+      "Group": "TEST",
+      "Size": 5,
+      "Type": "Tn3270",
+      "Netname": "FAVA.*"
+    }
+  ]
+}

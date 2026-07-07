@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="READCARD" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+    <module name="aws-carddemo-app" />
+    <setting name="path" value="file://$PROJECT_DIR$/aws-carddemo-app/src/main/groovy/READCARD.groovy" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="" />
+    <setting name="workDir" value="file://$PROJECT_DIR$/aws-carddemo-app/src/main/groovy" />
+    <setting name="debug" value="false" />
+    <env name="DATA_ROOT" value="$PROJECT_DIR$/aws-carddemo-app/data" />
+    <env name="NIB_BATCH_CONFIG" value="$PROJECT_DIR$/config/batch/nibbatch.json" />
+    <env name="NIB_COMMONS_CONFIG" value="D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\config\nib-ascii.conf" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

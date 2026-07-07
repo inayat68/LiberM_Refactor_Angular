@@ -1,0 +1,36 @@
+<configuration>
+	<define name="hostname"
+			class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner"/>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+            <pattern>[%date{ISO8601}][%-24t][%-5level] %msg%n</pattern>
+		</encoder>
+	</appender>
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender" >
+        <!-- in the absence of the class attribute, it is assumed that the
+             desired discriminator type is
+             ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+        <discriminator>
+            <key>logid</key>
+            <defaultValue>motorhead-core</defaultValue>
+        </discriminator>
+
+        <sift>
+            <appender name="FILE-${logid}" class="ch.qos.logback.core.FileAppender">
+                <file>./boot-batch/logs/${logid}.log</file>
+                <append>false</append>
+                <encoder>
+                    <!--					<pattern>%d [%thread] %level %mdc %logger{35} -%kvp -%msg%n</pattern>-->
+                    <pattern>[%date{ISO8601}][%-24t][%-5level] %msg%n</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+	<logger name="com.nib" level="debug" />
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="SIFT" />
+	</root>
+</configuration>

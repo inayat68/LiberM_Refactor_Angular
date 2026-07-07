@@ -1,0 +1,103 @@
+spring:
+  application:
+    name: CXAWSDEV
+  profiles:
+    active: dev
+  cloud:
+    config:
+      enabled: false
+    function:
+      scan:
+        packages: "com.nib.supernaut"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      region: ${spring.application.name}
+      environment: "devel"
+  tracing:
+    enabled: false
+
+supernaut:
+  start-up: "cold"
+  applid: ${spring.application.name}
+  sysid: "AWSD"
+  cwa: 512
+  ati:
+    enabled: true
+  programs:
+    packages: >
+      com.aws.carddemo.online.program,
+      com.nib.utilities.api.le
+    # additional CLASSPATH
+    classpath: >
+      ./aws-carddemo-app/target/classes
+#    dependencies: >
+#      ${NIB_JAVA_HOME}/nib-commons-cobol/lib
+  component-scan: >
+    org.sample.online.servlets,
+    org.sample.online.webservices
+  transactions: 'file:./config/online/pct.json'
+  files: 'file:./config/online/fct.json'
+  tdqueues: 'file:./config/online/dct.json'
+  terminals:
+    tct: 'file:./config/online/tct.json'
+    typeterm: 'file:./config/online/typeterm.json'
+    timeout: 60
+  bms:
+    path: "file:./aws-carddemo-app/target/classes/bms"
+    attributes: 
+      ascii: false
+      convert_space: false
+  extensions:
+    iscobol: 
+      enabled: false
+  security:
+    users:
+      default: "CICSUSER"
+    authorization:
+      provider: "com.nib.supernaut.security.SecurityDisabledAuthorizationProvider"
+      config: "file:./config/online/roles.yaml"
+    authentication:
+      provider: "com.nib.supernaut.security.SecurityDisabledAuthenticationProvider"
+      config: "jdbc:postgresql://localhost/postgres?user=postgres&password=postgres&ssl=false&currentSchema=online_security"
+
+logging:
+  level:
+    com.nib: DEBUG
+    org.springframework.ws.server.endpoint: TRACE
+    org.springframework.ws.soap.server: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+supernaut:
+  backbone:
+    storage: redis
+    config: 'file:./config/online/redisson-localhost.yaml'
+  datasources:
+    #rdbms: 'file:./config/online/crdb-esql-nonxa-localhost.json'
+    rdbms: 'file:./config/online/pgsql-esql-nonxa-localhost.json'
+    vsam: 'file:./config/online/pgsql-vsam-nonxa-localhost.json'
+    catalog: 'file:./config/online/pgsql-vsam-nonxa-localhost.json'
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+supernaut:
+  backbone:
+    storage: redis
+    config: 'file:./config/online/redisson-docker.yaml'
+  datasources:
+    rdbms: 'file:./config/online/pgsql-esql-nonxa-docker.json'
+    vsam: 'file:./config/online/pgsql-vsam-nonxa-docker.json'
+    catalog: 'file:./config/online/pgsql-vsam-nonxa-docker.json'

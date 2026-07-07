@@ -1,0 +1,50 @@
+datasources:
+-  access: 'proxy'
+   editable: true
+   is_default: true
+   name: 'Prometheus'
+   type: 'prometheus'
+   url: 'http://prometheus:9090'
+   version: 1
+   uid: prometheus
+-  name: Loki
+   type: loki
+   access: proxy
+   url: http://loki:3100
+   basicAuth: false
+   isDefault: false
+   version: 1
+   editable: false
+   uid: loki
+#   jsonData:
+#      derivedFields:
+#         -  datasourceUid: tempo-datasource
+#            matcherRegex: "traceID=(\\w+)"
+#            name: MyTraceID
+#            # url will be interpreted as query for the datasource
+#            url: '$${__value.raw}'
+#            # optional for URL Label to set a custom display label for the link.
+#            urlDisplayLabel: 'View Trace'
+-  name: "Motorhead Admin Node"
+   type: marcusolsson-json-datasource
+   access: proxy
+   url: http://host.docker.internal:8081
+   basicAuth: false
+   isDefault: false
+   version: 1
+   editable: true
+   uid: motorhead-admin-node
+-  name: Tempo
+   type: tempo
+   access: proxy
+   url: http://tempo:3200
+   basicAuth: false
+   isDefault: true
+   version: 1
+   editable: false
+   apiVersion: 1
+   uid: tempo-datasource
+   jsonData:
+      httpMethod: GET
+      tracesToLogs:
+         datasourceUid: 'loki'

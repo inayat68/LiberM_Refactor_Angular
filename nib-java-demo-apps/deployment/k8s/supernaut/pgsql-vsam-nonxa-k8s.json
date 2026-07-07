@@ -1,0 +1,6 @@
+{
+  "name": "pgsql-non-xa",
+  "xa": false,
+  "driver": "org.postgresql.Driver",
+  "url": "jdbc:postgresql://host.docker.internal/postgres?user=postgres&password=postgres&ssl=false&currentSchema=vsam&autosave=always"
+}

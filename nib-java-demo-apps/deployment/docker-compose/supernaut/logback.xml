@@ -1,0 +1,28 @@
+<configuration debug="false">
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+	<define name="hostname"
+			class="ch.qos.logback.core.property.CanonicalHostNamePropertyDefiner"/>
+	<appender name="STDOUT"
+			  class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%date{ISO8601}][%-24t][%-5level] %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+		<http>
+			<url>http://loki:3100/loki/api/v1/push</url>
+		</http>
+		<format>
+			<label>
+				<pattern>region=%mdc{region:-none},node=%mdc{node:-unknown},transid=%mdc{transid:-none},termid=%mdc{termid:-none},program=%mdc{program:-none},host=${hostname},level=%level,thread=%t</pattern>
+			</label>
+			<message>
+				<pattern>%msg %ex</pattern>
+			</message>
+		</format>
+	</appender>
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="LOKI" />
+	</root>
+</configuration>

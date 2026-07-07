@@ -1,0 +1,28 @@
+{
+  "tmpPath": "C:\\_tmp",
+  "loadlib": [
+    "com.nib.scripting.utils",
+    "com.aws.carddemo.batch.program"
+  ],
+  "datasets": {
+    "varfmt": "Ibm"
+  },
+  "vsam": {
+    "url": "jdbc:postgresql://localhost/postgres?user=postgres&password=postgres&ssl=false&currentSchema=vsam&autosave=always",
+    "autocommit": true
+  },
+  "programAliases": {
+    "IEFBR14": "com.nib.scripting.utils.NIBBR14",
+    "DSNUTILB": "com.nib.scripting.utils.NIBDB2UT",
+    "IDCAMS": "com.nib.scripting.utils.NIBCAMS",
+    "IEBGENER": "com.nib.scripting.utils.NIBGENER",
+    "SORT": "com.nib.scripting.utils.NIBSORT",
+    "DFSORT": "com.nib.scripting.utils.NIBSORT",
+    "ICEMAN": "com.nib.scripting.utils.NIBSORT",
+    "ICETOOL": "com.nib.scripting.utils.NIBTOOL",
+    "FTP": "com.nib.scripting.utils.NIBFTP",
+    "BPXBATCH": "com.nib.scripting.utils.NIBBPXBT",
+    "SDSF": "com.nib.scripting.utils.NIBSDSF",
+    "WTO": "com.nib.scripting.utils.NIBWTO"
+  }
+}

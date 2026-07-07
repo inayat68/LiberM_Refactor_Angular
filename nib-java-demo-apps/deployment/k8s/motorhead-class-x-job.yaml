@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: motorhead-class-x
+  namespace: motorhead-demo
+spec:
+  template:
+    spec:
+      containers:
+        - name: motorhead
+          image: nib/motorhead
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: OneOff
+            - name: NIB_JAVA_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nib-java-license
+                  key: NIB_JAVA_LICENSE_KEY
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: nib-volume
+              mountPath: /opt/nib
+            - name: data-volume
+              mountPath: /data
+            - name: logs-volume
+              mountPath: /logs
+      restartPolicy: Never
+      volumes:
+        - name: config-volume
+          configMap:
+            name: motorhead-config
+        - name: nib-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java
+        - name: data-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-k8s/data
+        - name: logs-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-k8s/logs
+  backoffLimit: 2

@@ -1,0 +1,221 @@
+name: nib-java-demo-cluster
+services:
+  rdbms:
+    image: postgres
+    ports:
+      - "5432:5432"
+    command: -c "max_prepared_transactions=1048"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pgsql/aws.sql:/docker-entrypoint-initdb.d/02.aws.sql
+      - ./pgsql/cics_security.sql:/docker-entrypoint-initdb.d/04.cics_security.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      retries: 10
+      start_period: 15s
+      timeout: 5s
+
+  redis:
+    image: "redis"
+    ports:
+      - "6379:6379"
+
+  supernaut:
+    image: ghcr.io/nib-labs/supernaut:latest
+    pull_policy: always
+    deploy:
+      mode: replicated
+      replicas: 3
+    # restart: on-failure
+    stop_grace_period: 60s
+    depends_on:
+      redis:
+        condition: service_started
+      rdbms:
+        condition: service_healthy
+        restart: true
+      loki:
+        condition: service_started
+    environment:
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./supernaut:/config
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/target/classes:/classes
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/src/main/resources/bms:/bms
+      - ${NIB_JAVA_DEMO_HOME}/cics-webservices/target/cics-webservices-1.0.0-SNAPSHOT.jar:/supernaut/jars/cics-webservices.jar:ro
+
+  motorhead-a:
+    image: ghcr.io/nib-labs/motorhead:latest
+    pull_policy: always
+    deploy:
+      mode: replicated
+      replicas: 2
+    #    ports:
+    #        - "8080:8080"
+    restart: on-failure
+    stop_grace_period: 180s
+    depends_on:
+      redis:
+        condition: service_started
+      loki:
+        condition: service_started
+      rdbms:
+        condition: service_healthy
+        restart: true
+    environment:
+      - SPRING_PROFILES_ACTIVE=NodeA
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./motorhead:/config
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/target/classes:/classes
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/src/main/groovy:/groovy
+      - ${DATA_ROOT}:/data
+
+  motorhead-b:
+    image: ghcr.io/nib-labs/motorhead:latest
+    pull_policy: always
+    deploy:
+      mode: replicated
+      replicas: 2
+    restart: on-failure
+    stop_grace_period: 180s
+    depends_on:
+      redis:
+        condition: service_started
+      loki:
+        condition: service_started
+      rdbms:
+        condition: service_healthy
+        restart: true
+    environment:
+      - SPRING_PROFILES_ACTIVE=NodeB
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./motorhead:/config
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/target/classes:/classes
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/src/main/groovy:/groovy
+      - ${DATA_ROOT}:/data
+
+  motorhead-cde:
+    image: ghcr.io/nib-labs/motorhead:latest
+    pull_policy: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    stop_grace_period: 180s
+    depends_on:
+      redis:
+        condition: service_started
+      loki:
+        condition: service_started
+      rdbms:
+        condition: service_healthy
+        restart: true
+    environment:
+      - SPRING_PROFILES_ACTIVE=NodeCDE
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./motorhead:/config
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/target/classes:/classes
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/src/main/groovy:/groovy
+      - ${DATA_ROOT}:/data
+
+  motorhead-proxy:
+    image: ghcr.io/nib-labs/motorhead:latest
+    pull_policy: always
+    restart: on-failure
+    stop_grace_period: 180s
+    depends_on:
+      redis:
+        condition: service_started
+      loki:
+        condition: service_started
+      rdbms:
+        condition: service_healthy
+        restart: true
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=Proxy
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./motorhead:/config
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/target/classes:/classes
+      - ${NIB_JAVA_DEMO_HOME}/aws-carddemo-app/src/main/groovy:/groovy
+      - ${DATA_ROOT}:/data
+
+  tn3270:
+    image: ghcr.io/nib-labs/tn3270:latest
+    pull_policy: always
+    depends_on:
+      - supernaut
+    ports:
+      - "3271:3270"
+    environment:
+      - NIB_JAVA_LICENSE_KEY=${NIB_JAVA_LICENSE_KEY}
+    volumes:
+      - ./tn3270:/config
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx-supernaut.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - supernaut
+    ports:
+      - "8090:8080"
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+      - loki
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_INSTALL_PLUGINS=marcusolsson-json-datasource,volkovlabs-form-panel
+    volumes:
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+
+  tempo:
+    image: grafana/tempo
+    extra_hosts: [ 'host.docker.internal:host-gateway' ]
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml:ro
+      - ./tempo-storage:/tmp/tempo
+    ports:
+      - "14268"  # jaeger ingest
+      - "9411:9411" # zipkin
+
+networks:
+  cluster-network:
+    driver: bridge

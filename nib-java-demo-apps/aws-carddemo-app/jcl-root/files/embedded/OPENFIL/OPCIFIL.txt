@@ -1,0 +1,5 @@
+ /F CICSAWSA,'CEMT SET FIL(TRANSACT ) OPE'                              
+ /F CICSAWSA,'CEMT SET FIL(CCXREF ) OPE'                                
+ /F CICSAWSA,'CEMT SET FIL(ACCTDAT ) OPE'                               
+ /F CICSAWSA,'CEMT SET FIL(CXACAIX ) OPE'                               
+ /F CICSAWSA,'CEMT SET FIL(USRSEC ) OPE'                                

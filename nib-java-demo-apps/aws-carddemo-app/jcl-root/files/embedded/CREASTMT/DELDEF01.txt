@@ -1,0 +1,15 @@
+  DELETE    AWS.M2.CARDDEMO.TRXFL.SEQ
+  DELETE    AWS.M2.CARDDEMO.TRXFL.VSAM.KSDS                     -
+            CLUSTER
+  SET       MAXCC = 0
+  DEFINE    CLUSTER  (NAME(AWS.M2.CARDDEMO.TRXFL.VSAM.KSDS)     -
+                      KEYS(32 0)                                -
+                      VOLUMES(TSU023)                           -
+                      RECORDSIZE(350 350)                       -
+                      SHAREOPTIONS(2 3)                         -
+                      ERASE                                     -
+                      INDEXED                                   -
+                      CYL(1 5))                                 -
+            DATA      (NAME(AWS.M2.CARDDEMO.TRXFL.DATA)         -
+                      CISZ(4096))                               -
+            INDEX     (NAME(AWS.M2.CARDDEMO.TRXFL.INDEX))

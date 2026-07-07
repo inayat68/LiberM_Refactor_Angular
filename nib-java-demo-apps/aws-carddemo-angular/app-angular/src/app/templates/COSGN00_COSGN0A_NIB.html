@@ -1,0 +1,28 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="container">
+	<div class="login-container">
+		<div class="circle circle-one"></div>
+		<div class="form-container">
+			<img src="assets/images/pic-login.png" class="pic-login" />
+			<h2 class="opacity">N.I.B. Login</h2>
+			<form [formGroup]="COSGN00_COSGN0A_NIB_FORM">
+				<input id='USERID' name='USERID' formControlName='USERID' autocorrect="off" spellcheck="false"
+					autocomplete="off" type="text" size='8' maxlength='8' placeholder="USERNAME" (keyup.enter)="sendKey('DFHENTER')" tabindex="0" />
+				<input id='PASSWD' name='PASSWD' formControlName='PASSWD' autocorrect="off" spellcheck="false"
+					autocomplete="off" type="password" size='9' maxlength='9' placeholder="PASSWORD" (keyup.enter)="sendKey('DFHENTER')" tabindex="1" />
+				<button class="opacity" (click)='sendKey("DFHENTER")' tabindex="2" >Submit</button>
+				<br />
+				<pre id='ERRMSG' name='ERRMSG' style="color:red"></pre>
+			</form>
+		</div>
+		<div class="circle circle-two"></div>
+	</div>
+</div>
+<div id='connection_data'>
+	<br />
+	<br />
+	<br />
+	<br />
+	<pre id='termId' style='font-size: 10px;'></pre>
+	<pre id='sessionId' style='font-size: 10px;'></pre>
+</div>	

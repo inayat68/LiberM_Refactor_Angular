@@ -1,0 +1,112 @@
+  <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+  <form [formGroup] = "COTRN01_COTRN1A_FORM">
+	 <div id='screenarea'>
+		<div>
+			<div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+			<div id="title">
+				<h2>N.I.B. 3270 to Angular demo</h2>
+			</div>
+		</div>
+		<div id='floatfix'>
+		   <div id='screenimage'>
+              <pre class='line1 col1 len5 bluefg norm'>Tran:</pre>
+              <input appNoTabByClass id='TRNNAME' name='TRNNAME' formControlName='TRNNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col7 len4 bluefg norm' type='text' size='4' maxlength='4' (focus)="setFocusField('TRNNAME')" (focusout)="unsetFocusField('TRNNAME')" value=''>
+              <input appNoTabByClass id='TITLE01' name='TITLE01' formControlName='TITLE01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE01')" (focusout)="unsetFocusField('TITLE01')" value=''>
+              <pre class='line1 col65 len5 bluefg norm'>Date:</pre>
+              <input appNoTabByClass id='CURDATE' name='CURDATE' formControlName='CURDATE' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURDATE')" (focusout)="unsetFocusField('CURDATE')" value='mm/dd/yy'>
+              <pre class='line2 col1 len5 bluefg norm'>Prog:</pre>
+              <input appNoTabByClass id='PGMNAME' name='PGMNAME' formControlName='PGMNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col7 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('PGMNAME')" (focusout)="unsetFocusField('PGMNAME')" value=''>
+              <input appNoTabByClass id='TITLE02' name='TITLE02' formControlName='TITLE02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE02')" (focusout)="unsetFocusField('TITLE02')" value=''>
+              <pre class='line2 col65 len5 bluefg norm'>Time:</pre>
+              <input appNoTabByClass id='CURTIME' name='CURTIME' formControlName='CURTIME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURTIME')" (focusout)="unsetFocusField('CURTIME')" value='hh:mm:ss'>
+              <pre class='line4 col30 len16 neutralfg brt'>View Transaction</pre>
+              <pre class='line6 col6 len14 turquoisefg norm'>Enter Tran ID:</pre>
+              <input appNoTabByClass id='TRNIDIN' name='TRNIDIN' formControlName='TRNIDIN' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line6 col21 len16 greenfg norm underline' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNIDIN')" (focusout)="unsetFocusField('TRNIDIN')" value=' '>
+              <pre class='line8 col6 len70 neutralfg norm'>----------------------------------------------------------------------</pre>
+              <pre class='line10 col6 len15 turquoisefg norm'>Transaction ID:</pre>
+              <input appNoTabByClass id='TRNID' name='TRNID' formControlName='TRNID' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col22 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID')" (focusout)="unsetFocusField('TRNID')" value=' '>
+              <pre class='line10 col45 len12 turquoisefg norm'>Card Number:</pre>
+              <input appNoTabByClass id='CARDNUM' name='CARDNUM' formControlName='CARDNUM' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col58 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('CARDNUM')" (focusout)="unsetFocusField('CARDNUM')" value=' '>
+              <pre class='line12 col6 len8 turquoisefg norm'>Type CD:</pre>
+              <input appNoTabByClass id='TTYPCD' name='TTYPCD' formControlName='TTYPCD' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col15 len2 bluefg norm' type='text' size='2' maxlength='2' (focus)="setFocusField('TTYPCD')" (focusout)="unsetFocusField('TTYPCD')" value=' '>
+              <pre class='line12 col18 len0 defaultfg'></pre>
+              <pre class='line12 col23 len12 turquoisefg norm'>Category CD:</pre>
+              <input appNoTabByClass id='TCATCD' name='TCATCD' formControlName='TCATCD' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col36 len4 bluefg norm' type='text' size='4' maxlength='4' (focus)="setFocusField('TCATCD')" (focusout)="unsetFocusField('TCATCD')" value=' '>
+              <pre class='line12 col41 len0 defaultfg'></pre>
+              <pre class='line12 col46 len7 turquoisefg norm'>Source:</pre>
+              <input appNoTabByClass id='TRNSRC' name='TRNSRC' formControlName='TRNSRC' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col54 len10 bluefg norm' type='text' size='10' maxlength='10' (focus)="setFocusField('TRNSRC')" (focusout)="unsetFocusField('TRNSRC')" value=' '>
+              <pre class='line12 col65 len0 defaultfg'></pre>
+              <pre class='line14 col6 len12 turquoisefg norm'>Description:</pre>
+              <input appNoTabByClass id='TDESC' name='TDESC' formControlName='TDESC' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col19 len60 bluefg norm' type='text' size='60' maxlength='60' (focus)="setFocusField('TDESC')" (focusout)="unsetFocusField('TDESC')" value=' '>
+              <pre class='line14 col80 len0 defaultfg'></pre>
+              <pre class='line16 col6 len7 turquoisefg norm'>Amount:</pre>
+              <input appNoTabByClass id='TRNAMT' name='TRNAMT' formControlName='TRNAMT' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col14 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TRNAMT')" (focusout)="unsetFocusField('TRNAMT')" value=' '>
+              <pre class='line16 col27 len0 defaultfg'></pre>
+              <pre class='line16 col31 len10 turquoisefg norm'>Orig Date:</pre>
+              <input appNoTabByClass id='TORIGDT' name='TORIGDT' formControlName='TORIGDT' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col42 len10 bluefg norm' type='text' size='10' maxlength='10' (focus)="setFocusField('TORIGDT')" (focusout)="unsetFocusField('TORIGDT')" value=' '>
+              <pre class='line16 col53 len0 defaultfg'></pre>
+              <pre class='line16 col57 len10 turquoisefg norm'>Proc Date:</pre>
+              <input appNoTabByClass id='TPROCDT' name='TPROCDT' formControlName='TPROCDT' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col68 len10 bluefg norm' type='text' size='10' maxlength='10' (focus)="setFocusField('TPROCDT')" (focusout)="unsetFocusField('TPROCDT')" value=' '>
+              <pre class='line16 col79 len0 defaultfg'></pre>
+              <pre class='line18 col6 len12 turquoisefg norm'>Merchant ID:</pre>
+              <input appNoTabByClass id='MID' name='MID' formControlName='MID' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col19 len9 bluefg norm' type='text' size='9' maxlength='9' (focus)="setFocusField('MID')" (focusout)="unsetFocusField('MID')" value=' '>
+              <pre class='line18 col29 len0 defaultfg'></pre>
+              <pre class='line18 col33 len14 turquoisefg norm'>Merchant Name:</pre>
+              <input appNoTabByClass id='MNAME' name='MNAME' formControlName='MNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col48 len30 bluefg norm' type='text' size='30' maxlength='30' (focus)="setFocusField('MNAME')" (focusout)="unsetFocusField('MNAME')" value=' '>
+              <pre class='line18 col79 len0 defaultfg'></pre>
+              <pre class='line20 col6 len14 turquoisefg norm'>Merchant City:</pre>
+              <input appNoTabByClass id='MCITY' name='MCITY' formControlName='MCITY' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line20 col21 len25 bluefg norm' type='text' size='25' maxlength='25' (focus)="setFocusField('MCITY')" (focusout)="unsetFocusField('MCITY')" value=' '>
+              <pre class='line20 col47 len0 defaultfg'></pre>
+              <pre class='line20 col53 len13 turquoisefg norm'>Merchant Zip:</pre>
+              <input appNoTabByClass id='MZIP' name='MZIP' formControlName='MZIP' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line20 col67 len10 bluefg norm' type='text' size='10' maxlength='10' (focus)="setFocusField('MZIP')" (focusout)="unsetFocusField('MZIP')" value=' '>
+              <pre class='line20 col78 len0 defaultfg'></pre>
+              <input appNoTabByClass id='ERRMSG' name='ERRMSG' formControlName='ERRMSG' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line23 col1 len78 redfg brt' type='text' size='78' maxlength='78' (focus)="setFocusField('ERRMSG')" (focusout)="unsetFocusField('ERRMSG')" value=''>
+              <pre class='line24 col1 len47 yellowfg norm'>ENTER=Fetch  F3=Back  F4=Clear  F5=Browse Tran.</pre>
+		   </div>
+		</div>
+		<div id='floatfix'>
+		   <div id='buttonpanel'>
+			  <input class='pkey f1' type='submit' (click)='sendKey("DFHPF1")' name='DFH_PF1' value='PF1'>
+			  <input class='pkey f2' type='submit' (click)='sendKey("DFHPF2")' name='DFH_PF2' value='PF2'>
+			  <input class='pkey f3' type='submit' (click)='sendKey("DFHPF3")' name='DFH_PF3' value='PF3'>
+			  <input class='pkey f4' type='submit' (click)='sendKey("DFHPF4")' name='DFH_PF4' value='PF4'>
+			  <input class='pkey f5' type='submit' (click)='sendKey("DFHPF5")' name='DFH_PF5' value='PF5'>
+			  <input class='pkey f6' type='submit' (click)='sendKey("DFHPF6")' name='DFH_PF6' value='PF6'>
+			  <input class='pkey f7' type='submit' (click)='sendKey("DFHPF7")' name='DFH_PF7' value='PF7'>
+			  <input class='pkey f8' type='submit' (click)='sendKey("DFHPF8")' name='DFH_PF8' value='PF8'>
+			  <input class='pkey f9' type='submit' (click)='sendKey("DFHPF9")' name='DFH_PF9' value='PF9'>
+			  <input class='pkey f10' type='submit' (click)='sendKey("DFHPF10")' name='DFH_PF10' value='PF10'>
+			  <input class='pkey f11' type='submit' (click)='sendKey("DFHPF11")' name='DFH_PF11' value='PF11'>
+			  <input class='pkey f12' type='submit' (click)='sendKey("DFHPF12")' name='DFH_PF12' value='PF12'>
+			  <input class='pkey f13' type='submit' (click)='sendKey("DFHPF13")' name='DFH_PF13' value='PF13'>
+			  <input class='pkey f14' type='submit' (click)='sendKey("DFHPF14")' name='DFH_PF14' value='PF14'>
+			  <input class='pkey f15' type='submit' (click)='sendKey("DFHPF15")' name='DFH_PF15' value='PF15'>
+			  <input class='pkey f16' type='submit' (click)='sendKey("DFHPF16")' name='DFH_PF16' value='PF16'>
+			  <input class='pkey f17' type='submit' (click)='sendKey("DFHPF17")' name='DFH_PF17' value='PF17'>
+			  <input class='pkey f18' type='submit' (click)='sendKey("DFHPF18")' name='DFH_PF18' value='PF18'>
+			  <input class='pkey f19' type='submit' (click)='sendKey("DFHPF19")' name='DFH_PF19' value='PF19'>
+			  <input class='pkey f20' type='submit' (click)='sendKey("DFHPF20")' name='DFH_PF20' value='PF20'>
+			  <input class='pkey f21' type='submit' (click)='sendKey("DFHPF21")' name='DFH_PF21' value='PF21'>
+			  <input class='pkey f22' type='submit' (click)='sendKey("DFHPF22")' name='DFH_PF22' value='PF22'>
+			  <input class='pkey f23' type='submit' (click)='sendKey("DFHPF23")' name='DFH_PF23' value='PF23'>
+			  <input class='pkey f24' type='submit' (click)='sendKey("DFHPF24")' name='DFH_PF24' value='PF24'>
+			  <input class='pkey a1' type='submit' (click)='sendKey("DFHPA1")' name='DFH_PA1' value='PA1'>
+			  <input class='pkey a2' type='submit' (click)='sendKey("DFHPA2")' name='DFH_PA2' value='PA2'>
+			  <input class='pkey a3' type='submit' (click)='sendKey("DFHPA3")' name='DFH_PA3' value='PA3'>
+			  <input class='clearkey' type='submit' (click)='sendKey("DFHCLEAR")' name='DFH_CLEAR' value='Clear'>
+			  <!--
+			  <input class='resetkey' type='reset' value='Reset'>
+			  -->
+			  <input class='enterkey' type='submit' (click)='sendKey("DFHENTER")' name='DFH_ENTER' value='Enter'>
+		   </div>
+		</div>
+	 </div>
+	 <div id='connection_data'>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <pre id='termId' style='font-size: 10px;'></pre>
+	    <pre id='sessionId' style='font-size: 10px;'></pre>
+	 </div>
+  </form>

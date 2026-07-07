@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Boot Angular" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files/Java/jdk-24" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.aws.carddemo.angular.AwsServiceApplication" />
+    <module name="aws-carddemo-angular" />
+    <option name="PROGRAM_PARAMETERS" value="--spring.config.location=file:../config/angular/awsangular.yaml" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/aws-carddemo-angular" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

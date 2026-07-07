@@ -1,0 +1,11 @@
+{
+  "name": "crdb-nonxa",
+  "xa": false,
+  "driver": "org.postgresql.Driver",
+  // PgSql
+  // url: 'jdbc:postgresql://localhost/postgres?user=postgres&password=postgres&ssl=false&currentSchema=darkside'
+  // CrDb cloud instance
+  // #url: 'jdbc:postgresql://rock-raven-8467.7tc.aws-eu-central-1.cockroachlabs.cloud:26257/imsdb?user=imsuser&password=F9__Po6ORsSJqpUvP0eSmg&sslmode=require&currentSchema=darkside'
+  //#CrDb docker
+  "url": "jdbc:postgresql://localhost:26257/imsdb?sslmode=disable&user=root&currentSchema=darkside"
+}

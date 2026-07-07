@@ -1,0 +1,12 @@
+ DELETE                  AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS
+ SET       MAXCC = 0
+ DEFINE    CLUSTER (NAME(AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS)    -
+                    KEYS(8,0)                                 -
+                    RECORDSIZE(80,80)                         -
+                    REUSE                                     -
+                    INDEXED                                   -
+                    TRACKS(45,15)                             -
+                    FREESPACE(10,15)                          -
+                    CISZ(8192))                               -
+           DATA    (NAME(AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS.DAT)) -
+           INDEX   (NAME(AWS.M2.CARDDEMO.USRSEC.VSAM.KSDS.IDX))

@@ -1,0 +1,37 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'codelab-monitor'
+
+# A scrape configuration containing exactly one endpoint to scrape:
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'supernaut-cluster'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    dns_sd_configs:
+      - names:
+          - supernaut
+        type: A
+        port: 8080
+#    static_configs:
+#      - targets: ['supernaut']
+  - job_name: 'motorhead-cluster'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    dns_sd_configs:
+      - names:
+          - motorhead-a
+          - motorhead-b
+          - motorhead-cde
+          - motorhead-proxy
+        type: A
+        port: 8080
+
+#    static_configs:
+#      - targets:
+#        - 'host.docker.internal:8081'
+#        - 'host.docker.internal:8082'

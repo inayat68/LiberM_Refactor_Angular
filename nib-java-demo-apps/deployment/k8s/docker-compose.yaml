@@ -1,0 +1,29 @@
+name: nib-java-k8s-demo-services
+services:
+  rdbms:
+    image: postgres
+    ports:
+      - "5432:5432"
+    command: -c "max_prepared_transactions=1048"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pgsql/aws.sql:/docker-entrypoint-initdb.d/02.aws.sql
+      - ./pgsql/cics_security.sql:/docker-entrypoint-initdb.d/04.cics_security.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      retries: 10
+      start_period: 15s
+      timeout: 5s
+
+  redis:
+    image: "redis"
+    ports:
+      - "6379:6379"
+
+networks:
+  cluster-network:
+    driver: bridge

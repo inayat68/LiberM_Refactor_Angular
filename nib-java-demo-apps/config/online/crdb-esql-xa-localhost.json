@@ -1,0 +1,12 @@
+{
+  "name": "esql-crdb-xa",
+  "xa": true,
+  "driver": "org.postgresql.xa.PGXADataSource",
+  "properties": {
+    "serverName": "localhost",
+    "portNumber": "26257",
+    "databaseName": "postgres",
+    "user": "root",
+    "currentSchema": "darkside"
+  }
+}

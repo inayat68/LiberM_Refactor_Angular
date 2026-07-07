@@ -1,0 +1,14 @@
+   DEFINE CLUSTER (NAME(AWS.M2.CARDDEMO.TRANCATG.VSAM.KSDS) -           
+          CYLINDERS(1 5) -                                              
+          VOLUMES(AWSHJ1 -                                              
+          ) -                                                           
+          KEYS(6 0) -                                                   
+          RECORDSIZE(60 60) -                                           
+          SHAREOPTIONS(2 3) -                                           
+          ERASE -                                                       
+          INDEXED -                                                     
+          ) -                                                           
+          DATA (NAME(AWS.M2.CARDDEMO.TRANCATG.VSAM.KSDS.DATA) -         
+          ) -                                                           
+          INDEX (NAME(AWS.M2.CARDDEMO.TRANCATG.VSAM.KSDS.INDEX) -       
+          )                                                             

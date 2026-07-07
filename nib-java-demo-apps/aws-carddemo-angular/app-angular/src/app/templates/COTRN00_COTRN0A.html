@@ -1,0 +1,137 @@
+  <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+  <form [formGroup] = "COTRN00_COTRN0A_FORM">
+	 <div id='screenarea'>
+		<div>
+			<div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+			<div id="title">
+				<h2>N.I.B. 3270 to Angular demo</h2>
+			</div>
+		</div>
+		<div id='floatfix'>
+		   <div id='screenimage'>
+              <pre class='line1 col1 len5 bluefg norm'>Tran:</pre>
+              <input appNoTabByClass id='TRNNAME' name='TRNNAME' formControlName='TRNNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col7 len4 bluefg norm' type='text' size='4' maxlength='4' (focus)="setFocusField('TRNNAME')" (focusout)="unsetFocusField('TRNNAME')" value=''>
+              <input appNoTabByClass id='TITLE01' name='TITLE01' formControlName='TITLE01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE01')" (focusout)="unsetFocusField('TITLE01')" value=''>
+              <pre class='line1 col65 len5 bluefg norm'>Date:</pre>
+              <input appNoTabByClass id='CURDATE' name='CURDATE' formControlName='CURDATE' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURDATE')" (focusout)="unsetFocusField('CURDATE')" value='mm/dd/yy'>
+              <pre class='line2 col1 len5 bluefg norm'>Prog:</pre>
+              <input appNoTabByClass id='PGMNAME' name='PGMNAME' formControlName='PGMNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col7 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('PGMNAME')" (focusout)="unsetFocusField('PGMNAME')" value=''>
+              <input appNoTabByClass id='TITLE02' name='TITLE02' formControlName='TITLE02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE02')" (focusout)="unsetFocusField('TITLE02')" value=''>
+              <pre class='line2 col65 len5 bluefg norm'>Time:</pre>
+              <input appNoTabByClass id='CURTIME' name='CURTIME' formControlName='CURTIME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURTIME')" (focusout)="unsetFocusField('CURTIME')" value='hh:mm:ss'>
+              <pre class='line4 col30 len17 neutralfg brt'>List Transactions</pre>
+              <pre class='line4 col65 len5 turquoisefg brt'>Page:</pre>
+              <input appNoTabByClass id='PAGENUM' name='PAGENUM' formControlName='PAGENUM' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line4 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('PAGENUM')" (focusout)="unsetFocusField('PAGENUM')" value=' '>
+              <pre class='line6 col5 len15 turquoisefg norm'>Search Tran ID:</pre>
+              <input appNoTabByClass id='TRNIDIN' name='TRNIDIN' formControlName='TRNIDIN' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line6 col21 len16 greenfg norm underline' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNIDIN')" (focusout)="unsetFocusField('TRNIDIN')" value=''>
+              <pre class='line8 col2 len3 neutralfg norm'>Sel</pre>
+              <pre class='line8 col8 len16 neutralfg norm'> Transaction ID </pre>
+              <pre class='line8 col27 len8 neutralfg norm'>  Date  </pre>
+              <pre class='line8 col38 len26 neutralfg norm'>     Description          </pre>
+              <pre class='line8 col67 len12 neutralfg norm'>   Amount   </pre>
+              <pre class='line9 col2 len3 neutralfg norm'>---</pre>
+              <pre class='line9 col8 len16 neutralfg norm'>----------------</pre>
+              <pre class='line9 col27 len8 neutralfg norm'>--------</pre>
+              <pre class='line9 col38 len26 neutralfg norm'>--------------------------</pre>
+              <pre class='line9 col67 len12 neutralfg norm'>------------</pre>
+              <input appNoTabByClass id='SEL0001' name='SEL0001' formControlName='SEL0001' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line10 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0001')" (focusout)="unsetFocusField('SEL0001')" value=' '>
+              <input appNoTabByClass id='TRNID01' name='TRNID01' formControlName='TRNID01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID01')" (focusout)="unsetFocusField('TRNID01')" value=' '>
+              <input appNoTabByClass id='TDATE01' name='TDATE01' formControlName='TDATE01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE01')" (focusout)="unsetFocusField('TDATE01')" value=' '>
+              <input appNoTabByClass id='TDESC01' name='TDESC01' formControlName='TDESC01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC01')" (focusout)="unsetFocusField('TDESC01')" value=' '>
+              <input appNoTabByClass id='TAMT001' name='TAMT001' formControlName='TAMT001' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT001')" (focusout)="unsetFocusField('TAMT001')" value=' '>
+              <input appNoTabByClass id='SEL0002' name='SEL0002' formControlName='SEL0002' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line11 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0002')" (focusout)="unsetFocusField('SEL0002')" value=' '>
+              <input appNoTabByClass id='TRNID02' name='TRNID02' formControlName='TRNID02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line11 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID02')" (focusout)="unsetFocusField('TRNID02')" value=' '>
+              <input appNoTabByClass id='TDATE02' name='TDATE02' formControlName='TDATE02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line11 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE02')" (focusout)="unsetFocusField('TDATE02')" value=' '>
+              <input appNoTabByClass id='TDESC02' name='TDESC02' formControlName='TDESC02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line11 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC02')" (focusout)="unsetFocusField('TDESC02')" value=' '>
+              <input appNoTabByClass id='TAMT002' name='TAMT002' formControlName='TAMT002' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line11 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT002')" (focusout)="unsetFocusField('TAMT002')" value=' '>
+              <input appNoTabByClass id='SEL0003' name='SEL0003' formControlName='SEL0003' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line12 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0003')" (focusout)="unsetFocusField('SEL0003')" value=' '>
+              <input appNoTabByClass id='TRNID03' name='TRNID03' formControlName='TRNID03' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID03')" (focusout)="unsetFocusField('TRNID03')" value=' '>
+              <input appNoTabByClass id='TDATE03' name='TDATE03' formControlName='TDATE03' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE03')" (focusout)="unsetFocusField('TDATE03')" value=' '>
+              <input appNoTabByClass id='TDESC03' name='TDESC03' formControlName='TDESC03' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC03')" (focusout)="unsetFocusField('TDESC03')" value=' '>
+              <input appNoTabByClass id='TAMT003' name='TAMT003' formControlName='TAMT003' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT003')" (focusout)="unsetFocusField('TAMT003')" value=' '>
+              <input appNoTabByClass id='SEL0004' name='SEL0004' formControlName='SEL0004' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line13 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0004')" (focusout)="unsetFocusField('SEL0004')" value=' '>
+              <input appNoTabByClass id='TRNID04' name='TRNID04' formControlName='TRNID04' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line13 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID04')" (focusout)="unsetFocusField('TRNID04')" value=' '>
+              <input appNoTabByClass id='TDATE04' name='TDATE04' formControlName='TDATE04' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line13 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE04')" (focusout)="unsetFocusField('TDATE04')" value=' '>
+              <input appNoTabByClass id='TDESC04' name='TDESC04' formControlName='TDESC04' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line13 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC04')" (focusout)="unsetFocusField('TDESC04')" value=' '>
+              <input appNoTabByClass id='TAMT004' name='TAMT004' formControlName='TAMT004' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line13 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT004')" (focusout)="unsetFocusField('TAMT004')" value=' '>
+              <input appNoTabByClass id='SEL0005' name='SEL0005' formControlName='SEL0005' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line14 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0005')" (focusout)="unsetFocusField('SEL0005')" value=' '>
+              <input appNoTabByClass id='TRNID05' name='TRNID05' formControlName='TRNID05' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID05')" (focusout)="unsetFocusField('TRNID05')" value=' '>
+              <input appNoTabByClass id='TDATE05' name='TDATE05' formControlName='TDATE05' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE05')" (focusout)="unsetFocusField('TDATE05')" value=' '>
+              <input appNoTabByClass id='TDESC05' name='TDESC05' formControlName='TDESC05' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC05')" (focusout)="unsetFocusField('TDESC05')" value=' '>
+              <input appNoTabByClass id='TAMT005' name='TAMT005' formControlName='TAMT005' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT005')" (focusout)="unsetFocusField('TAMT005')" value=' '>
+              <input appNoTabByClass id='SEL0006' name='SEL0006' formControlName='SEL0006' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line15 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0006')" (focusout)="unsetFocusField('SEL0006')" value=' '>
+              <input appNoTabByClass id='TRNID06' name='TRNID06' formControlName='TRNID06' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID06')" (focusout)="unsetFocusField('TRNID06')" value=' '>
+              <input appNoTabByClass id='TDATE06' name='TDATE06' formControlName='TDATE06' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE06')" (focusout)="unsetFocusField('TDATE06')" value=' '>
+              <input appNoTabByClass id='TDESC06' name='TDESC06' formControlName='TDESC06' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC06')" (focusout)="unsetFocusField('TDESC06')" value=' '>
+              <input appNoTabByClass id='TAMT006' name='TAMT006' formControlName='TAMT006' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT006')" (focusout)="unsetFocusField('TAMT006')" value=' '>
+              <input appNoTabByClass id='SEL0007' name='SEL0007' formControlName='SEL0007' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line16 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0007')" (focusout)="unsetFocusField('SEL0007')" value=' '>
+              <input appNoTabByClass id='TRNID07' name='TRNID07' formControlName='TRNID07' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID07')" (focusout)="unsetFocusField('TRNID07')" value=' '>
+              <input appNoTabByClass id='TDATE07' name='TDATE07' formControlName='TDATE07' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE07')" (focusout)="unsetFocusField('TDATE07')" value=' '>
+              <input appNoTabByClass id='TDESC07' name='TDESC07' formControlName='TDESC07' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC07')" (focusout)="unsetFocusField('TDESC07')" value=' '>
+              <input appNoTabByClass id='TAMT007' name='TAMT007' formControlName='TAMT007' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT007')" (focusout)="unsetFocusField('TAMT007')" value=' '>
+              <input appNoTabByClass id='SEL0008' name='SEL0008' formControlName='SEL0008' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line17 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0008')" (focusout)="unsetFocusField('SEL0008')" value=' '>
+              <input appNoTabByClass id='TRNID08' name='TRNID08' formControlName='TRNID08' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line17 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID08')" (focusout)="unsetFocusField('TRNID08')" value=' '>
+              <input appNoTabByClass id='TDATE08' name='TDATE08' formControlName='TDATE08' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line17 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE08')" (focusout)="unsetFocusField('TDATE08')" value=' '>
+              <input appNoTabByClass id='TDESC08' name='TDESC08' formControlName='TDESC08' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line17 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC08')" (focusout)="unsetFocusField('TDESC08')" value=' '>
+              <input appNoTabByClass id='TAMT008' name='TAMT008' formControlName='TAMT008' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line17 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT008')" (focusout)="unsetFocusField('TAMT008')" value=' '>
+              <input appNoTabByClass id='SEL0009' name='SEL0009' formControlName='SEL0009' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line18 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0009')" (focusout)="unsetFocusField('SEL0009')" value=' '>
+              <input appNoTabByClass id='TRNID09' name='TRNID09' formControlName='TRNID09' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID09')" (focusout)="unsetFocusField('TRNID09')" value=' '>
+              <input appNoTabByClass id='TDATE09' name='TDATE09' formControlName='TDATE09' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE09')" (focusout)="unsetFocusField('TDATE09')" value=' '>
+              <input appNoTabByClass id='TDESC09' name='TDESC09' formControlName='TDESC09' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC09')" (focusout)="unsetFocusField('TDESC09')" value=' '>
+              <input appNoTabByClass id='TAMT009' name='TAMT009' formControlName='TAMT009' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line18 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT009')" (focusout)="unsetFocusField('TAMT009')" value=' '>
+              <input appNoTabByClass id='SEL0010' name='SEL0010' formControlName='SEL0010' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line19 col3 len1 greenfg norm underline' type='text' size='1' maxlength='1' (focus)="setFocusField('SEL0010')" (focusout)="unsetFocusField('SEL0010')" value=' '>
+              <input appNoTabByClass id='TRNID10' name='TRNID10' formControlName='TRNID10' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line19 col8 len16 bluefg norm' type='text' size='16' maxlength='16' (focus)="setFocusField('TRNID10')" (focusout)="unsetFocusField('TRNID10')" value=' '>
+              <input appNoTabByClass id='TDATE10' name='TDATE10' formControlName='TDATE10' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line19 col27 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('TDATE10')" (focusout)="unsetFocusField('TDATE10')" value=' '>
+              <input appNoTabByClass id='TDESC10' name='TDESC10' formControlName='TDESC10' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line19 col38 len26 bluefg norm' type='text' size='26' maxlength='26' (focus)="setFocusField('TDESC10')" (focusout)="unsetFocusField('TDESC10')" value=' '>
+              <input appNoTabByClass id='TAMT010' name='TAMT010' formControlName='TAMT010' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line19 col67 len12 bluefg norm' type='text' size='12' maxlength='12' (focus)="setFocusField('TAMT010')" (focusout)="unsetFocusField('TAMT010')" value=' '>
+              <pre class='line21 col12 len50 neutralfg brt'>Type 'S' to View Transaction details from the list</pre>
+              <input appNoTabByClass id='ERRMSG' name='ERRMSG' formControlName='ERRMSG' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line23 col1 len78 redfg brt' type='text' size='78' maxlength='78' (focus)="setFocusField('ERRMSG')" (focusout)="unsetFocusField('ERRMSG')" value=''>
+              <pre class='line24 col1 len48 yellowfg norm'>ENTER=Continue  F3=Back  F7=Backward  F8=Forward</pre>
+		   </div>
+		</div>
+		<div id='floatfix'>
+		   <div id='buttonpanel'>
+			  <input class='pkey f1' type='submit' (click)='sendKey("DFHPF1")' name='DFH_PF1' value='PF1'>
+			  <input class='pkey f2' type='submit' (click)='sendKey("DFHPF2")' name='DFH_PF2' value='PF2'>
+			  <input class='pkey f3' type='submit' (click)='sendKey("DFHPF3")' name='DFH_PF3' value='PF3'>
+			  <input class='pkey f4' type='submit' (click)='sendKey("DFHPF4")' name='DFH_PF4' value='PF4'>
+			  <input class='pkey f5' type='submit' (click)='sendKey("DFHPF5")' name='DFH_PF5' value='PF5'>
+			  <input class='pkey f6' type='submit' (click)='sendKey("DFHPF6")' name='DFH_PF6' value='PF6'>
+			  <input class='pkey f7' type='submit' (click)='sendKey("DFHPF7")' name='DFH_PF7' value='PF7'>
+			  <input class='pkey f8' type='submit' (click)='sendKey("DFHPF8")' name='DFH_PF8' value='PF8'>
+			  <input class='pkey f9' type='submit' (click)='sendKey("DFHPF9")' name='DFH_PF9' value='PF9'>
+			  <input class='pkey f10' type='submit' (click)='sendKey("DFHPF10")' name='DFH_PF10' value='PF10'>
+			  <input class='pkey f11' type='submit' (click)='sendKey("DFHPF11")' name='DFH_PF11' value='PF11'>
+			  <input class='pkey f12' type='submit' (click)='sendKey("DFHPF12")' name='DFH_PF12' value='PF12'>
+			  <input class='pkey f13' type='submit' (click)='sendKey("DFHPF13")' name='DFH_PF13' value='PF13'>
+			  <input class='pkey f14' type='submit' (click)='sendKey("DFHPF14")' name='DFH_PF14' value='PF14'>
+			  <input class='pkey f15' type='submit' (click)='sendKey("DFHPF15")' name='DFH_PF15' value='PF15'>
+			  <input class='pkey f16' type='submit' (click)='sendKey("DFHPF16")' name='DFH_PF16' value='PF16'>
+			  <input class='pkey f17' type='submit' (click)='sendKey("DFHPF17")' name='DFH_PF17' value='PF17'>
+			  <input class='pkey f18' type='submit' (click)='sendKey("DFHPF18")' name='DFH_PF18' value='PF18'>
+			  <input class='pkey f19' type='submit' (click)='sendKey("DFHPF19")' name='DFH_PF19' value='PF19'>
+			  <input class='pkey f20' type='submit' (click)='sendKey("DFHPF20")' name='DFH_PF20' value='PF20'>
+			  <input class='pkey f21' type='submit' (click)='sendKey("DFHPF21")' name='DFH_PF21' value='PF21'>
+			  <input class='pkey f22' type='submit' (click)='sendKey("DFHPF22")' name='DFH_PF22' value='PF22'>
+			  <input class='pkey f23' type='submit' (click)='sendKey("DFHPF23")' name='DFH_PF23' value='PF23'>
+			  <input class='pkey f24' type='submit' (click)='sendKey("DFHPF24")' name='DFH_PF24' value='PF24'>
+			  <input class='pkey a1' type='submit' (click)='sendKey("DFHPA1")' name='DFH_PA1' value='PA1'>
+			  <input class='pkey a2' type='submit' (click)='sendKey("DFHPA2")' name='DFH_PA2' value='PA2'>
+			  <input class='pkey a3' type='submit' (click)='sendKey("DFHPA3")' name='DFH_PA3' value='PA3'>
+			  <input class='clearkey' type='submit' (click)='sendKey("DFHCLEAR")' name='DFH_CLEAR' value='Clear'>
+			  <!--
+			  <input class='resetkey' type='reset' value='Reset'>
+			  -->
+			  <input class='enterkey' type='submit' (click)='sendKey("DFHENTER")' name='DFH_ENTER' value='Enter'>
+		   </div>
+		</div>
+	 </div>
+	 <div id='connection_data'>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <pre id='termId' style='font-size: 10px;'></pre>
+	    <pre id='sessionId' style='font-size: 10px;'></pre>
+	 </div>
+  </form>

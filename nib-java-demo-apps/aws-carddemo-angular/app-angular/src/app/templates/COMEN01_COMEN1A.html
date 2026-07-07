@@ -1,0 +1,86 @@
+  <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+  <form [formGroup] = "COMEN01_COMEN1A_FORM">
+	 <div id='screenarea'>
+		<div>
+			<div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+			<div id="title">
+				<h2>N.I.B. 3270 to Angular demo</h2>
+			</div>
+		</div>
+		<div id='floatfix'>
+		   <div id='screenimage'>
+              <pre class='line1 col1 len5 bluefg norm'>Tran:</pre>
+              <input appNoTabByClass id='TRNNAME' name='TRNNAME' formControlName='TRNNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col7 len4 bluefg norm' type='text' size='4' maxlength='4' (focus)="setFocusField('TRNNAME')" (focusout)="unsetFocusField('TRNNAME')" value=''>
+              <input appNoTabByClass id='TITLE01' name='TITLE01' formControlName='TITLE01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE01')" (focusout)="unsetFocusField('TITLE01')" value=''>
+              <pre class='line1 col65 len5 bluefg norm'>Date:</pre>
+              <input appNoTabByClass id='CURDATE' name='CURDATE' formControlName='CURDATE' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURDATE')" (focusout)="unsetFocusField('CURDATE')" value='mm/dd/yy'>
+              <pre class='line2 col1 len5 bluefg norm'>Prog:</pre>
+              <input appNoTabByClass id='PGMNAME' name='PGMNAME' formControlName='PGMNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col7 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('PGMNAME')" (focusout)="unsetFocusField('PGMNAME')" value=''>
+              <input appNoTabByClass id='TITLE02' name='TITLE02' formControlName='TITLE02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE02')" (focusout)="unsetFocusField('TITLE02')" value=''>
+              <pre class='line2 col65 len5 bluefg norm'>Time:</pre>
+              <input appNoTabByClass id='CURTIME' name='CURTIME' formControlName='CURTIME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURTIME')" (focusout)="unsetFocusField('CURTIME')" value='hh:mm:ss'>
+              <pre class='line4 col35 len9 neutralfg brt'>Main Menu</pre>
+              <input appNoTabByClass id='OPTN001' name='OPTN001' formControlName='OPTN001' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line6 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN001')" (focusout)="unsetFocusField('OPTN001')" value=' '>
+              <input appNoTabByClass id='OPTN002' name='OPTN002' formControlName='OPTN002' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line7 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN002')" (focusout)="unsetFocusField('OPTN002')" value=' '>
+              <input appNoTabByClass id='OPTN003' name='OPTN003' formControlName='OPTN003' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line8 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN003')" (focusout)="unsetFocusField('OPTN003')" value=' '>
+              <input appNoTabByClass id='OPTN004' name='OPTN004' formControlName='OPTN004' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line9 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN004')" (focusout)="unsetFocusField('OPTN004')" value=' '>
+              <input appNoTabByClass id='OPTN005' name='OPTN005' formControlName='OPTN005' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line10 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN005')" (focusout)="unsetFocusField('OPTN005')" value=' '>
+              <input appNoTabByClass id='OPTN006' name='OPTN006' formControlName='OPTN006' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line11 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN006')" (focusout)="unsetFocusField('OPTN006')" value=' '>
+              <input appNoTabByClass id='OPTN007' name='OPTN007' formControlName='OPTN007' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line12 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN007')" (focusout)="unsetFocusField('OPTN007')" value=' '>
+              <input appNoTabByClass id='OPTN008' name='OPTN008' formControlName='OPTN008' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line13 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN008')" (focusout)="unsetFocusField('OPTN008')" value=' '>
+              <input appNoTabByClass id='OPTN009' name='OPTN009' formControlName='OPTN009' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line14 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN009')" (focusout)="unsetFocusField('OPTN009')" value=' '>
+              <input appNoTabByClass id='OPTN010' name='OPTN010' formControlName='OPTN010' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN010')" (focusout)="unsetFocusField('OPTN010')" value=' '>
+              <input appNoTabByClass id='OPTN011' name='OPTN011' formControlName='OPTN011' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line16 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN011')" (focusout)="unsetFocusField('OPTN011')" value=' '>
+              <input appNoTabByClass id='OPTN012' name='OPTN012' formControlName='OPTN012' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line17 col20 len40 bluefg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('OPTN012')" (focusout)="unsetFocusField('OPTN012')" value=' '>
+              <pre class='line20 col15 len25 turquoisefg brt'>Please select an option :</pre>
+              <input appNoTabByClass id='OPTION' name='OPTION' formControlName='OPTION' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line20 col41 len2 defaultfg norm underline' type='text' size='2' maxlength='2' (focus)="setFocusField('OPTION')" (focusout)="unsetFocusField('OPTION')" value=''>
+              <input appNoTabByClass id='ERRMSG' name='ERRMSG' formControlName='ERRMSG' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line23 col1 len78 redfg brt' type='text' size='78' maxlength='78' (focus)="setFocusField('ERRMSG')" (focusout)="unsetFocusField('ERRMSG')" value=''>
+              <pre class='line24 col1 len23 yellowfg norm'>ENTER=Continue  F3=Exit</pre>
+		   </div>
+		</div>
+		<div id='floatfix'>
+		   <div id='buttonpanel'>
+			  <input class='pkey f1' type='submit' (click)='sendKey("DFHPF1")' name='DFH_PF1' value='PF1'>
+			  <input class='pkey f2' type='submit' (click)='sendKey("DFHPF2")' name='DFH_PF2' value='PF2'>
+			  <input class='pkey f3' type='submit' (click)='sendKey("DFHPF3")' name='DFH_PF3' value='PF3'>
+			  <input class='pkey f4' type='submit' (click)='sendKey("DFHPF4")' name='DFH_PF4' value='PF4'>
+			  <input class='pkey f5' type='submit' (click)='sendKey("DFHPF5")' name='DFH_PF5' value='PF5'>
+			  <input class='pkey f6' type='submit' (click)='sendKey("DFHPF6")' name='DFH_PF6' value='PF6'>
+			  <input class='pkey f7' type='submit' (click)='sendKey("DFHPF7")' name='DFH_PF7' value='PF7'>
+			  <input class='pkey f8' type='submit' (click)='sendKey("DFHPF8")' name='DFH_PF8' value='PF8'>
+			  <input class='pkey f9' type='submit' (click)='sendKey("DFHPF9")' name='DFH_PF9' value='PF9'>
+			  <input class='pkey f10' type='submit' (click)='sendKey("DFHPF10")' name='DFH_PF10' value='PF10'>
+			  <input class='pkey f11' type='submit' (click)='sendKey("DFHPF11")' name='DFH_PF11' value='PF11'>
+			  <input class='pkey f12' type='submit' (click)='sendKey("DFHPF12")' name='DFH_PF12' value='PF12'>
+			  <input class='pkey f13' type='submit' (click)='sendKey("DFHPF13")' name='DFH_PF13' value='PF13'>
+			  <input class='pkey f14' type='submit' (click)='sendKey("DFHPF14")' name='DFH_PF14' value='PF14'>
+			  <input class='pkey f15' type='submit' (click)='sendKey("DFHPF15")' name='DFH_PF15' value='PF15'>
+			  <input class='pkey f16' type='submit' (click)='sendKey("DFHPF16")' name='DFH_PF16' value='PF16'>
+			  <input class='pkey f17' type='submit' (click)='sendKey("DFHPF17")' name='DFH_PF17' value='PF17'>
+			  <input class='pkey f18' type='submit' (click)='sendKey("DFHPF18")' name='DFH_PF18' value='PF18'>
+			  <input class='pkey f19' type='submit' (click)='sendKey("DFHPF19")' name='DFH_PF19' value='PF19'>
+			  <input class='pkey f20' type='submit' (click)='sendKey("DFHPF20")' name='DFH_PF20' value='PF20'>
+			  <input class='pkey f21' type='submit' (click)='sendKey("DFHPF21")' name='DFH_PF21' value='PF21'>
+			  <input class='pkey f22' type='submit' (click)='sendKey("DFHPF22")' name='DFH_PF22' value='PF22'>
+			  <input class='pkey f23' type='submit' (click)='sendKey("DFHPF23")' name='DFH_PF23' value='PF23'>
+			  <input class='pkey f24' type='submit' (click)='sendKey("DFHPF24")' name='DFH_PF24' value='PF24'>
+			  <input class='pkey a1' type='submit' (click)='sendKey("DFHPA1")' name='DFH_PA1' value='PA1'>
+			  <input class='pkey a2' type='submit' (click)='sendKey("DFHPA2")' name='DFH_PA2' value='PA2'>
+			  <input class='pkey a3' type='submit' (click)='sendKey("DFHPA3")' name='DFH_PA3' value='PA3'>
+			  <input class='clearkey' type='submit' (click)='sendKey("DFHCLEAR")' name='DFH_CLEAR' value='Clear'>
+			  <!--
+			  <input class='resetkey' type='reset' value='Reset'>
+			  -->
+			  <input class='enterkey' type='submit' (click)='sendKey("DFHENTER")' name='DFH_ENTER' value='Enter'>
+		   </div>
+		</div>
+	 </div>
+	 <div id='connection_data'>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <pre id='termId' style='font-size: 10px;'></pre>
+	    <pre id='sessionId' style='font-size: 10px;'></pre>
+	 </div>
+  </form>

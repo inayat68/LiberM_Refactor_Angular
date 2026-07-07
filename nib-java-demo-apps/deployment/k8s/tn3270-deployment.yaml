@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tn3270-gw
+  namespace: supernaut-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tn3270-gw
+  template:
+    metadata:
+      labels:
+        app: tn3270-gw
+    spec:
+      containers:
+        - name: tn3270-gw
+          image: nib/tn3270
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3270
+          env:
+            - name: NIB_JAVA_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nib-java-license
+                  key: NIB_JAVA_LICENSE_KEY
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: supernaut-config

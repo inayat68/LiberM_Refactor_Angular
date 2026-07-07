@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Boot Online" type="Application" factoryName="Application">
+    <classpathModifications>
+      <entry path="D:\Nib\nib-java-demo-apps\cics-webservices\target\classes" />
+      <entry path="C:\Nib\nib-java-demo-apps\cics-webservices\target\classes" />
+    </classpathModifications>
+    <envs>
+      <env name="NIB_COMMONS_CONFIG" value="D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\config\nib-ascii.conf" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.nib.supernaut.SupernautBootApp" />
+    <module name="boot-online" />
+    <option name="PROGRAM_PARAMETERS" value="--spring.config.location=file:./config/online/application.yaml" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

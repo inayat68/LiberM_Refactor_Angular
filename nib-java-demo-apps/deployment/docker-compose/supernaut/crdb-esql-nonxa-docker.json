@@ -1,0 +1,6 @@
+{
+  "name": "crdb-nonxa",
+  "xa": false,
+  "driver": "org.postgresql.Driver",
+  "url": "jdbc:postgresql://crdb:26257/imsdb?sslmode=disable&user=root&currentSchema=darkside"
+}

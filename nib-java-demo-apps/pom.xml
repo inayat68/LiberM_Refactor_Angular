@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change all versions:
+
+mvn versions:set -DnewVersion=1.0.0 -DprocessAllModules
+                              ^^^^^
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.nib</groupId>
+    <artifactId>nib-java-demo-apps</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <!-- public repo -->
+      <url>https://maven.pkg.github.com/nib-labs/nib-java</url>
+            <!-- private repo: -->
+            <!-- <url>https://maven.pkg.github.com/n-i-b/nib-java</url> -->
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <modules>
+        <module>boot-online</module>
+        <module>boot-batch</module>
+        <module>aws-carddemo-app</module>
+        <module>aws-carddemo-angular</module>
+        <module>cics-webservices</module>
+    </modules>
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>21</java.version>
+        <groovy.version>4.0.28</groovy.version>
+        <gmavenplus.version>4.2.0</gmavenplus.version>
+        <nib.version>1.6.30</nib.version>
+        <spring-boot.version>3.5.13</spring-boot.version>            <!-- TODO: vulnerabilities overridden - SEE BELOW -->
+        <spring-security-crypto.version>6.5.8</spring-security-crypto.version>
+        <spring-cloud.version>2025.0.1</spring-cloud.version>
+    </properties>
+</project>

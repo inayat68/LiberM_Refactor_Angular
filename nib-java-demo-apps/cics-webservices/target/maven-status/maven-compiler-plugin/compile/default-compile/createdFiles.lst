@@ -1,0 +1,15 @@
+org\sample\online\webservices\soap\NP100001Request$W02ENp100001In.class
+org\sample\online\webservices\soap\NP100001Response$W02ENp100001Out.class
+org\sample\online\webservices\soap\AccountInfoRequest.class
+org\sample\online\webservices\soap\NP100001Request.class
+org\sample\online\webservices\rest\RestWebServicesController.class
+org\sample\online\webservices\soap\AccountInfoResponse.class
+org\sample\online\webservices\soap\ObjectFactory.class
+org\sample\online\webservices\AccountInfo.class
+org\sample\online\webservices\CustomerRecord.class
+org\sample\online\webservices\soap\package-info.class
+org\sample\online\webservices\soap\NP100001Response.class
+org\sample\online\webservices\soap\SoapWebServicesConfig.class
+org\sample\online\webservices\soap\AccountInfoEndpoint.class
+org\sample\online\webservices\soap\NP100001Endpoint.class
+org\sample\online\webservices\soap\WsdlConfig.class

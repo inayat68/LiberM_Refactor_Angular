@@ -1,0 +1,3 @@
+   DELETE AWS.M2.CARDDEMO.TCATBALF.VSAM.KSDS -                          
+          CLUSTER                                                       
+   SET    MAXCC = 0                                                     

@@ -1,0 +1,34 @@
+<!-- ngx-spinner types
+type="ball-spin-clockwise"
+type="ball-spin-clockwise-fade"
+type="ball-scale-multiple"
+type="square-jelly-box"
+-->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "large" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div *ngIf="!response?.sessionId">
+  <div id='screenarea'>
+    <div>
+      <div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+      <div id="title">
+        <h2>N.I.B. 3270 to Angular demo</h2>
+      </div>
+    </div>
+    <div id='floatfix'>
+      <div id='screenimage'>
+        <ng-container *ngIf="!serverMessage; else showErr">
+          <pre class="line1 col1 redfg brt len14">CICS connection in progress, please wait<span class="dots">...</span></pre>
+        </ng-container>
+        <ng-template #showErr>
+          <pre class="line1 col1 redfg brt len14">Remote service error -> ({{ serverMessage }})</pre>
+          <pre class="line3 col1 redfg brt len14">Contact the technical support.</pre>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="response?.sessionId">
+  <ng-container *ngIf="currentComponent as component">
+    <ng-container *ngComponentOutlet="component"></ng-container>
+  </ng-container>
+</div>

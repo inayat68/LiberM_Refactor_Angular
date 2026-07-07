@@ -1,0 +1,16 @@
+def script = new GroovyShell();
+script.run(new File("./_INICATG.groovy"));
+script.run(new File("./DALYREJS.groovy"));
+script.run(new File("./DUSRSECJ.groovy"));
+script.run(new File("./DEFGDGB.groovy"));
+script.run(new File("./ACCTFILE.groovy"));
+script.run(new File("./CARDFILE.groovy"));
+script.run(new File("./CUSTFILE.groovy"));
+script.run(new File("./DISCGRP.groovy"));
+script.run(new File("./TRANFILE.groovy"));
+script.run(new File("./TRANCATG.groovy"));
+script.run(new File("./TRANTYPE.groovy"));
+script.run(new File("./XREFFILE.groovy"));
+script.run(new File("./CLOSEFIL.groovy"));
+script.run(new File("./TCATBALF.groovy"));
+script.run(new File("./TRANBKP.groovy"));

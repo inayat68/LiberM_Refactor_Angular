@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: motorhead-a
+  namespace: motorhead-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: motorhead
+  template:
+    metadata:
+      labels:
+        app: motorhead
+    spec:
+      containers:
+        - name: motorhead
+          image: nib/motorhead
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: NodeA
+            - name: NIB_JAVA_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nib-java-license
+                  key: NIB_JAVA_LICENSE_KEY
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: nib-volume
+              mountPath: /opt/nib
+            - name: data-volume
+              mountPath: /data
+            - name: logs-volume
+              mountPath: /logs
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: motorhead-config
+        - name: nib-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java
+        - name: data-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-k8s/data
+        - name: logs-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-k8s/logs

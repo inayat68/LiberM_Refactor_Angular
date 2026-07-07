@@ -1,0 +1,25 @@
+tn3270:
+  service:
+    address: "127.0.0.1"
+    port: 3270
+    ssl:
+      enabled: false
+      keystore: ""
+      password: ""
+  admin:
+    address: "127.0.0.1"
+    port: 7599
+  protocol:
+    welcome: true
+    # set false for rumba
+    tn3270e: false
+    uppercase: false
+    timeout: 0
+    # codepage: "classpath:./codepage/ENUS-370.tbl"
+  regions:
+    DEMO: "http://127.0.0.1:8080/tn3270"
+    OTHERAPP: "http://127.0.0.1:8080/tn3270"
+logging:
+  level:
+    com.nib: DEBUG
+

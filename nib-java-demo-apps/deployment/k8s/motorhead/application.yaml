@@ -1,0 +1,90 @@
+spring:
+  application:
+    name: JESAWSCD
+  profiles:
+    active: NodeA
+  cloud:
+    config:
+      enabled: false
+    function:
+      scan:
+        packages: "com.nib.motorhead"
+  lifecycle:
+    timeout-per-shutdown-phase: "10s"
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      cluster: ${spring.application.name}
+      environment: "test"
+#server:
+#  port: 7777
+logging:
+  config: file:/config/logback-motorhead.xml
+#  file:
+#    path: D:/tmp/motorhead
+motorhead:
+  cluster:
+    name: ${spring.application.name}
+    # admin: http://host.docker.internal:8081
+    admin: http://localhost:8081
+    classes:
+      enabled: "A,B,C,X"
+      disabled: "D,E"
+      default: "A"
+
+  scripts:
+    allowMultiple: false
+    lockDatasets: true
+    path: >
+      /groovy
+#    classpath: >
+#      /classes
+#      /opt/nib/nib-groovy-batch/target/classes,
+#      /opt/nib/samples/aws-carddemo-java/target/classes,
+#      /opt/nib/samples/sample-groovy-batch/target/classes
+    dependencies:
+      /classes
+    config: /config/nibbatch.json
+  redis:
+      config: file:/config/redisson-service.yaml
+---
+spring.config.activate.on-profile: NodeA
+motorhead:
+  node:
+    name: NodeA
+    classes: "A"
+
+---
+spring.config.activate.on-profile: NodeB
+motorhead:
+  node:
+    name: NodeB
+    classes: "B"
+
+---
+spring.config.activate.on-profile: NodeCDE
+motorhead:
+  node:
+    name: NodeCDE
+    classes: "C,D,E"
+---
+spring.config.activate.on-profile: Proxy
+motorhead:
+  node:
+    name: Proxy
+    type: proxy
+---
+spring.config.activate.on-profile: OneOff
+motorhead:
+  node:
+    name: OneOff
+    type: one-off
+    classes: "X"

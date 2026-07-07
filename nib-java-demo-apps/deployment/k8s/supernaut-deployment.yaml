@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supernaut
+  namespace: supernaut-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: supernaut
+  template:
+    metadata:
+      labels:
+        app: supernaut
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z redis 6379; do echo waiting for redis; sleep 2; done' ]
+      containers:
+        - name: supernaut
+          image: nib/supernaut
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NIB_JAVA_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nib-java-license
+                  key: NIB_JAVA_LICENSE_KEY
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: bms-volume
+              mountPath: /bms
+            - name: classes-volume
+              mountPath: /classes
+            - name: nib-volume
+              mountPath: /opt/nib
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 2
+      volumes:
+        - name: config-volume
+          configMap:
+            name: supernaut-config
+        - name: bms-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-java/target/classes/bms
+        - name: classes-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java/samples/aws-carddemo-java/target/classes
+        - name: nib-volume
+          hostPath:
+            path: /run/desktop/mnt/host/d/nib/nib-java

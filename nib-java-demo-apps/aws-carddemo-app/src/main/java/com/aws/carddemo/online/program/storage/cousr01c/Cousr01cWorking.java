@@ -1,0 +1,60 @@
+package com.aws.carddemo.online.program.storage.cousr01c;
+
+import static com.nib.commons.storage.SpecialRegister.*;
+
+import com.aws.carddemo.common.copybook.Cocom01y;
+import com.aws.carddemo.common.copybook.Cottl01y;
+import com.aws.carddemo.common.copybook.Cousr01;
+import com.aws.carddemo.common.copybook.Csdat01y;
+import com.aws.carddemo.common.copybook.Csmsg01y;
+import com.aws.carddemo.common.copybook.Csusr01y;
+import com.nib.commons.storage.*;
+
+public class Cousr01cWorking extends NGroup {
+  // COB:        01 WS-VARIABLES.
+  public WsVariables wsVariables = new WsVariables();
+
+  public static class WsVariables extends NGroup {
+
+    // COB:          05 WS-PGMNAME                 PIC X(08) VALUE 'COUSR01C'.
+    public NChar wsPgmname = new NChar(8).initial("COUSR01C");
+    // COB:          05 WS-TRANID                  PIC X(04) VALUE 'CU01'.
+    public NChar wsTranid = new NChar(4).initial("CU01");
+    // COB:          05 WS-MESSAGE                 PIC X(80) VALUE SPACES.
+    public NChar wsMessage = new NChar(80).initial(NChar.Space);
+    // COB:          05 WS-USRSEC-FILE             PIC X(08) VALUE 'USRSEC  '.
+    public NChar wsUsrsecFile = new NChar(8).initial("USRSEC  ");
+    // COB:          05 WS-ERR-FLG                 PIC X(01) VALUE 'N'.
+    public NChar wsErrFlg = new NChar(1).initial("N");
+
+    // COB:            88 ERR-FLG-ON                         VALUE 'Y'.
+    public boolean errFlgOn() {
+      return wsErrFlg.equals("Y");
+    }
+
+    public void setErrFlgOn(boolean value) {
+      if (value) wsErrFlg.setValue("Y");
+    }
+
+    // COB:            88 ERR-FLG-OFF                        VALUE 'N'.
+    public boolean errFlgOff() {
+      return wsErrFlg.equals("N");
+    }
+
+    public void setErrFlgOff(boolean value) {
+      if (value) wsErrFlg.setValue("N");
+    }
+
+    // COB:          05 WS-RESP-CD                 PIC S9(09) COMP VALUE ZEROS.
+    public NInt32 wsRespCd = new NInt32().initial(0);
+    // COB:          05 WS-REAS-CD                 PIC S9(09) COMP VALUE ZEROS.
+    public NInt32 wsReasCd = new NInt32().initial(0);
+  }
+
+  public Cocom01y cocom01y = new Cocom01y();
+  public Cousr01 cousr01 = new Cousr01();
+  public Cottl01y cottl01y = new Cottl01y();
+  public Csdat01y csdat01y = new Csdat01y();
+  public Csmsg01y csmsg01y = new Csmsg01y();
+  public Csusr01y csusr01y = new Csusr01y();
+}

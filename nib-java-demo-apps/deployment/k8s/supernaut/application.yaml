@@ -1,0 +1,87 @@
+spring:
+  application:
+    name: CXAWSCRD
+  cloud:
+    config:
+      enabled: false
+    function:
+      scan:
+        packages: "com.nib.supernaut"
+  lifecycle:
+    timeout-per-shutdown-phase: "10s"
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      region: ${spring.application.name}
+      environment: "test"
+  tracing:
+    enabled: true
+    sampling:
+      probability=: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans
+
+supernaut:
+  start-up: "warm"
+  applid: ${spring.application.name}
+  sysid: "AWSD"
+  cwa: 512
+  ati:
+    enabled: true
+  programs:
+    packages: >
+      com.aws.carddemo.online.program,
+      com.nib.utilities.api.le,
+      org.sample.online.testapp,
+      org.sample.online.testapp2
+    dependencies:
+      /classes
+  component-scan: >
+    org.sample.online.servlets,
+    org.sample.online.webservices
+  transactions: 'file:/config/pct.json'
+  files: 'file:/config/fct.json'
+  tdqueues: 'file:/config/dct.json'
+  terminals:
+    tct: 'file:/config/tct.json'
+    typeterm: 'file:/config/typeterm.json'
+    timeout: 60
+  bms:
+    path: "file:/bms"
+    attributes: 
+      ascii: false
+      convert_space: false
+  extensions:
+    iscobol: 
+      enabled: false
+  security:
+    users:
+      default: "CICSUSER"
+    authorization:
+      provider: "com.nib.supernaut.security.SecurityDisabledAuthorizationProvider"
+      config: "file:/config/roles.yaml"
+    authentication:
+      provider: "com.nib.supernaut.security.SecurityDisabledAuthenticationProvider"
+      config: "jdbc:postgresql://host.docker.internal/postgres?user=postgres&password=postgres&ssl=false&currentSchema=online_security"
+  backbone:
+    storage: redis
+    config: 'file:/config/redisson-docker.yaml'
+  datasources:
+    rdbms: 'file:/config/pgsql-esql-nonxa-docker.json'
+    vsam: 'file:/config/pgsql-vsam-nonxa-docker.json'
+    catalog: 'file:/config/pgsql-vsam-nonxa-docker.json'
+
+logging:
+  config: file:/config/logback.xml
+  level:
+    com.nib: DEBUG
+

@@ -1,0 +1,3 @@
+ SORT FIELDS=(TRAN-CARD-NUM,A)                                          
+ INCLUDE COND=(TRAN-PROC-DT,GE,PARM-START-DATE,AND,                     
+         TRAN-PROC-DT,LE,PARM-END-DATE)                                 

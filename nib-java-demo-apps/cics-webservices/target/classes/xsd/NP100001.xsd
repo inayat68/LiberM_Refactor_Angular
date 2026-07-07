@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.soap.webservices.online.sample.org" elementFormDefault="qualified">
+
+	<!-- ===================== -->
+	<!-- Request Root Element -->
+	<!-- ===================== -->
+	<xsd:element name="NP100001Request">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="w02e_np100001_in">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="entete_username" type="xsd:string" />
+							<xsd:element name="entete_grpname" type="xsd:string" />
+							<xsd:element name="entete_terminal" type="xsd:string" />
+							<xsd:element name="entete_igd" type="xsd:string" />
+							<xsd:element name="entete_service" type="xsd:string" />
+							<xsd:element name="f02e_action" type="xsd:string" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- ====================== -->
+	<!-- Response Root Element -->
+	<!-- ====================== -->
+	<xsd:element name="NP100001Response">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="w02e_np100001_out">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="entete_username" type="xsd:string" />
+							<xsd:element name="entete_grpname" type="xsd:string" />
+							<xsd:element name="entete_terminal" type="xsd:string" />
+							<xsd:element name="f02e_codeexec" type="xsd:string" />
+							<xsd:element name="f02e_codeerr" type="xsd:string" />
+							<xsd:element name="f02e_messerr" type="xsd:string" />
+							<xsd:element name="f02e_nboccur" type="xsd:string" />
+
+							<!-- Liste di occorrenze multiple -->
+							<xsd:element name="f02e_anneelof" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+							<xsd:element name="f02e_idlof" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+							<xsd:element name="f02e_datelof" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+							<xsd:element name="f02e_domfact" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+							<xsd:element name="f02e_statuslof" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+							<xsd:element name="f02e_datelimcor" type="xsd:string"
+								minOccurs="0" maxOccurs="unbounded" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

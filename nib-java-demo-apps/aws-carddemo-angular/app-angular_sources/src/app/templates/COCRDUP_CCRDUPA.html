@@ -1,0 +1,93 @@
+  <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+  <form [formGroup] = "COCRDUP_CCRDUPA_FORM">
+	 <div id='screenarea'>
+		<div>
+			<div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+			<div id="title">
+				<h2>N.I.B. 3270 to Angular demo</h2>
+			</div>
+		</div>
+		<div id='floatfix'>
+		   <div id='screenimage'>
+              <pre class='line1 col1 len5 bluefg norm'>Tran:</pre>
+              <input appNoTabByClass id='TRNNAME' name='TRNNAME' formControlName='TRNNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col7 len4 bluefg norm' type='text' size='4' maxlength='4' (focus)="setFocusField('TRNNAME')" (focusout)="unsetFocusField('TRNNAME')" value=''>
+              <input appNoTabByClass id='TITLE01' name='TITLE01' formControlName='TITLE01' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE01')" (focusout)="unsetFocusField('TITLE01')" value=''>
+              <pre class='line1 col65 len5 bluefg norm'>Date:</pre>
+              <input appNoTabByClass id='CURDATE' name='CURDATE' formControlName='CURDATE' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line1 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURDATE')" (focusout)="unsetFocusField('CURDATE')" value='mm/dd/yy'>
+              <pre class='line2 col1 len5 bluefg norm'>Prog:</pre>
+              <input appNoTabByClass id='PGMNAME' name='PGMNAME' formControlName='PGMNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col7 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('PGMNAME')" (focusout)="unsetFocusField('PGMNAME')" value=''>
+              <input appNoTabByClass id='TITLE02' name='TITLE02' formControlName='TITLE02' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col21 len40 yellowfg norm' type='text' size='40' maxlength='40' (focus)="setFocusField('TITLE02')" (focusout)="unsetFocusField('TITLE02')" value=''>
+              <pre class='line2 col65 len5 bluefg norm'>Time:</pre>
+              <input appNoTabByClass id='CURTIME' name='CURTIME' formControlName='CURTIME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line2 col71 len8 bluefg norm' type='text' size='8' maxlength='8' (focus)="setFocusField('CURTIME')" (focusout)="unsetFocusField('CURTIME')" value='hh:mm:ss'>
+              <pre class='line4 col30 len26 neutralfg'>Update Credit Card Details</pre>
+              <pre class='line7 col23 len19 turquoisefg norm'>Account Number    :</pre>
+              <input appNoTabByClass id='ACCTSID' name='ACCTSID' formControlName='ACCTSID' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line7 col45 len11 defaultfg norm underline' readonly  type='text' size='11' maxlength='11' (focus)="setFocusField('ACCTSID')" (focusout)="unsetFocusField('ACCTSID')" value=''>
+              <pre class='line7 col57 len0 defaultfg'></pre>
+              <pre class='line8 col23 len19 turquoisefg norm'>Card Number       :</pre>
+              <input appNoTabByClass id='CARDSID' name='CARDSID' formControlName='CARDSID' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line8 col45 len16 defaultfg norm underline' type='text' size='16' maxlength='16' (focus)="setFocusField('CARDSID')" (focusout)="unsetFocusField('CARDSID')" value=''>
+              <pre class='line8 col62 len0 defaultfg'></pre>
+              <pre class='line11 col4 len20 turquoisefg'>Name on card      :</pre>
+              <input appNoTabByClass id='CRDNAME' name='CRDNAME' formControlName='CRDNAME' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line11 col25 len50 defaultfg underline' type='text' size='50' maxlength='50' (focus)="setFocusField('CRDNAME')" (focusout)="unsetFocusField('CRDNAME')" value=''>
+              <pre class='line11 col76 len0 defaultfg'></pre>
+              <pre class='line13 col4 len20 turquoisefg'>Card Active Y/N   : </pre>
+              <input appNoTabByClass id='CRDSTCD' name='CRDSTCD' formControlName='CRDSTCD' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line13 col25 len1 defaultfg underline' type='text' size='1' maxlength='1' (focus)="setFocusField('CRDSTCD')" (focusout)="unsetFocusField('CRDSTCD')" value=''>
+              <pre class='line13 col27 len0 defaultfg'></pre>
+              <pre class='line15 col4 len20 turquoisefg'>Expiry Date       : </pre>
+              <input appNoTabByClass id='EXPMON' name='EXPMON' formControlName='EXPMON' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line15 col25 len2 defaultfg underline' type='text' size='2' maxlength='2' (focus)="setFocusField('EXPMON')" (focusout)="unsetFocusField('EXPMON')" value=''>
+              <pre class='line15 col28 len1 defaultfg'>/</pre>
+              <input appNoTabByClass id='EXPYEAR' name='EXPYEAR' formControlName='EXPYEAR' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield line15 col30 len4 defaultfg underline' type='text' size='4' maxlength='4' (focus)="setFocusField('EXPYEAR')" (focusout)="unsetFocusField('EXPYEAR')" value=''>
+              <pre class='line15 col35 len0 defaultfg'></pre>
+              <input appNoTabByClass id='EXPDAY' name='EXPDAY' formControlName='EXPDAY' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line15 col36 len2 defaultfg' readonly  type='text' size='2' maxlength='2' (focus)="setFocusField('EXPDAY')" (focusout)="unsetFocusField('EXPDAY')" value=''>
+              <pre class='line15 col39 len0 defaultfg'></pre>
+              <input appNoTabByClass id='INFOMSG' name='INFOMSG' formControlName='INFOMSG' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line20 col25 len40 neutralfg' readonly  type='text' size='40' maxlength='40' (focus)="setFocusField('INFOMSG')" (focusout)="unsetFocusField('INFOMSG')" value=''>
+              <input appNoTabByClass id='ERRMSG' name='ERRMSG' formControlName='ERRMSG' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line23 col1 len80 redfg brt' type='text' size='80' maxlength='80' (focus)="setFocusField('ERRMSG')" (focusout)="unsetFocusField('ERRMSG')" value=''>
+              <input appNoTabByClass id='FKEYS' name='FKEYS' formControlName='FKEYS' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line24 col1 len21 yellowfg norm' type='text' size='21' maxlength='21' (focus)="setFocusField('FKEYS')" (focusout)="unsetFocusField('FKEYS')" value='ENTER=Process F3=Exit'>
+              <input appNoTabByClass id='FKEYSC' name='FKEYSC' formControlName='FKEYSC' autocorrect="off" spellcheck="false" autocomplete="off" class='mapfield-prot line24 col23 len18 yellowfg' type='text' size='18' maxlength='18' (focus)="setFocusField('FKEYSC')" (focusout)="unsetFocusField('FKEYSC')" value='F5=Save F12=Cancel'>
+		   </div>
+		</div>
+		<div id='floatfix'>
+		   <div id='buttonpanel'>
+			  <input class='pkey f1' type='submit' (click)='sendKey("DFHPF1")' name='DFH_PF1' value='PF1'>
+			  <input class='pkey f2' type='submit' (click)='sendKey("DFHPF2")' name='DFH_PF2' value='PF2'>
+			  <input class='pkey f3' type='submit' (click)='sendKey("DFHPF3")' name='DFH_PF3' value='PF3'>
+			  <input class='pkey f4' type='submit' (click)='sendKey("DFHPF4")' name='DFH_PF4' value='PF4'>
+			  <input class='pkey f5' type='submit' (click)='sendKey("DFHPF5")' name='DFH_PF5' value='PF5'>
+			  <input class='pkey f6' type='submit' (click)='sendKey("DFHPF6")' name='DFH_PF6' value='PF6'>
+			  <input class='pkey f7' type='submit' (click)='sendKey("DFHPF7")' name='DFH_PF7' value='PF7'>
+			  <input class='pkey f8' type='submit' (click)='sendKey("DFHPF8")' name='DFH_PF8' value='PF8'>
+			  <input class='pkey f9' type='submit' (click)='sendKey("DFHPF9")' name='DFH_PF9' value='PF9'>
+			  <input class='pkey f10' type='submit' (click)='sendKey("DFHPF10")' name='DFH_PF10' value='PF10'>
+			  <input class='pkey f11' type='submit' (click)='sendKey("DFHPF11")' name='DFH_PF11' value='PF11'>
+			  <input class='pkey f12' type='submit' (click)='sendKey("DFHPF12")' name='DFH_PF12' value='PF12'>
+			  <input class='pkey f13' type='submit' (click)='sendKey("DFHPF13")' name='DFH_PF13' value='PF13'>
+			  <input class='pkey f14' type='submit' (click)='sendKey("DFHPF14")' name='DFH_PF14' value='PF14'>
+			  <input class='pkey f15' type='submit' (click)='sendKey("DFHPF15")' name='DFH_PF15' value='PF15'>
+			  <input class='pkey f16' type='submit' (click)='sendKey("DFHPF16")' name='DFH_PF16' value='PF16'>
+			  <input class='pkey f17' type='submit' (click)='sendKey("DFHPF17")' name='DFH_PF17' value='PF17'>
+			  <input class='pkey f18' type='submit' (click)='sendKey("DFHPF18")' name='DFH_PF18' value='PF18'>
+			  <input class='pkey f19' type='submit' (click)='sendKey("DFHPF19")' name='DFH_PF19' value='PF19'>
+			  <input class='pkey f20' type='submit' (click)='sendKey("DFHPF20")' name='DFH_PF20' value='PF20'>
+			  <input class='pkey f21' type='submit' (click)='sendKey("DFHPF21")' name='DFH_PF21' value='PF21'>
+			  <input class='pkey f22' type='submit' (click)='sendKey("DFHPF22")' name='DFH_PF22' value='PF22'>
+			  <input class='pkey f23' type='submit' (click)='sendKey("DFHPF23")' name='DFH_PF23' value='PF23'>
+			  <input class='pkey f24' type='submit' (click)='sendKey("DFHPF24")' name='DFH_PF24' value='PF24'>
+			  <input class='pkey a1' type='submit' (click)='sendKey("DFHPA1")' name='DFH_PA1' value='PA1'>
+			  <input class='pkey a2' type='submit' (click)='sendKey("DFHPA2")' name='DFH_PA2' value='PA2'>
+			  <input class='pkey a3' type='submit' (click)='sendKey("DFHPA3")' name='DFH_PA3' value='PA3'>
+			  <input class='clearkey' type='submit' (click)='sendKey("DFHCLEAR")' name='DFH_CLEAR' value='Clear'>
+			  <!--
+			  <input class='resetkey' type='reset' value='Reset'>
+			  -->
+			  <input class='enterkey' type='submit' (click)='sendKey("DFHENTER")' name='DFH_ENTER' value='Enter'>
+		   </div>
+		</div>
+	 </div>
+	 <div id='connection_data'>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <br/>
+	    <pre id='termId' style='font-size: 10px;'></pre>
+	    <pre id='sessionId' style='font-size: 10px;'></pre>
+	 </div>
+  </form>

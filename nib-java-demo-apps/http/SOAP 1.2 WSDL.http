@@ -1,0 +1,17 @@
+### accountInfo WSDL
+GET http://localhost:8080/ws/soap12/accountInfo.wsdl
+
+> {%
+    client.test("accountInfo WSDL disponibile", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### NP100001 WSDL
+GET http://localhost:8080/ws/soap12/np100001.wsdl
+
+> {%
+    client.test("NP100001 WSDL disponibile", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}

@@ -1,0 +1,10 @@
+   DEFINE ALTERNATEINDEX (NAME(AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX)-      
+   RELATE(AWS.M2.CARDDEMO.CARDDATA.VSAM.KSDS)                    -      
+   KEYS(11 16)                                                   -      
+   NONUNIQUEKEY                                                  -      
+   UPGRADE                                                       -      
+   RECORDSIZE(150,150)                                           -      
+   VOLUMES(AWSHJ1)                                               -      
+   CYLINDERS(5,1))                                               -      
+   DATA (NAME(AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX.DATA))           -      
+   INDEX (NAME(AWS.M2.CARDDEMO.CARDDATA.VSAM.AIX.INDEX))                

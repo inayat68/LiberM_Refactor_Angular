@@ -1,0 +1,3 @@
+   BLDINDEX                                                      -      
+   INDATASET(AWS.M2.CARDDEMO.TRANSACT.VSAM.KSDS)                 -      
+   OUTDATASET(AWS.M2.CARDDEMO.TRANSACT.VSAM.AIX)                        

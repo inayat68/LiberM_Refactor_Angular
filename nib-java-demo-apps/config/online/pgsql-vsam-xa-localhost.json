@@ -1,0 +1,14 @@
+{
+  "name": "vsam-pgsql-xa",
+  "xa": true,
+  "driver": "org.postgresql.xa.PGXADataSource",
+  "properties": {
+    "serverName": "localhost",
+    "portNumber": "5432",
+    "databaseName": "postgres",
+    "user": "postgres",
+    "password": "postgres",
+    "currentSchema": "vsam",
+    "autosave": "always"
+  }
+}

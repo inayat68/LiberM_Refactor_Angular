@@ -1,0 +1,41 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div id='screenarea'>
+	<div>
+		<div id="logo" onclick="switchStyle()" title="Switch look&feel"></div>
+		<div id="title">
+			<h2>N.I.B. 3270 to Angular demo</h2>
+		</div>
+	</div>
+	<br />
+	<br />
+	<pre style="color:white">Start a known transaction: </pre>
+	<br />
+	<select [(ngModel)]="appService.selectedTransaction">
+		<option *ngFor="let tran of appService.transactions" [ngValue]="tran.value">{{ tran.description }}</option>
+	</select> &nbsp;&nbsp;
+	<button (click)='appService.handleDashboardCommand(appService.selectedTransaction)'>Start</button>
+	<br />
+	<br />
+	<pre style="color:white">or send a custom command: </pre>
+	<br />
+	<br />
+	<textarea [(ngModel)]="appService.serverMessage" class="screenarea"></textarea>
+	<br />
+	<!--
+	<button (click)='appService.handleDashboardCommand(appService.selectedCommand)'>Send</button>
+	-->
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<input class='enterkey' style="color:rgb(105, 105, 105)" type="submit" (click)='appService.handleDashboardCommand(appService.serverMessage)'
+		name='DFH_ENTER' value='Enter'>
+</div>
+<div id='connection_data'>
+	<br />
+	<br />
+	<br />
+	<pre id='termId' style='font-size: 10px;'></pre>
+	<pre id='sessionId' style='font-size: 10px;'></pre>
+</div>

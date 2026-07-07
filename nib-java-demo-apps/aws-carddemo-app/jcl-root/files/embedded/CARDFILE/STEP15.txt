@@ -1,0 +1,1 @@
+   REPRO INFILE(CARDDATA) OUTFILE(CARDVSAM)                             
