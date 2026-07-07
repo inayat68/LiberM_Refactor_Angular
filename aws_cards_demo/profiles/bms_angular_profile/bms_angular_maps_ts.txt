@@ -1,0 +1,68 @@
+@[LOOP_START_BMS_MAPS_COUNT:@IDX_MAP]>>@[OUTPRINT_JSON]
+<NO_PRINT>>>@[OUTPRINT_TS](@IDX_MAP)
+import { Component, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppService } from '../app.service';
+import { BmsMap } from '../app.bmsmap';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BmsBaseComponent } from './BmsBaseComponent';
+<BR>
+@Component({
+	selector: 'app-@[METHOD_BMS_MAPSET_NAME]-@[METHOD_BMS_MAP_NAME](@IDX_MAP)',
+	templateUrl: './@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP).html',
+	standalone: true,
+	imports: [CommonModule, FormsModule, ReactiveFormsModule ],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+<BR>
+export class @[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP) extends BmsBaseComponent implements BmsMap {
+<BR>
+	@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM! : FormGroup;
+<BR>
+	constructor(
+		appService: AppService,
+		formBuilder: FormBuilder,
+	) {
+		super(appService, formBuilder);
+	}
+<BR>
+	ngOnInit() {
+		this.@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM = this.formBuilder.group({
+	@[LOOP_START_BMS_MAP_FIELDS_COUNT_FOR_ANGULAR:@IDX_FLD](@IDX_MAP)
+			@[METHOD_BMS_FIELD_TO_TS](@IDX_MAP, @IDX_FLD)
+	@[LOOP_END_BMS_MAP_FIELDS_COUNT_FOR_ANGULAR]
+		});
+	}
+!<BR>
+!	ngAfterViewInit() {
+!		this.appService.activeComponent = this;
+!		this.appService.populateMap(this.getMapName());
+!	}
+<BR>
+	getMapName(): string {
+		return "@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)";
+	}
+<BR>
+	getForm(): FormGroup {
+		return this.@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM;
+	}
+<BR>
+	setText(fieldName: string): string {
+		return this.@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM.get(fieldName)?.value ?? '';
+	}
+<BR>
+!	sendKey(keyPressed: string): boolean {
+!		const fields: Array<{name: string, text: string}> = [];
+!		Object.keys(this.@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM.controls).forEach(key => {
+!			const value = this.@[METHOD_BMS_MAPSET_NAME]_@[METHOD_BMS_MAP_NAME](@IDX_MAP)_FORM.get(key)?.value;
+!			//console.log(key + ': ' + value);
+!			fields.push({ name: key, text: value.toUpperCase() });
+!		});
+!		console.info('Key pressed: ' + keyPressed);
+!		this.appService.handleFunctionKey(keyPressed, fields);
+!		return false;
+!	}
+!<BR>
+}
+@[LOOP_END_BMS_MAPS_COUNT]

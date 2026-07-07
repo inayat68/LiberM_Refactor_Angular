@@ -1,0 +1,1923 @@
+*>Converted by nib-paranoid 1.7.15/O
+*>Copyright (c) 2025-2026 NIB Labs S.r.l.
+*>source file name:  C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cbl\COTRN00C.cbl
+*>date generated  :  2026-04-20 16:22:54
+*>*****************************************************************
+*> Program     : COTRN00C.CBL
+*> Application : CardDemo
+*> Type        : CICS COBOL Program
+*> Function    : List Transactions from TRANSACT file
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+IDENTIFICATION DIVISION.
+PROGRAM-ID. COTRN00C.
+AUTHOR.     AWS.
+*>
+ENVIRONMENT DIVISION.
+CONFIGURATION SECTION.
+*>
+DATA DIVISION.
+*>----------------------------------------------------------------*
+*>                     WORKING STORAGE SECTION
+*>----------------------------------------------------------------*
+WORKING-STORAGE SECTION. *>COPY EMCOBCX. COPY DFHRESP.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\EMCOBCX.cpy
+*>    COPY DFHEIBLK.
+*>    EMBEDDED VERSION
+*>     EIBLK EXEC INTERFACE BLOCK
+01   DFHEIBLK.
+  02  EIBTIME  COMP-3 PIC S9(7).
+  02  EIBDATE  COMP-3 PIC S9(7).
+  02  EIBTRNID PIC X(4).
+  02  EIBTASKN COMP-3 PIC S9(7).
+  02  EIBTRMID PIC X(4).
+  02  DFHEIGDI COMP PIC S9(4).
+  02  EIBCPOSN COMP PIC S9(4).
+  02  EIBCALEN COMP PIC S9(4).
+  02  EIBAID   PIC X(1).
+  02  EIBFN    PIC X(2).
+  02  EIBRCODE PIC X(6).
+  02  EIBDS    PIC X(8).
+  02  EIBREQID PIC X(8).
+  02  EIBRSRCE PIC X(8).
+  02  EIBSYNC  PIC X(1).
+  02  EIBFREE  PIC X(1).
+  02  EIBRECV  PIC X(1).
+  02  EIBFIL01 PIC X(1).
+  02  EIBATT   PIC X(1).
+  02  EIBEOC   PIC X(1).
+  02  EIBFMH   PIC X(1).
+  02  EIBCOMPL PIC X(1).
+  02  EIBSIG   PIC X(1).
+  02  EIBCONF  PIC X(1).
+  02  EIBERR   PIC X(1).
+  02  EIBERRCD PIC X(4).
+  02  EIBSYNRB PIC X(1).
+  02  EIBNODAT PIC X(1).
+  02  EIBRESP  COMP PIC S9(8).
+  02  EIBRESP2 COMP PIC S9(8).
+  02  EIBRLDBK PIC X(1).
+*> IDMS FIELDS
+01  REVCOUNT         PIC S9(4) COMP.
+01  REVEQ1           PIC X(2) VALUE 'EQ'.
+01  REVNE1           PIC X(2) VALUE 'NE'.
+01  REVGT1           PIC X(2) VALUE 'GT'.
+01  REVLT1           PIC X(2) VALUE 'LT'.
+01  REVLE1           PIC X(2) VALUE 'LE'.
+01  REVGE1           PIC X(2) VALUE 'GE'.
+01  REVEQ2           PIC X(2) VALUE 'EQ'.
+01  REVNE2           PIC X(2) VALUE 'NE'.
+01  REVGT2           PIC X(2) VALUE 'GT'.
+01  REVLT2           PIC X(2) VALUE 'LT'.
+01  REVLE2           PIC X(2) VALUE 'LE'.
+01  REVGE2           PIC X(2) VALUE 'GE'.
+01  REVEQ3           PIC X(2) VALUE 'EQ'.
+01  REVNE3           PIC X(2) VALUE 'NE'.
+01  REVGT3           PIC X(2) VALUE 'GT'.
+01  REVLT3           PIC X(2) VALUE 'LT'.
+01  REVLE3           PIC X(2) VALUE 'LE'.
+01  REVGE3           PIC X(2) VALUE 'GE'.
+01  REVOR1           PIC X(1) VALUE '|'.
+01  REVOR2           PIC X(1) VALUE '+'.
+01  REVAND1          PIC X(1) VALUE '&'.
+01  REVAND2          PIC X(1) VALUE '*'.
+01  REVLP            PIC X(1) VALUE '('.
+01  REVRP            PIC X(1) VALUE ')'.
+01  CL-NULL          POINTER.
+01  ADSO-TWO-STAT-DEF PIC X(4).
+  88  DB-STATUS-OKAY  VALUE '0000'.
+  88  DB-END-OF-SET   VALUE '0307'.
+  88  NO-RECORD       VALUE '0326'.
+  88  MODIFY-PROBLEM  VALUE '0800' THRU '0899'.
+01  ADSO-ONE-STAT-REC.
+  02 CODE-FIELD PIC X(4).
+    88  OKAY      VALUE '0000'.
+    88  NOT-GOOD  VALUE '0001' THRU '9999'.
+01 XDLZDIB.
+    02 XDIB-VARS.
+       05 XDIBVER     PIC X(2) VALUE "01".
+       05 XDIBSTAT    PIC X(2).
+         88 XDIB-STATUS-OK                       VALUE "  ".
+         88 XDIB-STATUS-RESOURCE-DEADLOCK        VALUE "FD".
+         88 XDIB-STATUS-HIGHER-LEVEL-CROSSED     VALUE "GA".
+         88 XDIB-STATUS-END-DB-REACHED           VALUE "GB".
+         88 XDIB-STATUS-SEGMENT-NOT-FOUND        VALUE "GE".
+         88 XDIB-STATUS-CHANGED-SEGMENT-TYPE     VALUE "GK".
+         88 XDIB-STATUS-DUPLICATED-KEY           VALUE "II".
+         88 XDIB-STATUS-ISRT-RULE-VIOLATION      VALUE "IX".
+         88 XDIB-STATUS-INTERNAL-NOT-HANDLED     VALUE "XX".
+         88 XDIB-STATUS-PSB-ALREADY-SCHEDULE     VALUE "TC".
+         88 XDIB-STATUS-PSB-INIT-ERROR           VALUE "TE".
+         88 XDIB-STATUS-NO-PSB-SCHEDULED         VALUE "TG".
+         88 XDIB-STATUS-WRONG-PCB                VALUE "TP".
+       05 XDIBSEGM    PIC X(8).
+       05 XDIBFLAG    PIC X(1).
+       05 XDIBFIL01   PIC X(1).
+       05 XDIBSEGLV   PIC X(2).
+       05 XDIBKFBL    PIC S9(4) COMP-5.
+       05 XDIBLENG    PIC S9(4) COMP-5.
+       05 XDIBFIL02   PIC X(8).
+       05 XDIBKFB     USAGE POINTER.
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\EMCOBCX.cpy
+*>                                COPY DFHRESP.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHRESP.cpy
+*>***************************************************************
+*>   COPY PER DEFINIZIONE TABELLA DFHRESP                       *
+*>***************************************************************
+01  NORMAL                   PIC  S9(8) COMP VALUE ZERO.
+01  DFHRESP-TAB.
+    05  ERROR1               PIC  S9(8) COMP VALUE    1.
+    05  RDATT                PIC  S9(8) COMP VALUE    2.
+    05  WRBRK                PIC  S9(8) COMP VALUE    3.
+    05  EOF                  PIC  S9(8) COMP VALUE    4.
+    05  EODS                 PIC  S9(8) COMP VALUE    5.
+    05  EOC                  PIC  S9(8) COMP VALUE    6.
+    05  INBFMH               PIC  S9(8) COMP VALUE    7.
+    05  ENDINPT              PIC  S9(8) COMP VALUE    8.
+    05  NONVAL               PIC  S9(8) COMP VALUE    9.
+    05  NOSTART              PIC  S9(8) COMP VALUE   10.
+    05  TERMIDERR            PIC  S9(8) COMP VALUE   11.
+    05  DSIDERR              PIC  S9(8) COMP VALUE   12.
+    05  FILENOTFOUND         PIC  S9(8) COMP VALUE   12.
+    05  NOTFND               PIC  S9(8) COMP VALUE   13.
+    05  DUPREC               PIC  S9(8) COMP VALUE   14.
+    05  DUPKEY               PIC  S9(8) COMP VALUE   15.
+    05  INVREC               PIC  S9(8) COMP VALUE   16.
+    05  IOERR                PIC  S9(8) COMP VALUE   17.
+    05  NOSPACE              PIC  S9(8) COMP VALUE   18.
+    05  NOTOPEN              PIC  S9(8) COMP VALUE   19.
+    05  ENDFILE              PIC  S9(8) COMP VALUE   20.
+    05  ILLOGIC              PIC  S9(8) COMP VALUE   21.
+    05  LENGERR              PIC  S9(8) COMP VALUE   22.
+    05  QZERO                PIC  S9(8) COMP VALUE   23.
+    05  SIGNAL               PIC  S9(8) COMP VALUE   24.
+    05  QBUSY                PIC  S9(8) COMP VALUE   25.
+    05  ITEMERR              PIC  S9(8) COMP VALUE   26.
+    05  PGMIDERR             PIC  S9(8) COMP VALUE   27.
+    05  TRANSIDERR           PIC  S9(8) COMP VALUE   28.
+    05  ENDDATA              PIC  S9(8) COMP VALUE   29.
+    05  INVTSREC             PIC  S9(8) COMP VALUE   30.
+    05  EXPIRED              PIC  S9(8) COMP VALUE   31.
+    05  RETPAGE              PIC  S9(8) COMP VALUE   32.
+    05  RTEFILE              PIC  S9(8) COMP VALUE   33.
+    05  RTESOME              PIC  S9(8) COMP VALUE   34.
+    05  TSIOERR              PIC  S9(8) COMP VALUE   35.
+    05  MAPFAIL              PIC  S9(8) COMP VALUE   36.
+    05  INVERRTERM           PIC  S9(8) COMP VALUE   37.
+    05  INVMPSZ              PIC  S9(8) COMP VALUE   38.
+    05  IGREQID              PIC  S9(8) COMP VALUE   39.
+    05  OVERFLOW             PIC  S9(8) COMP VALUE   40.
+    05  INVLDC               PIC  S9(8) COMP VALUE   41.
+    05  NOSTG                PIC  S9(8) COMP VALUE   42.
+    05  JIDERR               PIC  S9(8) COMP VALUE   43.
+    05  QIDERR               PIC  S9(8) COMP VALUE   44.
+    05  NOJBUFSP             PIC  S9(8) COMP VALUE   45.
+    05  DSSTAT               PIC  S9(8) COMP VALUE   46.
+    05  SELNERR              PIC  S9(8) COMP VALUE   47.
+    05  FUNCERR              PIC  S9(8) COMP VALUE   48.
+    05  UNEXPIN              PIC  S9(8) COMP VALUE   49.
+    05  NOPASSBKRD           PIC  S9(8) COMP VALUE   50.
+    05  NOPASSBKWR           PIC  S9(8) COMP VALUE   51.
+    05  FILLER               PIC  S9(8) COMP VALUE   52.
+    05  SYSIDERR             PIC  S9(8) COMP VALUE   53.
+    05  ISCINVREC            PIC  S9(8) COMP VALUE   54.
+    05  ENQBUSY              PIC  S9(8) COMP VALUE   55.
+    05  ENVDEFERR            PIC  S9(8) COMP VALUE   56.
+    05  IGREQCD              PIC  S9(8) COMP VALUE   57.
+    05  SESSIONERR           PIC  S9(8) COMP VALUE   58.
+    05  SYSBUSY              PIC  S9(8) COMP VALUE   59.
+    05  SESSBUSY             PIC  S9(8) COMP VALUE   60.
+    05  NOTALLOC             PIC  S9(8) COMP VALUE   61.
+    05  CBIDERR              PIC  S9(8) COMP VALUE   62.
+    05  INVEXITREQ           PIC  S9(8) COMP VALUE   63.
+    05  INVPARTNSET          PIC  S9(8) COMP VALUE   64.
+    05  INVPARTN             PIC  S9(8) COMP VALUE   65.
+    05  PARTNFAIL            PIC  S9(8) COMP VALUE   66.
+    05  FILLER               PIC  S9(8) COMP VALUE   67.
+    05  FILLER               PIC  S9(8) COMP VALUE   68.
+    05  INVREQ               PIC  S9(8) COMP VALUE   69.
+    05  NOTAUTH              PIC  S9(8) COMP VALUE   70.
+    05  FILLER               PIC  S9(8) COMP VALUE   71.
+    05  FILLER               PIC  S9(8) COMP VALUE   72.
+    05  WRONGSTAT            PIC  S9(8) COMP VALUE   73.
+    05  NAMEERROR            PIC  S9(8) COMP VALUE   74.
+    05  FILLER               PIC  S9(8) COMP VALUE   75.
+    05  CCERROR              PIC  S9(8) COMP VALUE   76.
+    05  MAPERROR             PIC  S9(8) COMP VALUE   77.
+    05  FILLER               PIC  S9(8) COMP VALUE   78.
+    05  FILLER               PIC  S9(8) COMP VALUE   79.
+    05  NOSPOOL              PIC  S9(8) COMP VALUE   80.
+    05  TERMERR              PIC  S9(8) COMP VALUE   81.
+    05  ROLLEDBACK           PIC  S9(8) COMP VALUE   82.
+    05  END1                 PIC  S9(8) COMP VALUE   83.
+    05  DISABLED             PIC  S9(8) COMP VALUE   84.
+    05  CCSIDERR             PIC  S9(8) COMP VALUE   85.
+    05  CHANNELERR           PIC  S9(8) COMP VALUE   86.
+    05  CONTAINERERR         PIC  S9(8) COMP VALUE   87.
+01  DFHRESP-TAB1    REDEFINES  DFHRESP-TAB.
+    05  DFHRESP              PIC  S9(8) COMP OCCURS 84.
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHRESP.cpy
+*>
+01 WS-VARIABLES.
+  05 WS-PGMNAME                 PIC X(08) VALUE 'COTRN00C'.
+  05 WS-TRANID                  PIC X(04) VALUE 'CT00'.
+  05 WS-MESSAGE                 PIC X(80) VALUE SPACES.
+  05 WS-TRANSACT-FILE             PIC X(08) VALUE 'TRANSACT'.
+  05 WS-ERR-FLG                 PIC X(01) VALUE 'N'.
+    88 ERR-FLG-ON                         VALUE 'Y'.
+    88 ERR-FLG-OFF                        VALUE 'N'.
+  05 WS-TRANSACT-EOF            PIC X(01) VALUE 'N'.
+    88 TRANSACT-EOF                       VALUE 'Y'.
+    88 TRANSACT-NOT-EOF                   VALUE 'N'.
+  05 WS-SEND-ERASE-FLG          PIC X(01) VALUE 'Y'.
+    88 SEND-ERASE-YES                     VALUE 'Y'.
+    88 SEND-ERASE-NO                      VALUE 'N'.
+*>
+  05 WS-RESP-CD                 PIC S9(09) COMP VALUE ZEROS.
+  05 WS-REAS-CD                 PIC S9(09) COMP VALUE ZEROS.
+  05 WS-REC-COUNT               PIC S9(04) COMP VALUE ZEROS.
+  05 WS-IDX                     PIC S9(04) COMP VALUE ZEROS.
+  05 WS-PAGE-NUM                PIC S9(04) COMP VALUE ZEROS.
+*>
+  05 WS-TRAN-AMT                PIC +99999999.99.
+  05 WS-TRAN-DATE               PIC X(08) VALUE '00/00/00'.
+*>
+*>
+*>
+*>COPY COCOM01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COCOM01Y.cpy
+*>*****************************************************************
+*> Communication area for CardDemo application programs
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CARDDEMO-COMMAREA.
+   05 CDEMO-GENERAL-INFO.
+      10 CDEMO-FROM-TRANID             PIC X(04).
+      10 CDEMO-FROM-PROGRAM            PIC X(08).
+      10 CDEMO-TO-TRANID               PIC X(04).
+      10 CDEMO-TO-PROGRAM              PIC X(08).
+      10 CDEMO-USER-ID                 PIC X(08).
+      10 CDEMO-USER-TYPE               PIC X(01).
+         88 CDEMO-USRTYP-ADMIN         VALUE 'A'.
+         88 CDEMO-USRTYP-USER          VALUE 'U'.
+      10 CDEMO-PGM-CONTEXT             PIC 9(01).
+         88 CDEMO-PGM-ENTER            VALUE 0.
+         88 CDEMO-PGM-REENTER          VALUE 1.
+   05 CDEMO-CUSTOMER-INFO.
+      10 CDEMO-CUST-ID                 PIC 9(09).
+      10 CDEMO-CUST-FNAME              PIC X(25).
+      10 CDEMO-CUST-MNAME              PIC X(25).
+      10 CDEMO-CUST-LNAME              PIC X(25).
+   05 CDEMO-ACCOUNT-INFO.
+      10 CDEMO-ACCT-ID                 PIC 9(11).
+      10 CDEMO-ACCT-STATUS             PIC X(01).
+   05 CDEMO-CARD-INFO.
+      10 CDEMO-CARD-NUM                PIC 9(16).
+   05 CDEMO-MORE-INFO.
+      10  CDEMO-LAST-MAP               PIC X(7).
+      10  CDEMO-LAST-MAPSET            PIC X(7).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:57 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COCOM01Y.cpy
+   05 CDEMO-CT00-INFO.
+      10 CDEMO-CT00-TRNID-FIRST     PIC X(16).
+      10 CDEMO-CT00-TRNID-LAST      PIC X(16).
+      10 CDEMO-CT00-PAGE-NUM        PIC 9(08).
+      10 CDEMO-CT00-NEXT-PAGE-FLG   PIC X(01) VALUE 'N'.
+         88 NEXT-PAGE-YES                     VALUE 'Y'.
+         88 NEXT-PAGE-NO                      VALUE 'N'.
+      10 CDEMO-CT00-TRN-SEL-FLG     PIC X(01).
+      10 CDEMO-CT00-TRN-SELECTED    PIC X(16).
+*>
+*>COPY COTRN00.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy-bms\COTRN00.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01  COTRN0AI.
+    02  FILLER PIC X(12).
+    02  TRNNAMEL    COMP  PIC  S9(4).
+    02  TRNNAMEF    PICTURE X.
+    02  FILLER REDEFINES TRNNAMEF.
+      03 TRNNAMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNNAMEI  PIC X(4).
+    02  TITLE01L    COMP  PIC  S9(4).
+    02  TITLE01F    PICTURE X.
+    02  FILLER REDEFINES TITLE01F.
+      03 TITLE01A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TITLE01I  PIC X(40).
+    02  CURDATEL    COMP  PIC  S9(4).
+    02  CURDATEF    PICTURE X.
+    02  FILLER REDEFINES CURDATEF.
+      03 CURDATEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  CURDATEI  PIC X(8).
+    02  PGMNAMEL    COMP  PIC  S9(4).
+    02  PGMNAMEF    PICTURE X.
+    02  FILLER REDEFINES PGMNAMEF.
+      03 PGMNAMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  PGMNAMEI  PIC X(8).
+    02  TITLE02L    COMP  PIC  S9(4).
+    02  TITLE02F    PICTURE X.
+    02  FILLER REDEFINES TITLE02F.
+      03 TITLE02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TITLE02I  PIC X(40).
+    02  CURTIMEL    COMP  PIC  S9(4).
+    02  CURTIMEF    PICTURE X.
+    02  FILLER REDEFINES CURTIMEF.
+      03 CURTIMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  CURTIMEI  PIC X(8).
+    02  PAGENUML    COMP  PIC  S9(4).
+    02  PAGENUMF    PICTURE X.
+    02  FILLER REDEFINES PAGENUMF.
+      03 PAGENUMA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  PAGENUMI  PIC X(8).
+    02  TRNIDINL    COMP  PIC  S9(4).
+    02  TRNIDINF    PICTURE X.
+    02  FILLER REDEFINES TRNIDINF.
+      03 TRNIDINA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNIDINI  PIC X(16).
+    02  SEL0001L    COMP  PIC  S9(4).
+    02  SEL0001F    PICTURE X.
+    02  FILLER REDEFINES SEL0001F.
+      03 SEL0001A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0001I  PIC X(1).
+    02  TRNID01L    COMP  PIC  S9(4).
+    02  TRNID01F    PICTURE X.
+    02  FILLER REDEFINES TRNID01F.
+      03 TRNID01A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID01I  PIC X(16).
+    02  TDATE01L    COMP  PIC  S9(4).
+    02  TDATE01F    PICTURE X.
+    02  FILLER REDEFINES TDATE01F.
+      03 TDATE01A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE01I  PIC X(8).
+    02  TDESC01L    COMP  PIC  S9(4).
+    02  TDESC01F    PICTURE X.
+    02  FILLER REDEFINES TDESC01F.
+      03 TDESC01A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC01I  PIC X(26).
+    02  TAMT001L    COMP  PIC  S9(4).
+    02  TAMT001F    PICTURE X.
+    02  FILLER REDEFINES TAMT001F.
+      03 TAMT001A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT001I  PIC X(12).
+    02  SEL0002L    COMP  PIC  S9(4).
+    02  SEL0002F    PICTURE X.
+    02  FILLER REDEFINES SEL0002F.
+      03 SEL0002A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0002I  PIC X(1).
+    02  TRNID02L    COMP  PIC  S9(4).
+    02  TRNID02F    PICTURE X.
+    02  FILLER REDEFINES TRNID02F.
+      03 TRNID02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID02I  PIC X(16).
+    02  TDATE02L    COMP  PIC  S9(4).
+    02  TDATE02F    PICTURE X.
+    02  FILLER REDEFINES TDATE02F.
+      03 TDATE02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE02I  PIC X(8).
+    02  TDESC02L    COMP  PIC  S9(4).
+    02  TDESC02F    PICTURE X.
+    02  FILLER REDEFINES TDESC02F.
+      03 TDESC02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC02I  PIC X(26).
+    02  TAMT002L    COMP  PIC  S9(4).
+    02  TAMT002F    PICTURE X.
+    02  FILLER REDEFINES TAMT002F.
+      03 TAMT002A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT002I  PIC X(12).
+    02  SEL0003L    COMP  PIC  S9(4).
+    02  SEL0003F    PICTURE X.
+    02  FILLER REDEFINES SEL0003F.
+      03 SEL0003A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0003I  PIC X(1).
+    02  TRNID03L    COMP  PIC  S9(4).
+    02  TRNID03F    PICTURE X.
+    02  FILLER REDEFINES TRNID03F.
+      03 TRNID03A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID03I  PIC X(16).
+    02  TDATE03L    COMP  PIC  S9(4).
+    02  TDATE03F    PICTURE X.
+    02  FILLER REDEFINES TDATE03F.
+      03 TDATE03A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE03I  PIC X(8).
+    02  TDESC03L    COMP  PIC  S9(4).
+    02  TDESC03F    PICTURE X.
+    02  FILLER REDEFINES TDESC03F.
+      03 TDESC03A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC03I  PIC X(26).
+    02  TAMT003L    COMP  PIC  S9(4).
+    02  TAMT003F    PICTURE X.
+    02  FILLER REDEFINES TAMT003F.
+      03 TAMT003A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT003I  PIC X(12).
+    02  SEL0004L    COMP  PIC  S9(4).
+    02  SEL0004F    PICTURE X.
+    02  FILLER REDEFINES SEL0004F.
+      03 SEL0004A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0004I  PIC X(1).
+    02  TRNID04L    COMP  PIC  S9(4).
+    02  TRNID04F    PICTURE X.
+    02  FILLER REDEFINES TRNID04F.
+      03 TRNID04A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID04I  PIC X(16).
+    02  TDATE04L    COMP  PIC  S9(4).
+    02  TDATE04F    PICTURE X.
+    02  FILLER REDEFINES TDATE04F.
+      03 TDATE04A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE04I  PIC X(8).
+    02  TDESC04L    COMP  PIC  S9(4).
+    02  TDESC04F    PICTURE X.
+    02  FILLER REDEFINES TDESC04F.
+      03 TDESC04A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC04I  PIC X(26).
+    02  TAMT004L    COMP  PIC  S9(4).
+    02  TAMT004F    PICTURE X.
+    02  FILLER REDEFINES TAMT004F.
+      03 TAMT004A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT004I  PIC X(12).
+    02  SEL0005L    COMP  PIC  S9(4).
+    02  SEL0005F    PICTURE X.
+    02  FILLER REDEFINES SEL0005F.
+      03 SEL0005A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0005I  PIC X(1).
+    02  TRNID05L    COMP  PIC  S9(4).
+    02  TRNID05F    PICTURE X.
+    02  FILLER REDEFINES TRNID05F.
+      03 TRNID05A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID05I  PIC X(16).
+    02  TDATE05L    COMP  PIC  S9(4).
+    02  TDATE05F    PICTURE X.
+    02  FILLER REDEFINES TDATE05F.
+      03 TDATE05A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE05I  PIC X(8).
+    02  TDESC05L    COMP  PIC  S9(4).
+    02  TDESC05F    PICTURE X.
+    02  FILLER REDEFINES TDESC05F.
+      03 TDESC05A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC05I  PIC X(26).
+    02  TAMT005L    COMP  PIC  S9(4).
+    02  TAMT005F    PICTURE X.
+    02  FILLER REDEFINES TAMT005F.
+      03 TAMT005A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT005I  PIC X(12).
+    02  SEL0006L    COMP  PIC  S9(4).
+    02  SEL0006F    PICTURE X.
+    02  FILLER REDEFINES SEL0006F.
+      03 SEL0006A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0006I  PIC X(1).
+    02  TRNID06L    COMP  PIC  S9(4).
+    02  TRNID06F    PICTURE X.
+    02  FILLER REDEFINES TRNID06F.
+      03 TRNID06A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID06I  PIC X(16).
+    02  TDATE06L    COMP  PIC  S9(4).
+    02  TDATE06F    PICTURE X.
+    02  FILLER REDEFINES TDATE06F.
+      03 TDATE06A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE06I  PIC X(8).
+    02  TDESC06L    COMP  PIC  S9(4).
+    02  TDESC06F    PICTURE X.
+    02  FILLER REDEFINES TDESC06F.
+      03 TDESC06A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC06I  PIC X(26).
+    02  TAMT006L    COMP  PIC  S9(4).
+    02  TAMT006F    PICTURE X.
+    02  FILLER REDEFINES TAMT006F.
+      03 TAMT006A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT006I  PIC X(12).
+    02  SEL0007L    COMP  PIC  S9(4).
+    02  SEL0007F    PICTURE X.
+    02  FILLER REDEFINES SEL0007F.
+      03 SEL0007A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0007I  PIC X(1).
+    02  TRNID07L    COMP  PIC  S9(4).
+    02  TRNID07F    PICTURE X.
+    02  FILLER REDEFINES TRNID07F.
+      03 TRNID07A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID07I  PIC X(16).
+    02  TDATE07L    COMP  PIC  S9(4).
+    02  TDATE07F    PICTURE X.
+    02  FILLER REDEFINES TDATE07F.
+      03 TDATE07A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE07I  PIC X(8).
+    02  TDESC07L    COMP  PIC  S9(4).
+    02  TDESC07F    PICTURE X.
+    02  FILLER REDEFINES TDESC07F.
+      03 TDESC07A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC07I  PIC X(26).
+    02  TAMT007L    COMP  PIC  S9(4).
+    02  TAMT007F    PICTURE X.
+    02  FILLER REDEFINES TAMT007F.
+      03 TAMT007A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT007I  PIC X(12).
+    02  SEL0008L    COMP  PIC  S9(4).
+    02  SEL0008F    PICTURE X.
+    02  FILLER REDEFINES SEL0008F.
+      03 SEL0008A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0008I  PIC X(1).
+    02  TRNID08L    COMP  PIC  S9(4).
+    02  TRNID08F    PICTURE X.
+    02  FILLER REDEFINES TRNID08F.
+      03 TRNID08A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID08I  PIC X(16).
+    02  TDATE08L    COMP  PIC  S9(4).
+    02  TDATE08F    PICTURE X.
+    02  FILLER REDEFINES TDATE08F.
+      03 TDATE08A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE08I  PIC X(8).
+    02  TDESC08L    COMP  PIC  S9(4).
+    02  TDESC08F    PICTURE X.
+    02  FILLER REDEFINES TDESC08F.
+      03 TDESC08A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC08I  PIC X(26).
+    02  TAMT008L    COMP  PIC  S9(4).
+    02  TAMT008F    PICTURE X.
+    02  FILLER REDEFINES TAMT008F.
+      03 TAMT008A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT008I  PIC X(12).
+    02  SEL0009L    COMP  PIC  S9(4).
+    02  SEL0009F    PICTURE X.
+    02  FILLER REDEFINES SEL0009F.
+      03 SEL0009A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0009I  PIC X(1).
+    02  TRNID09L    COMP  PIC  S9(4).
+    02  TRNID09F    PICTURE X.
+    02  FILLER REDEFINES TRNID09F.
+      03 TRNID09A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID09I  PIC X(16).
+    02  TDATE09L    COMP  PIC  S9(4).
+    02  TDATE09F    PICTURE X.
+    02  FILLER REDEFINES TDATE09F.
+      03 TDATE09A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE09I  PIC X(8).
+    02  TDESC09L    COMP  PIC  S9(4).
+    02  TDESC09F    PICTURE X.
+    02  FILLER REDEFINES TDESC09F.
+      03 TDESC09A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC09I  PIC X(26).
+    02  TAMT009L    COMP  PIC  S9(4).
+    02  TAMT009F    PICTURE X.
+    02  FILLER REDEFINES TAMT009F.
+      03 TAMT009A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT009I  PIC X(12).
+    02  SEL0010L    COMP  PIC  S9(4).
+    02  SEL0010F    PICTURE X.
+    02  FILLER REDEFINES SEL0010F.
+      03 SEL0010A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  SEL0010I  PIC X(1).
+    02  TRNID10L    COMP  PIC  S9(4).
+    02  TRNID10F    PICTURE X.
+    02  FILLER REDEFINES TRNID10F.
+      03 TRNID10A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNID10I  PIC X(16).
+    02  TDATE10L    COMP  PIC  S9(4).
+    02  TDATE10F    PICTURE X.
+    02  FILLER REDEFINES TDATE10F.
+      03 TDATE10A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDATE10I  PIC X(8).
+    02  TDESC10L    COMP  PIC  S9(4).
+    02  TDESC10F    PICTURE X.
+    02  FILLER REDEFINES TDESC10F.
+      03 TDESC10A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TDESC10I  PIC X(26).
+    02  TAMT010L    COMP  PIC  S9(4).
+    02  TAMT010F    PICTURE X.
+    02  FILLER REDEFINES TAMT010F.
+      03 TAMT010A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TAMT010I  PIC X(12).
+    02  ERRMSGL    COMP  PIC  S9(4).
+    02  ERRMSGF    PICTURE X.
+    02  FILLER REDEFINES ERRMSGF.
+      03 ERRMSGA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  ERRMSGI  PIC X(78).
+01  COTRN0AO REDEFINES COTRN0AI.
+    02  FILLER PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  TRNNAMEC    PICTURE X.
+    02  TRNNAMEP    PICTURE X.
+    02  TRNNAMEH    PICTURE X.
+    02  TRNNAMEV    PICTURE X.
+    02  TRNNAMEO  PIC X(4).
+    02  FILLER PICTURE X(3).
+    02  TITLE01C    PICTURE X.
+    02  TITLE01P    PICTURE X.
+    02  TITLE01H    PICTURE X.
+    02  TITLE01V    PICTURE X.
+    02  TITLE01O  PIC X(40).
+    02  FILLER PICTURE X(3).
+    02  CURDATEC    PICTURE X.
+    02  CURDATEP    PICTURE X.
+    02  CURDATEH    PICTURE X.
+    02  CURDATEV    PICTURE X.
+    02  CURDATEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  PGMNAMEC    PICTURE X.
+    02  PGMNAMEP    PICTURE X.
+    02  PGMNAMEH    PICTURE X.
+    02  PGMNAMEV    PICTURE X.
+    02  PGMNAMEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TITLE02C    PICTURE X.
+    02  TITLE02P    PICTURE X.
+    02  TITLE02H    PICTURE X.
+    02  TITLE02V    PICTURE X.
+    02  TITLE02O  PIC X(40).
+    02  FILLER PICTURE X(3).
+    02  CURTIMEC    PICTURE X.
+    02  CURTIMEP    PICTURE X.
+    02  CURTIMEH    PICTURE X.
+    02  CURTIMEV    PICTURE X.
+    02  CURTIMEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  PAGENUMC    PICTURE X.
+    02  PAGENUMP    PICTURE X.
+    02  PAGENUMH    PICTURE X.
+    02  PAGENUMV    PICTURE X.
+    02  PAGENUMO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TRNIDINC    PICTURE X.
+    02  TRNIDINP    PICTURE X.
+    02  TRNIDINH    PICTURE X.
+    02  TRNIDINV    PICTURE X.
+    02  TRNIDINO  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  SEL0001C    PICTURE X.
+    02  SEL0001P    PICTURE X.
+    02  SEL0001H    PICTURE X.
+    02  SEL0001V    PICTURE X.
+    02  SEL0001O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID01C    PICTURE X.
+    02  TRNID01P    PICTURE X.
+    02  TRNID01H    PICTURE X.
+    02  TRNID01V    PICTURE X.
+    02  TRNID01O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE01C    PICTURE X.
+    02  TDATE01P    PICTURE X.
+    02  TDATE01H    PICTURE X.
+    02  TDATE01V    PICTURE X.
+    02  TDATE01O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC01C    PICTURE X.
+    02  TDESC01P    PICTURE X.
+    02  TDESC01H    PICTURE X.
+    02  TDESC01V    PICTURE X.
+    02  TDESC01O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT001C    PICTURE X.
+    02  TAMT001P    PICTURE X.
+    02  TAMT001H    PICTURE X.
+    02  TAMT001V    PICTURE X.
+    02  TAMT001O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0002C    PICTURE X.
+    02  SEL0002P    PICTURE X.
+    02  SEL0002H    PICTURE X.
+    02  SEL0002V    PICTURE X.
+    02  SEL0002O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID02C    PICTURE X.
+    02  TRNID02P    PICTURE X.
+    02  TRNID02H    PICTURE X.
+    02  TRNID02V    PICTURE X.
+    02  TRNID02O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE02C    PICTURE X.
+    02  TDATE02P    PICTURE X.
+    02  TDATE02H    PICTURE X.
+    02  TDATE02V    PICTURE X.
+    02  TDATE02O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC02C    PICTURE X.
+    02  TDESC02P    PICTURE X.
+    02  TDESC02H    PICTURE X.
+    02  TDESC02V    PICTURE X.
+    02  TDESC02O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT002C    PICTURE X.
+    02  TAMT002P    PICTURE X.
+    02  TAMT002H    PICTURE X.
+    02  TAMT002V    PICTURE X.
+    02  TAMT002O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0003C    PICTURE X.
+    02  SEL0003P    PICTURE X.
+    02  SEL0003H    PICTURE X.
+    02  SEL0003V    PICTURE X.
+    02  SEL0003O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID03C    PICTURE X.
+    02  TRNID03P    PICTURE X.
+    02  TRNID03H    PICTURE X.
+    02  TRNID03V    PICTURE X.
+    02  TRNID03O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE03C    PICTURE X.
+    02  TDATE03P    PICTURE X.
+    02  TDATE03H    PICTURE X.
+    02  TDATE03V    PICTURE X.
+    02  TDATE03O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC03C    PICTURE X.
+    02  TDESC03P    PICTURE X.
+    02  TDESC03H    PICTURE X.
+    02  TDESC03V    PICTURE X.
+    02  TDESC03O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT003C    PICTURE X.
+    02  TAMT003P    PICTURE X.
+    02  TAMT003H    PICTURE X.
+    02  TAMT003V    PICTURE X.
+    02  TAMT003O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0004C    PICTURE X.
+    02  SEL0004P    PICTURE X.
+    02  SEL0004H    PICTURE X.
+    02  SEL0004V    PICTURE X.
+    02  SEL0004O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID04C    PICTURE X.
+    02  TRNID04P    PICTURE X.
+    02  TRNID04H    PICTURE X.
+    02  TRNID04V    PICTURE X.
+    02  TRNID04O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE04C    PICTURE X.
+    02  TDATE04P    PICTURE X.
+    02  TDATE04H    PICTURE X.
+    02  TDATE04V    PICTURE X.
+    02  TDATE04O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC04C    PICTURE X.
+    02  TDESC04P    PICTURE X.
+    02  TDESC04H    PICTURE X.
+    02  TDESC04V    PICTURE X.
+    02  TDESC04O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT004C    PICTURE X.
+    02  TAMT004P    PICTURE X.
+    02  TAMT004H    PICTURE X.
+    02  TAMT004V    PICTURE X.
+    02  TAMT004O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0005C    PICTURE X.
+    02  SEL0005P    PICTURE X.
+    02  SEL0005H    PICTURE X.
+    02  SEL0005V    PICTURE X.
+    02  SEL0005O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID05C    PICTURE X.
+    02  TRNID05P    PICTURE X.
+    02  TRNID05H    PICTURE X.
+    02  TRNID05V    PICTURE X.
+    02  TRNID05O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE05C    PICTURE X.
+    02  TDATE05P    PICTURE X.
+    02  TDATE05H    PICTURE X.
+    02  TDATE05V    PICTURE X.
+    02  TDATE05O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC05C    PICTURE X.
+    02  TDESC05P    PICTURE X.
+    02  TDESC05H    PICTURE X.
+    02  TDESC05V    PICTURE X.
+    02  TDESC05O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT005C    PICTURE X.
+    02  TAMT005P    PICTURE X.
+    02  TAMT005H    PICTURE X.
+    02  TAMT005V    PICTURE X.
+    02  TAMT005O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0006C    PICTURE X.
+    02  SEL0006P    PICTURE X.
+    02  SEL0006H    PICTURE X.
+    02  SEL0006V    PICTURE X.
+    02  SEL0006O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID06C    PICTURE X.
+    02  TRNID06P    PICTURE X.
+    02  TRNID06H    PICTURE X.
+    02  TRNID06V    PICTURE X.
+    02  TRNID06O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE06C    PICTURE X.
+    02  TDATE06P    PICTURE X.
+    02  TDATE06H    PICTURE X.
+    02  TDATE06V    PICTURE X.
+    02  TDATE06O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC06C    PICTURE X.
+    02  TDESC06P    PICTURE X.
+    02  TDESC06H    PICTURE X.
+    02  TDESC06V    PICTURE X.
+    02  TDESC06O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT006C    PICTURE X.
+    02  TAMT006P    PICTURE X.
+    02  TAMT006H    PICTURE X.
+    02  TAMT006V    PICTURE X.
+    02  TAMT006O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0007C    PICTURE X.
+    02  SEL0007P    PICTURE X.
+    02  SEL0007H    PICTURE X.
+    02  SEL0007V    PICTURE X.
+    02  SEL0007O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID07C    PICTURE X.
+    02  TRNID07P    PICTURE X.
+    02  TRNID07H    PICTURE X.
+    02  TRNID07V    PICTURE X.
+    02  TRNID07O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE07C    PICTURE X.
+    02  TDATE07P    PICTURE X.
+    02  TDATE07H    PICTURE X.
+    02  TDATE07V    PICTURE X.
+    02  TDATE07O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC07C    PICTURE X.
+    02  TDESC07P    PICTURE X.
+    02  TDESC07H    PICTURE X.
+    02  TDESC07V    PICTURE X.
+    02  TDESC07O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT007C    PICTURE X.
+    02  TAMT007P    PICTURE X.
+    02  TAMT007H    PICTURE X.
+    02  TAMT007V    PICTURE X.
+    02  TAMT007O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0008C    PICTURE X.
+    02  SEL0008P    PICTURE X.
+    02  SEL0008H    PICTURE X.
+    02  SEL0008V    PICTURE X.
+    02  SEL0008O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID08C    PICTURE X.
+    02  TRNID08P    PICTURE X.
+    02  TRNID08H    PICTURE X.
+    02  TRNID08V    PICTURE X.
+    02  TRNID08O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE08C    PICTURE X.
+    02  TDATE08P    PICTURE X.
+    02  TDATE08H    PICTURE X.
+    02  TDATE08V    PICTURE X.
+    02  TDATE08O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC08C    PICTURE X.
+    02  TDESC08P    PICTURE X.
+    02  TDESC08H    PICTURE X.
+    02  TDESC08V    PICTURE X.
+    02  TDESC08O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT008C    PICTURE X.
+    02  TAMT008P    PICTURE X.
+    02  TAMT008H    PICTURE X.
+    02  TAMT008V    PICTURE X.
+    02  TAMT008O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0009C    PICTURE X.
+    02  SEL0009P    PICTURE X.
+    02  SEL0009H    PICTURE X.
+    02  SEL0009V    PICTURE X.
+    02  SEL0009O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID09C    PICTURE X.
+    02  TRNID09P    PICTURE X.
+    02  TRNID09H    PICTURE X.
+    02  TRNID09V    PICTURE X.
+    02  TRNID09O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE09C    PICTURE X.
+    02  TDATE09P    PICTURE X.
+    02  TDATE09H    PICTURE X.
+    02  TDATE09V    PICTURE X.
+    02  TDATE09O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC09C    PICTURE X.
+    02  TDESC09P    PICTURE X.
+    02  TDESC09H    PICTURE X.
+    02  TDESC09V    PICTURE X.
+    02  TDESC09O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT009C    PICTURE X.
+    02  TAMT009P    PICTURE X.
+    02  TAMT009H    PICTURE X.
+    02  TAMT009V    PICTURE X.
+    02  TAMT009O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  SEL0010C    PICTURE X.
+    02  SEL0010P    PICTURE X.
+    02  SEL0010H    PICTURE X.
+    02  SEL0010V    PICTURE X.
+    02  SEL0010O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRNID10C    PICTURE X.
+    02  TRNID10P    PICTURE X.
+    02  TRNID10H    PICTURE X.
+    02  TRNID10V    PICTURE X.
+    02  TRNID10O  PIC X(16).
+    02  FILLER PICTURE X(3).
+    02  TDATE10C    PICTURE X.
+    02  TDATE10P    PICTURE X.
+    02  TDATE10H    PICTURE X.
+    02  TDATE10V    PICTURE X.
+    02  TDATE10O  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TDESC10C    PICTURE X.
+    02  TDESC10P    PICTURE X.
+    02  TDESC10H    PICTURE X.
+    02  TDESC10V    PICTURE X.
+    02  TDESC10O  PIC X(26).
+    02  FILLER PICTURE X(3).
+    02  TAMT010C    PICTURE X.
+    02  TAMT010P    PICTURE X.
+    02  TAMT010H    PICTURE X.
+    02  TAMT010V    PICTURE X.
+    02  TAMT010O  PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  ERRMSGC    PICTURE X.
+    02  ERRMSGP    PICTURE X.
+    02  ERRMSGH    PICTURE X.
+    02  ERRMSGV    PICTURE X.
+    02  ERRMSGO  PIC X(78).
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy-bms\COTRN00.cpy
+*>
+*>COPY COTTL01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COTTL01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CCDA-SCREEN-TITLE.
+  05 CCDA-TITLE01    PIC X(40) VALUE
+     '      AWS Mainframe Modernization       '.
+  05 CCDA-TITLE02    PIC X(40) VALUE
+*>     '  Credit Card Demo Application (CCDA)   '.
+     '              CardDemo                  '.
+  05 CCDA-THANK-YOU  PIC X(40) VALUE
+     'Thank you for using CCDA application... '.
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COTTL01Y.cpy
+*>COPY CSDAT01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDAT01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 WS-DATE-TIME.
+  05 WS-CURDATE-DATA.
+    10  WS-CURDATE.
+      15  WS-CURDATE-YEAR         PIC 9(04).
+      15  WS-CURDATE-MONTH        PIC 9(02).
+      15  WS-CURDATE-DAY          PIC 9(02).
+    10 WS-CURDATE-N REDEFINES WS-CURDATE PIC 9(08).
+    10  WS-CURTIME.
+      15  WS-CURTIME-HOURS        PIC 9(02).
+      15  WS-CURTIME-MINUTE       PIC 9(02).
+      15  WS-CURTIME-SECOND       PIC 9(02).
+      15  WS-CURTIME-MILSEC       PIC 9(02).
+    10 WS-CURTIME-N REDEFINES WS-CURTIME PIC 9(08).
+  05 WS-CURDATE-MM-DD-YY.
+    10  WS-CURDATE-MM             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '/'.
+    10  WS-CURDATE-DD             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '/'.
+    10  WS-CURDATE-YY             PIC 9(02).
+  05 WS-CURTIME-HH-MM-SS.
+    10  WS-CURTIME-HH             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-CURTIME-MM             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-CURTIME-SS             PIC 9(02).
+  05 WS-TIMESTAMP.
+    10  WS-TIMESTAMP-DT-YYYY      PIC 9(04).
+    10  FILLER                    PIC X(01) VALUE '-'.
+    10  WS-TIMESTAMP-DT-MM        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '-'.
+    10  WS-TIMESTAMP-DT-DD        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ' '.
+    10  WS-TIMESTAMP-TM-HH        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-TIMESTAMP-TM-MM        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-TIMESTAMP-TM-SS        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '.'.
+    10  WS-TIMESTAMP-TM-MS6       PIC 9(06).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDAT01Y.cpy
+*>COPY CSMSG01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSMSG01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CCDA-COMMON-MESSAGES.
+  05 CCDA-MSG-THANK-YOU         PIC X(50) VALUE
+       'Thank you for using CardDemo application...      '.
+  05 CCDA-MSG-INVALID-KEY       PIC X(50) VALUE
+       'Invalid key pressed. Please see below...         '.
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSMSG01Y.cpy
+*>
+*>COPY CVTRA05Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVTRA05Y.cpy
+*>****************************************************************
+*>    Data-structure for TRANsaction record (RECLN = 350)
+*>****************************************************************
+01  TRAN-RECORD.
+    05  TRAN-ID                                 PIC X(16).
+    05  TRAN-TYPE-CD                            PIC X(02).
+    05  TRAN-CAT-CD                             PIC 9(04).
+    05  TRAN-SOURCE                             PIC X(10).
+    05  TRAN-DESC                               PIC X(100).
+    05  TRAN-AMT                                PIC S9(09)V99.
+    05  TRAN-MERCHANT-ID                        PIC 9(09).
+    05  TRAN-MERCHANT-NAME                      PIC X(50).
+    05  TRAN-MERCHANT-CITY                      PIC X(50).
+    05  TRAN-MERCHANT-ZIP                       PIC X(10).
+    05  TRAN-CARD-NUM                           PIC X(16).
+    05  TRAN-ORIG-TS                            PIC X(26).
+    05  TRAN-PROC-TS                            PIC X(26).
+    05  FILLER                                  PIC X(20).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:16:01 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVTRA05Y.cpy
+*>
+*>COPY DFHAID.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHAID.cpy
+01    DFHAID.
+  02  DFHNULL   PIC  X  VALUE IS " ".
+  02  DFHENTER  PIC  X  VALUE IS " ".
+  02  DFHCLEAR  PIC  X  VALUE IS "_".
+  02  DFHPEN    PIC  X  VALUE IS "=".
+  02  DFHOPID   PIC  X  VALUE IS "W".
+  02  DFHPA1    PIC  X  VALUE IS "%".
+  02  DFHPA2    PIC  X  VALUE IS ">".
+  02  DFHPA3    PIC  X  VALUE IS ",".
+  02  DFHPF1    PIC  X  VALUE IS "1".
+  02  DFHPF2    PIC  X  VALUE IS "2".
+  02  DFHPF3    PIC  X  VALUE IS "3".
+  02  DFHPF4    PIC  X  VALUE IS "4".
+  02  DFHPF5    PIC  X  VALUE IS "5".
+  02  DFHPF6    PIC  X  VALUE IS "6".
+  02  DFHPF7    PIC  X  VALUE IS "7".
+  02  DFHPF8    PIC  X  VALUE IS "8".
+  02  DFHPF9    PIC  X  VALUE IS "9".
+  02  DFHPF10   PIC  X  VALUE IS ":".
+  02  DFHPF11   PIC  X  VALUE IS "#".
+  02  DFHPF12   PIC  X  VALUE IS "@".
+  02  DFHPF13   PIC  X  VALUE IS "A".
+  02  DFHPF14   PIC  X  VALUE IS "B".
+  02  DFHPF15   PIC  X  VALUE IS "C".
+  02  DFHPF16   PIC  X  VALUE IS "D".
+  02  DFHPF17   PIC  X  VALUE IS "E".
+  02  DFHPF18   PIC  X  VALUE IS "F".
+  02  DFHPF19   PIC  X  VALUE IS "G".
+  02  DFHPF20   PIC  X  VALUE IS "H".
+  02  DFHPF21   PIC  X  VALUE IS "I".
+  02  DFHPF22   PIC  X  VALUE IS "L".
+  02  DFHPF23   PIC  X  VALUE IS "M".
+  02  DFHPF24   PIC  X  VALUE IS "N".
+
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHAID.cpy
+*>COPY DFHBMSCA.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHBMSCA.cpy
+01 DFHBMSCA.
+    02 DFHBMPEM   PIC X   VALUE " ".
+    02 DFHBMPNL   PIC X   VALUE " ".
+    02 DFHBMASK   PIC X   VALUE "0".
+    02 DFHBMUNP   PIC X   VALUE " ".
+    02 DFHBMUNN   PIC X   VALUE "&".
+    02 DFHBMPRO   PIC X   VALUE "-".
+    02 DFHBMBRY   PIC X   VALUE "H".
+    02 DFHBMDAR   PIC X   VALUE "<".
+    02 DFHBMFSE   PIC X   VALUE "A".
+    02 DFHBMPRF   PIC X   VALUE "/".
+    02 DFHBMASF   PIC X   VALUE "1".
+    02 DFHBMASB   PIC X   VALUE "8".
+    02 DFHBMEOF   PIC X   VALUE "Ø".
+    02 DFHBMDET   PIC X   VALUE "~".
+    02 DFHBMPSO   PIC X   VALUE " ".
+    02 DFHBMPSI   PIC X   VALUE " ".
+    02 DFHSA      PIC X   VALUE " ".
+    02 DFHCOLOR   PIC X   VALUE "â".
+    02 DFHPS      PIC X   VALUE "ä".
+    02 DFHHLT     PIC X   VALUE " ".
+    02 DFH3270    PIC X   VALUE "ù".
+    02 DFHVAL     PIC X   VALUE "A".
+    02 DFHOUTLN   PIC X   VALUE "B".
+    02 DFHBKTRN   PIC X   VALUE "ã".
+    02 DFHALL     PIC X   VALUE " ".
+    02 DFHERROR   PIC X   VALUE " ".
+    02 DFHDFT     PIC X   VALUE "~".
+    02 DFHDFCOL   PIC X   VALUE " ".
+    02 DFHBLUE    PIC X   VALUE "1".
+    02 DFHRED     PIC X   VALUE "2".
+    02 DFHPINK    PIC X   VALUE "3".
+    02 DFHGREEN   PIC X   VALUE "4".
+    02 DFHTURQ    PIC X   VALUE "5".
+    02 DFHYELLO   PIC X   VALUE "6".
+    02 DFHNEUTR   PIC X   VALUE "7".
+    02 DFHBASE    PIC X   VALUE " ".
+    02 DFHDFHI    PIC X   VALUE " ".
+    02 DFHBLINK   PIC X   VALUE "1".
+    02 DFHREVRS   PIC X   VALUE "2".
+    02 DFHUNDLN   PIC X   VALUE "4".
+    02 DFHMFIL    PIC X   VALUE " ".
+    02 DFHMENT    PIC X   VALUE " ".
+    02 DFHMFE     PIC X   VALUE " ".
+    02 DFHUNNOD   PIC X   VALUE "(".
+    02 DFHUNIMD   PIC X   VALUE "I".
+    02 DFHUNNUM   PIC X   VALUE "J".
+    02 DFHUNINT   PIC X   VALUE "R".
+    02 DFHUNNON   PIC X   VALUE ")".
+    02 DFHPROTI   PIC X   VALUE "Y".
+    02 DFHPROTN   PIC X   VALUE "%".
+    02 DFHMT      PIC X   VALUE " ".
+    02 DFHMFT     PIC X   VALUE " ".
+    02 DFHMET     PIC X   VALUE " ".
+    02 DFHMFET    PIC X   VALUE " ".
+    02 DFHDFFR    PIC X   VALUE " ".
+    02 DFHLEFT    PIC X   VALUE " ".
+    02 DFHOVER    PIC X   VALUE " ".
+    02 DFHRIGHT   PIC X   VALUE " ".
+    02 DFHUNDER   PIC X   VALUE " ".
+    02 DFHBOX     PIC X   VALUE " ".
+    02 DFHSOSI    PIC X   VALUE " ".
+    02 DFHTRANS   PIC X   VALUE "0".
+    02 DFHOPAQ    PIC X   VALUE "~".
+    02 DFHBMABF   PIC X   VALUE "X".
+    02 DFHBMADP   PIC X   VALUE "X".
+    02 DFHBMFF    PIC X   VALUE "X".
+    02 DFHBMCR    PIC X   VALUE "X".
+
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHBMSCA.cpy
+*>
+*>----------------------------------------------------------------*
+*>                        LINKAGE SECTION
+*>----------------------------------------------------------------*
+LINKAGE SECTION.
+01  DFHCOMMAREA.
+  05  LK-COMMAREA                           PIC X(01)
+      OCCURS 1 TO 32767 TIMES DEPENDING ON EIBCALEN.
+*>
+*>----------------------------------------------------------------*
+*>                       PROCEDURE DIVISION
+*>----------------------------------------------------------------*
+PROCEDURE DIVISION.
+MAIN-PARA.
+*>
+    SET ERR-FLG-OFF TO TRUE
+    SET TRANSACT-NOT-EOF TO TRUE
+    SET NEXT-PAGE-NO TO TRUE
+    SET SEND-ERASE-YES TO TRUE
+*>
+    MOVE SPACES TO WS-MESSAGE
+                   ERRMSGO OF COTRN0AO
+*>
+    MOVE -1       TO TRNIDINL OF COTRN0AI
+*>
+    IF EIBCALEN = 0
+        MOVE 'COSGN00C' TO CDEMO-TO-PROGRAM
+        PERFORM RETURN-TO-PREV-SCREEN
+    ELSE
+        MOVE DFHCOMMAREA(1:EIBCALEN) TO CARDDEMO-COMMAREA
+        IF NOT CDEMO-PGM-REENTER
+            SET CDEMO-PGM-REENTER    TO TRUE
+            MOVE LOW-VALUES          TO COTRN0AO
+            PERFORM PROCESS-ENTER-KEY
+            PERFORM SEND-TRNLST-SCREEN
+        ELSE
+            PERFORM RECEIVE-TRNLST-SCREEN
+            EVALUATE EIBAID
+                WHEN DFHENTER
+                    PERFORM PROCESS-ENTER-KEY
+                WHEN DFHPF3
+                    MOVE 'COMEN01C' TO CDEMO-TO-PROGRAM
+                    PERFORM RETURN-TO-PREV-SCREEN
+                WHEN DFHPF7
+                    PERFORM PROCESS-PF7-KEY
+                WHEN DFHPF8
+                    PERFORM PROCESS-PF8-KEY
+                WHEN OTHER
+                    MOVE 'Y'                       TO WS-ERR-FLG
+                    MOVE -1       TO TRNIDINL OF COTRN0AI
+                    MOVE CCDA-MSG-INVALID-KEY      TO WS-MESSAGE
+                    PERFORM SEND-TRNLST-SCREEN
+            END-EVALUATE
+        END-IF
+    END-IF
+*>
+    EXEC CICS RETURN
+              TRANSID (WS-TRANID)
+              COMMAREA (CARDDEMO-COMMAREA)
+    END-EXEC.
+*>
+*>----------------------------------------------------------------*
+*>                      PROCESS-ENTER-KEY
+*>----------------------------------------------------------------*
+PROCESS-ENTER-KEY.
+*>
+    EVALUATE TRUE
+        WHEN SEL0001I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0001I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID01I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0002I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0002I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID02I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0003I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0003I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID03I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0004I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0004I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID04I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0005I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0005I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID05I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0006I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0006I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID06I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0007I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0007I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID07I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0008I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0008I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID08I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0009I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0009I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID09I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN SEL0010I OF COTRN0AI NOT = SPACES AND LOW-VALUES
+            MOVE SEL0010I OF COTRN0AI TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE TRNID10I OF COTRN0AI TO CDEMO-CT00-TRN-SELECTED
+        WHEN OTHER
+            MOVE SPACES   TO CDEMO-CT00-TRN-SEL-FLG
+            MOVE SPACES   TO CDEMO-CT00-TRN-SELECTED
+    END-EVALUATE
+    IF (CDEMO-CT00-TRN-SEL-FLG NOT = SPACES AND LOW-VALUES) AND
+       (CDEMO-CT00-TRN-SELECTED NOT = SPACES AND LOW-VALUES)
+        EVALUATE CDEMO-CT00-TRN-SEL-FLG
+            WHEN 'S'
+            WHEN 's'
+                 MOVE 'COTRN01C'   TO CDEMO-TO-PROGRAM
+                 MOVE WS-TRANID    TO CDEMO-FROM-TRANID
+                 MOVE WS-PGMNAME   TO CDEMO-FROM-PROGRAM
+                 MOVE 0        TO CDEMO-PGM-CONTEXT
+                 EXEC CICS
+                     XCTL PROGRAM(CDEMO-TO-PROGRAM)
+                     COMMAREA(CARDDEMO-COMMAREA)
+                 END-EXEC
+            WHEN OTHER
+*>                SET TRANSACT-EOF TO TRUE
+                MOVE
+                'Invalid selection. Valid value is S' TO
+                                WS-MESSAGE
+                MOVE -1       TO TRNIDINL OF COTRN0AI
+*>                PERFORM SEND-TRNLST-SCREEN
+        END-EVALUATE
+    END-IF
+*>
+    IF TRNIDINI OF COTRN0AI = SPACES OR LOW-VALUES
+        MOVE LOW-VALUES TO TRAN-ID
+    ELSE
+        IF TRNIDINI  OF COTRN0AI IS NUMERIC
+            MOVE TRNIDINI  OF COTRN0AI    TO TRAN-ID
+        ELSE
+            MOVE 'Y'                       TO WS-ERR-FLG
+            MOVE
+            'Tran ID must be Numeric ...' TO
+                            WS-MESSAGE
+            MOVE -1                 TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+        END-IF
+    END-IF
+*>
+    MOVE -1       TO TRNIDINL OF COTRN0AI
+*>
+*>
+    MOVE 0       TO CDEMO-CT00-PAGE-NUM
+    PERFORM PROCESS-PAGE-FORWARD
+*>
+    IF NOT ERR-FLG-ON
+        MOVE SPACE   TO TRNIDINO  OF COTRN0AO
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      PROCESS-PF7-KEY
+*>----------------------------------------------------------------*
+PROCESS-PF7-KEY.
+*>
+    IF CDEMO-CT00-TRNID-FIRST = SPACES OR LOW-VALUES
+        MOVE LOW-VALUES TO TRAN-ID
+    ELSE
+        MOVE CDEMO-CT00-TRNID-FIRST TO TRAN-ID
+    END-IF
+*>
+    SET NEXT-PAGE-YES TO TRUE
+    MOVE -1       TO TRNIDINL OF COTRN0AI
+*>
+    IF CDEMO-CT00-PAGE-NUM > 1
+        PERFORM PROCESS-PAGE-BACKWARD
+    ELSE
+        MOVE 'You are already at the top of the page...' TO
+                        WS-MESSAGE
+        SET SEND-ERASE-NO TO TRUE
+        PERFORM SEND-TRNLST-SCREEN
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      PROCESS-PF8-KEY
+*>----------------------------------------------------------------*
+PROCESS-PF8-KEY.
+*>
+    IF CDEMO-CT00-TRNID-LAST = SPACES OR LOW-VALUES
+        MOVE HIGH-VALUES TO TRAN-ID
+    ELSE
+        MOVE CDEMO-CT00-TRNID-LAST TO TRAN-ID
+    END-IF
+*>
+    MOVE -1       TO TRNIDINL OF COTRN0AI
+*>
+    IF NEXT-PAGE-YES
+        PERFORM PROCESS-PAGE-FORWARD
+    ELSE
+        MOVE 'You are already at the bottom of the page...' TO
+                        WS-MESSAGE
+        SET SEND-ERASE-NO TO TRUE
+        PERFORM SEND-TRNLST-SCREEN
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      PROCESS-PAGE-FORWARD
+*>----------------------------------------------------------------*
+PROCESS-PAGE-FORWARD.
+*>
+    PERFORM STARTBR-TRANSACT-FILE
+*>
+    IF NOT ERR-FLG-ON
+*>
+        IF EIBAID NOT = DFHENTER AND DFHPF7 AND DFHPF3
+            PERFORM READNEXT-TRANSACT-FILE
+        END-IF
+*>
+        IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+           PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
+               PERFORM INITIALIZE-TRAN-DATA
+           END-PERFORM
+        END-IF
+*>
+        MOVE 1             TO  WS-IDX
+*>
+        PERFORM UNTIL WS-IDX >= 11 OR TRANSACT-EOF OR ERR-FLG-ON
+            PERFORM READNEXT-TRANSACT-FILE
+            IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+                PERFORM POPULATE-TRAN-DATA
+                COMPUTE WS-IDX = WS-IDX + 1
+            END-IF
+        END-PERFORM
+*>
+        IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+            COMPUTE CDEMO-CT00-PAGE-NUM =
+                    CDEMO-CT00-PAGE-NUM + 1
+            PERFORM READNEXT-TRANSACT-FILE
+            IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+                SET NEXT-PAGE-YES TO TRUE
+            ELSE
+                SET NEXT-PAGE-NO TO TRUE
+            END-IF
+        ELSE
+            SET NEXT-PAGE-NO TO TRUE
+            IF WS-IDX > 1
+                COMPUTE CDEMO-CT00-PAGE-NUM = CDEMO-CT00-PAGE-NUM
+                 + 1
+            END-IF
+        END-IF
+*>
+        PERFORM ENDBR-TRANSACT-FILE
+*>
+        MOVE CDEMO-CT00-PAGE-NUM TO PAGENUMI  OF COTRN0AI
+        MOVE SPACE   TO TRNIDINO  OF COTRN0AO
+        PERFORM SEND-TRNLST-SCREEN
+*>
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      PROCESS-PAGE-BACKWARD
+*>----------------------------------------------------------------*
+PROCESS-PAGE-BACKWARD.
+*>
+    PERFORM STARTBR-TRANSACT-FILE
+*>
+    IF NOT ERR-FLG-ON
+*>
+        IF EIBAID NOT = DFHENTER AND DFHPF8
+            PERFORM READPREV-TRANSACT-FILE
+        END-IF
+*>
+        IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+           PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
+              PERFORM INITIALIZE-TRAN-DATA
+           END-PERFORM
+        END-IF
+*>
+        MOVE 10          TO  WS-IDX
+*>
+        PERFORM UNTIL WS-IDX <= 0 OR TRANSACT-EOF OR ERR-FLG-ON
+            PERFORM READPREV-TRANSACT-FILE
+            IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+                PERFORM POPULATE-TRAN-DATA
+                COMPUTE WS-IDX = WS-IDX - 1
+            END-IF
+        END-PERFORM
+*>
+        IF TRANSACT-NOT-EOF AND ERR-FLG-OFF
+           PERFORM READPREV-TRANSACT-FILE
+           IF NEXT-PAGE-YES
+              IF TRANSACT-NOT-EOF AND ERR-FLG-OFF AND
+                 CDEMO-CT00-PAGE-NUM > 1
+                 SUBTRACT 1 FROM CDEMO-CT00-PAGE-NUM
+              ELSE
+                 MOVE 1 TO CDEMO-CT00-PAGE-NUM
+              END-IF
+           END-IF
+        END-IF
+*>
+        PERFORM ENDBR-TRANSACT-FILE
+*>
+        MOVE CDEMO-CT00-PAGE-NUM TO PAGENUMI  OF COTRN0AI
+        PERFORM SEND-TRNLST-SCREEN
+*>
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      POPULATE-TRAN-DATA
+*>----------------------------------------------------------------*
+POPULATE-TRAN-DATA.
+*>
+    MOVE TRAN-AMT                  TO WS-TRAN-AMT
+    MOVE TRAN-ORIG-TS              TO WS-TIMESTAMP
+    MOVE WS-TIMESTAMP-DT-YYYY(3:2) TO WS-CURDATE-YY
+    MOVE WS-TIMESTAMP-DT-MM        TO WS-CURDATE-MM
+    MOVE WS-TIMESTAMP-DT-DD        TO WS-CURDATE-DD
+    MOVE WS-CURDATE-MM-DD-YY       TO WS-TRAN-DATE
+*>
+    EVALUATE WS-IDX
+        WHEN 1
+            MOVE TRAN-ID    TO TRNID01I OF COTRN0AI
+                                  CDEMO-CT00-TRNID-FIRST
+            MOVE WS-TRAN-DATE TO TDATE01I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC01I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT001I OF COTRN0AI
+        WHEN 2
+            MOVE TRAN-ID    TO TRNID02I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE02I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC02I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT002I OF COTRN0AI
+        WHEN 3
+            MOVE TRAN-ID    TO TRNID03I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE03I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC03I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT003I OF COTRN0AI
+        WHEN 4
+            MOVE TRAN-ID    TO TRNID04I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE04I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC04I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT004I OF COTRN0AI
+        WHEN 5
+            MOVE TRAN-ID    TO TRNID05I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE05I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC05I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT005I OF COTRN0AI
+        WHEN 6
+            MOVE TRAN-ID    TO TRNID06I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE06I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC06I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT006I OF COTRN0AI
+        WHEN 7
+            MOVE TRAN-ID    TO TRNID07I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE07I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC07I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT007I OF COTRN0AI
+        WHEN 8
+            MOVE TRAN-ID    TO TRNID08I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE08I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC08I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT008I OF COTRN0AI
+        WHEN 9
+            MOVE TRAN-ID    TO TRNID09I OF COTRN0AI
+            MOVE WS-TRAN-DATE TO TDATE09I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC09I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT009I OF COTRN0AI
+        WHEN 10
+            MOVE TRAN-ID    TO TRNID10I OF COTRN0AI
+                                  CDEMO-CT00-TRNID-LAST
+            MOVE WS-TRAN-DATE TO TDATE10I OF COTRN0AI
+            MOVE TRAN-DESC TO TDESC10I OF COTRN0AI
+            MOVE WS-TRAN-AMT  TO TAMT010I OF COTRN0AI
+        WHEN OTHER
+            CONTINUE
+    END-EVALUATE.
+*>
+*>----------------------------------------------------------------*
+*>                      INITIALIZE-TRAN-DATA
+*>----------------------------------------------------------------*
+INITIALIZE-TRAN-DATA.
+*>
+    EVALUATE WS-IDX
+        WHEN 1
+            MOVE SPACES TO TRNID01I OF COTRN0AI
+            MOVE SPACES TO TDATE01I OF COTRN0AI
+            MOVE SPACES TO TDESC01I OF COTRN0AI
+            MOVE SPACES TO TAMT001I OF COTRN0AI
+        WHEN 2
+            MOVE SPACES TO TRNID02I OF COTRN0AI
+            MOVE SPACES TO TDATE02I OF COTRN0AI
+            MOVE SPACES TO TDESC02I OF COTRN0AI
+            MOVE SPACES TO TAMT002I OF COTRN0AI
+        WHEN 3
+            MOVE SPACES TO TRNID03I OF COTRN0AI
+            MOVE SPACES TO TDATE03I OF COTRN0AI
+            MOVE SPACES TO TDESC03I OF COTRN0AI
+            MOVE SPACES TO TAMT003I OF COTRN0AI
+        WHEN 4
+            MOVE SPACES TO TRNID04I OF COTRN0AI
+            MOVE SPACES TO TDATE04I OF COTRN0AI
+            MOVE SPACES TO TDESC04I OF COTRN0AI
+            MOVE SPACES TO TAMT004I OF COTRN0AI
+        WHEN 5
+            MOVE SPACES TO TRNID05I OF COTRN0AI
+            MOVE SPACES TO TDATE05I OF COTRN0AI
+            MOVE SPACES TO TDESC05I OF COTRN0AI
+            MOVE SPACES TO TAMT005I OF COTRN0AI
+        WHEN 6
+            MOVE SPACES TO TRNID06I OF COTRN0AI
+            MOVE SPACES TO TDATE06I OF COTRN0AI
+            MOVE SPACES TO TDESC06I OF COTRN0AI
+            MOVE SPACES TO TAMT006I OF COTRN0AI
+        WHEN 7
+            MOVE SPACES TO TRNID07I OF COTRN0AI
+            MOVE SPACES TO TDATE07I OF COTRN0AI
+            MOVE SPACES TO TDESC07I OF COTRN0AI
+            MOVE SPACES TO TAMT007I OF COTRN0AI
+        WHEN 8
+            MOVE SPACES TO TRNID08I OF COTRN0AI
+            MOVE SPACES TO TDATE08I OF COTRN0AI
+            MOVE SPACES TO TDESC08I OF COTRN0AI
+            MOVE SPACES TO TAMT008I OF COTRN0AI
+        WHEN 9
+            MOVE SPACES TO TRNID09I OF COTRN0AI
+            MOVE SPACES TO TDATE09I OF COTRN0AI
+            MOVE SPACES TO TDESC09I OF COTRN0AI
+            MOVE SPACES TO TAMT009I OF COTRN0AI
+        WHEN 10
+            MOVE SPACES TO TRNID10I OF COTRN0AI
+            MOVE SPACES TO TDATE10I OF COTRN0AI
+            MOVE SPACES TO TDESC10I OF COTRN0AI
+            MOVE SPACES TO TAMT010I OF COTRN0AI
+        WHEN OTHER
+            CONTINUE
+    END-EVALUATE.
+*>
+*>----------------------------------------------------------------*
+*>                      RETURN-TO-PREV-SCREEN
+*>----------------------------------------------------------------*
+RETURN-TO-PREV-SCREEN.
+*>
+    IF CDEMO-TO-PROGRAM = LOW-VALUES OR SPACES
+        MOVE 'COSGN00C' TO CDEMO-TO-PROGRAM
+    END-IF
+    MOVE WS-TRANID    TO CDEMO-FROM-TRANID
+    MOVE WS-PGMNAME   TO CDEMO-FROM-PROGRAM
+    MOVE ZEROS        TO CDEMO-PGM-CONTEXT
+    EXEC CICS
+        XCTL PROGRAM(CDEMO-TO-PROGRAM)
+        COMMAREA(CARDDEMO-COMMAREA)
+    END-EXEC.
+*>
+*>
+*>----------------------------------------------------------------*
+*>                      SEND-TRNLST-SCREEN
+*>----------------------------------------------------------------*
+SEND-TRNLST-SCREEN.
+*>
+    PERFORM POPULATE-HEADER-INFO
+*>
+    MOVE WS-MESSAGE TO ERRMSGO OF COTRN0AO
+*>
+    IF SEND-ERASE-YES
+        EXEC CICS SEND
+                  MAP('COTRN0A')
+                  MAPSET('COTRN00')
+                  FROM(COTRN0AO)
+                  ERASE
+                  CURSOR
+        END-EXEC
+    ELSE
+        EXEC CICS SEND
+                  MAP('COTRN0A')
+                  MAPSET('COTRN00')
+                  FROM(COTRN0AO)
+*>                  ERASE
+                  CURSOR
+        END-EXEC
+    END-IF.
+*>
+*>----------------------------------------------------------------*
+*>                      RECEIVE-TRNLST-SCREEN
+*>----------------------------------------------------------------*
+RECEIVE-TRNLST-SCREEN.
+*>
+    EXEC CICS RECEIVE
+              MAP('COTRN0A')
+              MAPSET('COTRN00')
+              INTO(COTRN0AI)
+              RESP(WS-RESP-CD)
+              RESP2(WS-REAS-CD)
+    END-EXEC.
+*>
+*>----------------------------------------------------------------*
+*>                      POPULATE-HEADER-INFO
+*>----------------------------------------------------------------*
+POPULATE-HEADER-INFO.
+*>
+    MOVE FUNCTION CURRENT-DATE  TO WS-CURDATE-DATA
+*>
+    MOVE CCDA-TITLE01           TO TITLE01O OF COTRN0AO
+    MOVE CCDA-TITLE02           TO TITLE02O OF COTRN0AO
+    MOVE WS-TRANID              TO TRNNAMEO OF COTRN0AO
+    MOVE WS-PGMNAME             TO PGMNAMEO OF COTRN0AO
+*>
+    MOVE WS-CURDATE-MONTH       TO WS-CURDATE-MM
+    MOVE WS-CURDATE-DAY         TO WS-CURDATE-DD
+    MOVE WS-CURDATE-YEAR(3:2)   TO WS-CURDATE-YY
+*>
+    MOVE WS-CURDATE-MM-DD-YY    TO CURDATEO OF COTRN0AO
+*>
+    MOVE WS-CURTIME-HOURS       TO WS-CURTIME-HH
+    MOVE WS-CURTIME-MINUTE      TO WS-CURTIME-MM
+    MOVE WS-CURTIME-SECOND      TO WS-CURTIME-SS
+*>
+    MOVE WS-CURTIME-HH-MM-SS    TO CURTIMEO OF COTRN0AO.
+*>
+*>----------------------------------------------------------------*
+*>                      STARTBR-TRANSACT-FILE
+*>----------------------------------------------------------------*
+STARTBR-TRANSACT-FILE.
+*>
+    EXEC CICS STARTBR
+         DATASET   (WS-TRANSACT-FILE)
+         RIDFLD    (TRAN-ID)
+         KEYLENGTH (LENGTH OF TRAN-ID)
+*>         GTEQ
+         RESP      (WS-RESP-CD)
+         RESP2     (WS-REAS-CD)
+    END-EXEC.
+*>
+    EVALUATE WS-RESP-CD
+        WHEN DFHRESP(NORMAL)
+            CONTINUE
+        WHEN DFHRESP(NOTFND)
+            CONTINUE
+            SET TRANSACT-EOF TO TRUE
+            MOVE 'You are at the top of the page...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+        WHEN OTHER
+            DISPLAY 'RESP:' WS-RESP-CD 'REAS:' WS-REAS-CD
+            MOVE 'Y'     TO WS-ERR-FLG
+            MOVE 'Unable to lookup transaction...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+    END-EVALUATE.
+*>
+*>----------------------------------------------------------------*
+*>                      READNEXT-TRANSACT-FILE
+*>----------------------------------------------------------------*
+READNEXT-TRANSACT-FILE.
+*>
+    EXEC CICS READNEXT
+         DATASET   (WS-TRANSACT-FILE)
+         INTO      (TRAN-RECORD)
+         LENGTH    (LENGTH OF TRAN-RECORD)
+         RIDFLD    (TRAN-ID)
+         KEYLENGTH (LENGTH OF TRAN-ID)
+         RESP      (WS-RESP-CD)
+         RESP2     (WS-REAS-CD)
+    END-EXEC.
+*>
+    EVALUATE WS-RESP-CD
+        WHEN DFHRESP(NORMAL)
+            CONTINUE
+        WHEN DFHRESP(ENDFILE)
+            CONTINUE
+            SET TRANSACT-EOF TO TRUE
+            MOVE 'You have reached the bottom of the page...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+        WHEN OTHER
+            DISPLAY 'RESP:' WS-RESP-CD 'REAS:' WS-REAS-CD
+            MOVE 'Y'     TO WS-ERR-FLG
+            MOVE 'Unable to lookup transaction...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+    END-EVALUATE.
+*>
+*>----------------------------------------------------------------*
+*>                      READPREV-TRANSACT-FILE
+*>----------------------------------------------------------------*
+READPREV-TRANSACT-FILE.
+*>
+    EXEC CICS READPREV
+         DATASET   (WS-TRANSACT-FILE)
+         INTO      (TRAN-RECORD)
+         LENGTH    (LENGTH OF TRAN-RECORD)
+         RIDFLD    (TRAN-ID)
+         KEYLENGTH (LENGTH OF TRAN-ID)
+         RESP      (WS-RESP-CD)
+         RESP2     (WS-REAS-CD)
+    END-EXEC.
+*>
+    EVALUATE WS-RESP-CD
+        WHEN DFHRESP(NORMAL)
+            CONTINUE
+        WHEN DFHRESP(ENDFILE)
+            CONTINUE
+            SET TRANSACT-EOF TO TRUE
+            MOVE 'You have reached the top of the page...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+        WHEN OTHER
+            DISPLAY 'RESP:' WS-RESP-CD 'REAS:' WS-REAS-CD
+            MOVE 'Y'     TO WS-ERR-FLG
+            MOVE 'Unable to lookup transaction...' TO
+                            WS-MESSAGE
+            MOVE -1       TO TRNIDINL OF COTRN0AI
+            PERFORM SEND-TRNLST-SCREEN
+    END-EVALUATE.
+*>
+*>----------------------------------------------------------------*
+*>                      ENDBR-TRANSACT-FILE
+*>----------------------------------------------------------------*
+ENDBR-TRANSACT-FILE.
+*>
+    EXEC CICS ENDBR
+         DATASET   (WS-TRANSACT-FILE)
+    END-EXEC.
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:12:34 CDT
+*>

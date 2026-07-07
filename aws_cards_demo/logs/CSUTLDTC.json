@@ -1,0 +1,25 @@
+{
+  "objectName" : "CSUTLDTC",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-04-20 16:22:56.692",
+    "endTime" : "2026-04-20 16:22:56.695",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\CSUTLDTC.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-20 16:22:56.702",
+    "endTime" : "2026-04-20 16:22:56.717",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\CSUTLDTC.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

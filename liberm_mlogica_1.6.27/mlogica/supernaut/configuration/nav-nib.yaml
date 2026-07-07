@@ -1,0 +1,15 @@
+nav:
+  - index.md
+  - node.md
+  - datasources.md
+  - Program Control: pct.md
+  - File Control: fct.md
+  - Program Loading: plt.md
+  - Transient Data: dct.md
+  - Terminal Control: tct.md
+  - Typeterm: typeterm.md
+  - codepage.md
+  - TCP Services: tcp-services.md
+  - MQ Triggers: mq-trigger-monitors.md
+
+

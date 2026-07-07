@@ -1,0 +1,25 @@
+{
+  "objectName" : "DSN8BC3",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-04-20 16:22:51.162",
+    "endTime" : "2026-04-20 16:22:51.176",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\DSN8BC3.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-20 16:22:51.176",
+    "endTime" : "2026-04-20 16:22:51.204",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\DSN8BC3.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

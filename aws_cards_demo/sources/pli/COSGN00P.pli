@@ -1,0 +1,266 @@
+ /*********************************************************************/
+ /* Program     : COSGN00P.PLI                                        */
+ /* Application : CardDemo                                            */
+ /* Type        : CICS PL/I Program                                   */
+ /* Function    : Signon Screen for the CardDemo Application          */
+ /* *******************************************************************/
+ /* Copyright Amazon.com, Inc. or its affiliates.                     */
+ /* All Rights Reserved.                                              */
+ /*                                                                   */
+ /* Licensed under the Apache License, Version 2.0 (the "License").   */
+ /* You may not use this file except in compliance with the License.  */
+ /* You may obtain a copy of the License at                           */
+ /*                                                                   */
+ /*    http://www.apache.org/licenses/LICENSE-2.0                     */
+ /*                                                                   */
+ /* Unless required by applicable law or agreed to in writing,        */
+ /* software distributed under the License is distributed on an       */
+ /* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,      */
+ /* either express or implied. See the License for the specific       */
+ /* language governing permissions and limitations under the License  */
+ /*********************************************************************/
+ COSGN00P: PROC(COMMAREA_PTR) OPTIONS(MAIN);
+ 
+ /*------------------------------------------------------------------
+  * CICS-PARAMETER                                                   
+  *------------------------------------------------------------------*/
+ DCL COMMAREA_PTR     POINTER;
+
+ DCL 1 DFHCOMMAREA BASED(COMMAREA_PTR),
+ /*------------------------------------------------------------------
+  * ACTUAL COMMAREA         
+  */   5 LK_COMMAREA    CHAR (32767) VAR;  /* IT'S 
+                                              VARYING */ /* FEB-2024 */
+ 
+ DCL (LENGTH, UPPERCASE, LOW, DATETIME, STG) BUILTIN;
+ DCL CICS_LEN  FIXED BIN(15);                     
+ DCL CICS_LEN2 FIXED BIN(15);                     
+ 
+ DCL 1 WS_VARIABLES,
+       2 WS_PGMNAME     CHAR(8)         INIT('COSGN00P'),
+       2 WS_TRANID      CHAR(4)         INIT('PP00'),
+       2 WS_MESSAGE     CHAR(80)        INIT(' '),
+       2 WS_USRSEC_FILE CHAR(8)         INIT('USRSEC  '),
+       2 WS_ERR_FLG     CHAR            INIT('N'),
+       2 WS_RESP_CD     FIXED BIN(31)   INIT(0),
+       2 WS_REAS_CD     FIXED BIN(31)   INIT(0),
+       2 WS_USER_ID     CHAR(8),
+       2 WS_USER_PWD    CHAR(8);
+ 
+ /* %INCLUDE COCOM01X; No longer required */
+ %INCLUDE COCOM01Y;
+ %INCLUDE COSGN00;
+ 
+ %INCLUDE COTTL01Y;
+ %INCLUDE CSDAT01Y;
+ %INCLUDE CSMSG01Y;
+ %INCLUDE CSUSR01Y;
+ 
+ %INCLUDE DFHAID;
+ %INCLUDE DFHBMSCA;
+ 
+     WS_ERR_FLG = 'N';
+     WS_MESSAGE = ' ';
+ 
+     IF EIBCALEN = 0 THEN 
+         CALL SEND_SIGNON_SCREEN();
+     ELSE DO;
+         IF EIBAID = DFHENTER THEN
+           CALL PROCESS_ENTER_KEY(WS_ERR_FLG);
+         ELSE IF EIBAID = DFHPF3 THEN DO;
+           WS_MESSAGE = CCDA_MSG_THANK_YOU;
+           CALL SEND_PLAIN_TEXT();
+         END;
+         ELSE DO;
+           WS_ERR_FLG = 'Y';
+           WS_MESSAGE = CCDA_MSG_INVALID_KEY;
+           CALL SEND_SIGNON_SCREEN();
+         END;
+     END;
+ 
+ 
+ 
+     CICS_LEN = STG(CARDDEMO_COMMAREA);
+     EXEC CICS
+         RETURN
+         TRANSID (WS_TRANID)
+         COMMAREA (CARDDEMO_COMMAREA)
+         LENGTH (CICS_LEN);
+     
+ /*-------------------------------------------------------------------*
+                        PROCESS-ENTER-KEY
+  *-------------------------------------------------------------------*/
+ PROCESS_ENTER_KEY: PROC(LC_ERR_FLG);
+ 
+     DCL LC_ERR_FLG     CHAR;
+	 
+     EXEC CICS
+         RECEIVE
+         MAP ('COSGN0A')
+         MAPSET ('COSGN00')
+         RESP (WS_RESP_CD)
+         RESP2 (WS_REAS_CD);
+ 
+     SELECT;
+         WHEN (COSGN0AI.USERIDI = ' ' | COSGN0AI.USERIDI = LOW(8)) 
+         DO;                                                            
+             WS_ERR_FLG = 'Y';
+             WS_MESSAGE = 'Please enter User ID ...';
+             COSGN0AI.USERIDL = -1;
+             CALL SEND_SIGNON_SCREEN();
+         END;
+         WHEN (COSGN0AI.PASSWDI = ' ' | COSGN0AI.PASSWDI = LOW(8)) 
+         DO;                                                            
+             WS_ERR_FLG = 'Y';
+             WS_MESSAGE = 'Please enter Password XXX';
+             COSGN0AI.PASSWDL = -1;
+             CALL SEND_SIGNON_SCREEN();
+         END;
+         OTHERWISE;
+     END;
+ 
+     WS_USER_ID = UPPERCASE(COSGN0AI.USERIDI); /* ADDED UPPER-CASE 
+	                                                          02-2024 */
+     WS_USER_PWD = UPPERCASE(COSGN0AI.PASSWDI);
+ 
+     IF WS_ERR_FLG = 'N' THEN 
+         CALL READ_USER_SEC_FILE();
+ END PROCESS_ENTER_KEY;
+
+ /*-------------------------------------------------------------------*
+                        SEND-SIGNON-SCREEN
+  *-------------------------------------------------------------------*/
+ SEND_SIGNON_SCREEN: PROC;
+ 
+     CALL POPULATE_HEADER_INFO(); /* POPULATE 
+                                            MAP HEADER */ /* SANTIX */
+ 
+     COSGN0AO.ERRMSGO = SUBSTR(WS_MESSAGE, 1, LENGTH(COSGN0AO.ERRMSGO));
+ 
+     EXEC CICS
+         SEND
+         MAP ('COSGN0A')
+         MAPSET ('COSGN00')
+         FROM (COSGN0AO)
+         ERASE
+         CURSOR;
+ END SEND_SIGNON_SCREEN;
+
+ /*-------------------------------------------------------------------*
+                        SEND-PLAIN-TEXT
+  *-------------------------------------------------------------------*/
+ SEND_PLAIN_TEXT: PROC;
+ 
+     CICS_LEN = LENGTH(WS_MESSAGE);
+     EXEC CICS
+         SEND TEXT
+         FROM (WS_MESSAGE)
+         LENGTH (CICS_LEN)
+         ERASE
+         FREEKB;
+ 
+     EXEC CICS RETURN;
+ END SEND_PLAIN_TEXT;
+ 
+ /*-------------------------------------------------------------------*
+                        POPULATE-HEADER-INFO
+  *-------------------------------------------------------------------*/
+ POPULATE_HEADER_INFO: PROC;
+ 
+     WS_CURDATE_DATA = DATETIME('YYYYMMDDHHMISS999'); /* CURRENT DATE */
+ 
+     COSGN0AO.TITLE01O = CCDA_TITLE01;
+     COSGN0AO.TITLE02O = CCDA_TITLE02;
+     COSGN0AO.TRNNAMEO = WS_TRANID;
+     COSGN0AO.PGMNAMEO = WS_PGMNAME;
+ 
+     WS_CURDATE_MM = WS_CURDATE_MONTH;
+     WS_CURDATE_DD = WS_CURDATE_DAY;
+     WS_CURDATE_YY = SUBSTR(WS_CURDATE_YEAR,3,2); 
+ 
+     COSGN0AO.CURDATEO = WS_CURDATE_MM_DD_YY; 
+
+ 
+     WS_CURTIME_HH = WS_CURTIME_HOURS;    /* TAKE HOURS   */
+     WS_CURTIME_MM = WS_CURTIME_MINUTE;   /* TAKE MINUTES */
+     WS_CURTIME_SS = WS_CURTIME_SECOND;   /* TAKE SECONDS */
+ 
+     /* CONCATENATED
+        TIME         */
+     COSGN0AO.CURTIMEO = WS_CURTIME_HH_MM_SS; 
+
+ 
+     EXEC CICS
+         ASSIGN
+         APPLID (COSGN0AO.APPLIDO);
+ 
+     EXEC CICS
+         ASSIGN
+         SYSID (COSGN0AO.SYSIDO);
+ END POPULATE_HEADER_INFO;
+ 
+ /*-------------------------------------------------------------------*
+                        READ-USER-SEC-FILE
+  *-------------------------------------------------------------------*/
+ READ_USER_SEC_FILE: PROC;
+ 
+     CICS_LEN = STG(SEC_USER_DATA);
+     CICS_LEN2 = STG(WS_USER_ID);
+     EXEC CICS
+         READ
+         DATASET (WS_USRSEC_FILE)
+         INTO (SEC_USER_DATA)
+         LENGTH (CICS_LEN)
+         RIDFLD (WS_USER_ID)
+         KEYLENGTH (CICS_LEN2)
+         RESP (WS_RESP_CD)
+         RESP2 (WS_REAS_CD);
+ 
+     SELECT;
+         WHEN (WS_RESP_CD = 0) DO;
+             IF SEC_USR_PWD = WS_USER_PWD 
+             THEN DO;
+                 CDEMO_FROM_TRANID = WS_TRANID;
+                 CDEMO_FROM_PROGRAM = WS_PGMNAME;
+                 CDEMO_USER_ID = WS_USER_ID;
+                 CDEMO_USER_TYPE = SEC_USR_TYPE;
+                 CDEMO_PGM_CONTEXT = 0;
+ 
+                 IF (CDEMO_USER_TYPE = CDEMO_USRTYP_ADMIN) 
+                 THEN DO;
+                         EXEC CICS
+                             XCTL
+                             PROGRAM ('COADM01C')
+                             COMMAREA (CARDDEMO_COMMAREA);
+                 END;
+                 ELSE DO;
+                         EXEC CICS
+                             XCTL
+                             PROGRAM ('COMEN01C')
+                             COMMAREA (CARDDEMO_COMMAREA);
+                 END;
+             END;
+             ELSE DO;
+                 WS_MESSAGE = 'Wrong Password. Try again ...';
+                 COSGN0AI.PASSWDL = -1;
+                 CALL SEND_SIGNON_SCREEN();
+             END;
+         END;
+         WHEN (WS_RESP_CD = 13) DO;
+             WS_ERR_FLG = 'Y'; 
+             WS_MESSAGE = 'User not found. Try again ...'; 
+             COSGN0AI.USERIDL = -1;
+             CALL SEND_SIGNON_SCREEN();
+         END;
+         OTHERWISE DO;
+             WS_ERR_FLG = 'Y'; 
+             WS_MESSAGE = 'Unable to verify the User ...';              
+             COSGN0AI.USERIDL = -1;
+             CALL SEND_SIGNON_SCREEN();
+         END;
+     END;
+ END READ_USER_SEC_FILE;
+ 
+ END COSGN00P;
+ 
+ 

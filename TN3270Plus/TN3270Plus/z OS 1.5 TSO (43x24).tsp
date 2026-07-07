@@ -1,0 +1,23 @@
+[Session Profile]
+Name=z/OS 1.5 TSO (43x24)
+Host=127.0.0.1,3270
+TerminalType=3279,43,80,IBM-3278-4-E
+LUname=0701
+LogFile=z OS 1.5 TSO (43x24).log
+KeyboardMapName=3270 Default
+ColorSchemeName=3270 Default
+KeypadToolbarName=3270 Default
+ScreenFont=37,17,15,8,0,0,400,0,0,0,0,1,2,2,49,Courier New
+PrinterFont=15,8,0,15,8,0,0,400,0,0,0,0,1,2,2,49,Courier New
+SessionOptions=0
+HostOptions=0
+TerminalOptions=0
+FontOptions=1
+PrintOptions=2
+DisplayOptions=2864
+KeyboardOptions=2
+EditOptions=1
+SessionNumber=-1
+TypeAheadBufferSize=512
+ReconnectDelay=0
+FileTransfer=D:\_TSF\TORINO 2006-07-27\cobol.batch.txt,rita.seq80,,C:\Programmi\SDI\TN3270 Plus\Italy.cpg,IND$FILE,96,1,0,0,0,0

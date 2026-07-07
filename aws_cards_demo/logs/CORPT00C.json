@@ -1,0 +1,31 @@
+{
+  "objectName" : "CORPT00C",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-04-20 16:22:54.286",
+    "endTime" : "2026-04-20 16:22:54.307",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\CORPT00C.cbl",
+    "executionStatus" : "ENDED_WITH_WARNINGS",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "WARNING",
+      "detail" : "JOB-DATA-2",
+      "line" : 126,
+      "container" : "",
+      "messageError" : "REDEFINES too long"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-20 16:22:54.315",
+    "endTime" : "2026-04-20 16:22:54.379",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\CORPT00C.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

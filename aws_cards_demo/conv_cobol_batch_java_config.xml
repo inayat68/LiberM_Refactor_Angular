@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<divergeek_converter xmlns="https://www.mlogica.com">
+	<properties>
+		<property name="create_date" value="2026-04-16 11:08:33.872"/>
+		<property name="project_name" value="AWS_CARDS_DEMO"/>
+		<property name="rights" value="mLogica"/>
+		<!--
+			One of the following values:
+			jcl
+			proc
+			cobol
+			bms
+		-->
+		<property name="converter" value="cobol"/>
+		<property name="workspace" value="ENV{DG_CONV_WORKSPACE_IN}"/>
+		<property name="delivery_project_root" value="ENV{DG_CONV_WORKSPACE_OUT}"/>
+		<property name="profile" value="cobol_java_profile"/>
+		<property name="skeleton" value="skeleton_cobol_batch.txt"/>
+	</properties>
+	<resources>
+		<resource pattern="*" location="sources\cbl-batch" output="${delivery_project_root}\src\main\java" package="com.aws.carddemo.batch.program" />
+	</resources>
+	<converter_settings>
+		<setting name="target_syntax" value="JAVA" />
+		<setting name="target_os" value="windows" />
+		<setting name="target_db" value="pgsql" />
+		<setting name="reserved_words" value="CURSOR" />
+		<setting name="variable_break_char" value="-" />
+		<setting name="copybooks_location" value="${workspace}\sources\cpy;${workspace}\sources\cpy-bms;${workspace}\sources\app-authorization-ims-db2-mq\cpy-iris" />
+		<setting name="program_package" value="com.aws.carddemo.batch.program" />
+		<setting name="working_storage_sub_package" value="storage" />
+		<setting name="working_storage_variable_name" value="ws" />
+		<setting name="context" value="context" />
+		<setting name="comment_tag" value="COB" />
+		<setting name="fd_section_variable_name" value="fs" />
+		<setting name="copybook_package" value="com.aws.carddemo.common.copybook" />
+		<setting name="tab_spaces" value="2" />
+		<setting name="ignore_severe_errors" value="true" />
+	</converter_settings>
+</divergeek_converter>

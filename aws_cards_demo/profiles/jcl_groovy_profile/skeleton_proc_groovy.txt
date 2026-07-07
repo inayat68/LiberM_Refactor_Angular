@@ -1,0 +1,13 @@
+@[METHOD_DECLARE_PROC_PACKAGE]>>@[OUTPRINT_MAIN_CLASS]
+<BR>
+import com.nib.groovybatch.NibProc
+!import com.nib.commons.io.tools.NibVsamCommandLine
+@[METHOD_IMPORT_ADDITIONAL_PACKAGE]
+import groovy.transform.BaseScript
+import groovy.transform.Field
+<BR>
+@BaseScript NibProc @[METHOD_OBJECT_LOGICAL_NAME]
+<BR>
+@[SKELETON_PROC_GROOVY_PROPERTIES]
+<BR>
+@[SKELETON_PROC_GROOVY_STEPS]

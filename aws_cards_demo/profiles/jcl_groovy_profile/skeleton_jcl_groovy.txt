@@ -1,0 +1,13 @@
+import com.nib.groovybatch.NibJob>>@[OUTPRINT_MAIN_CLASS]
+!import com.nib.commons.io.tools.NibVsamCommandLine
+@[METHOD_IMPORT_ADDITIONAL_PACKAGE]
+import groovy.transform.BaseScript
+@[METHOD_IMPORT_PROC_PACKAGE]
+<BR>
+<BR>
+@BaseScript NibJob @[METHOD_OBJECT_LOGICAL_NAME]
+@[METHOD_EXECUTION_CLASS]
+<BR>
+@[SKELETON_JCL_GROOVY_PROPERTIES]
+<BR>
+@[SKELETON_JCL_GROOVY_STEPS]

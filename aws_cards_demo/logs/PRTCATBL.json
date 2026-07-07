@@ -1,0 +1,31 @@
+{
+  "objectName" : "PRTCATBL",
+  "objectType" : "JOB/SCRIPT",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:42:26.882",
+    "endTime" : "2026-07-03 21:42:26.884",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\PRTCATBL.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "INFO",
+      "detail" : "Included PROC: REPROC",
+      "line" : 29,
+      "container" : "",
+      "messageError" : "No errors"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-07-03 21:42:26.884",
+    "endTime" : "2026-07-03 21:42:26.884",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\PRTCATBL.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

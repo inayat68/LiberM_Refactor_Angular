@@ -1,0 +1,3467 @@
+*>Converted by nib-paranoid 1.7.15/O
+*>Copyright (c) 2025-2026 NIB Labs S.r.l.
+*>source file name:  C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cbl\COTRTLIC.cbl
+*>date generated  :  2026-04-20 16:22:55
+*>****************************************************************
+*> Program:     COTRTLIC.CBL                                     *
+*> Layer:       Business logic                                   *
+*> Function:    List Transaction Type for updates and deletes    *
+*>              Demonstrates paging with cursors in Db2          *
+*>              and Simple, select, delete and update use cases  *
+*>****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+*>
+IDENTIFICATION DIVISION.
+PROGRAM-ID.
+    COTRTLIC.
+DATE-WRITTEN.
+    Jan 2023.
+DATE-COMPILED.
+    Today.
+*>
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+*>
+DATA DIVISION.
+*>
+WORKING-STORAGE SECTION. *>COPY EMCOBCX. COPY DFHRESP.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\EMCOBCX.cpy
+*>    COPY DFHEIBLK.
+*>    EMBEDDED VERSION
+*>     EIBLK EXEC INTERFACE BLOCK
+01   DFHEIBLK.
+  02  EIBTIME  COMP-3 PIC S9(7).
+  02  EIBDATE  COMP-3 PIC S9(7).
+  02  EIBTRNID PIC X(4).
+  02  EIBTASKN COMP-3 PIC S9(7).
+  02  EIBTRMID PIC X(4).
+  02  DFHEIGDI COMP PIC S9(4).
+  02  EIBCPOSN COMP PIC S9(4).
+  02  EIBCALEN COMP PIC S9(4).
+  02  EIBAID   PIC X(1).
+  02  EIBFN    PIC X(2).
+  02  EIBRCODE PIC X(6).
+  02  EIBDS    PIC X(8).
+  02  EIBREQID PIC X(8).
+  02  EIBRSRCE PIC X(8).
+  02  EIBSYNC  PIC X(1).
+  02  EIBFREE  PIC X(1).
+  02  EIBRECV  PIC X(1).
+  02  EIBFIL01 PIC X(1).
+  02  EIBATT   PIC X(1).
+  02  EIBEOC   PIC X(1).
+  02  EIBFMH   PIC X(1).
+  02  EIBCOMPL PIC X(1).
+  02  EIBSIG   PIC X(1).
+  02  EIBCONF  PIC X(1).
+  02  EIBERR   PIC X(1).
+  02  EIBERRCD PIC X(4).
+  02  EIBSYNRB PIC X(1).
+  02  EIBNODAT PIC X(1).
+  02  EIBRESP  COMP PIC S9(8).
+  02  EIBRESP2 COMP PIC S9(8).
+  02  EIBRLDBK PIC X(1).
+*> IDMS FIELDS
+01  REVCOUNT         PIC S9(4) COMP.
+01  REVEQ1           PIC X(2) VALUE 'EQ'.
+01  REVNE1           PIC X(2) VALUE 'NE'.
+01  REVGT1           PIC X(2) VALUE 'GT'.
+01  REVLT1           PIC X(2) VALUE 'LT'.
+01  REVLE1           PIC X(2) VALUE 'LE'.
+01  REVGE1           PIC X(2) VALUE 'GE'.
+01  REVEQ2           PIC X(2) VALUE 'EQ'.
+01  REVNE2           PIC X(2) VALUE 'NE'.
+01  REVGT2           PIC X(2) VALUE 'GT'.
+01  REVLT2           PIC X(2) VALUE 'LT'.
+01  REVLE2           PIC X(2) VALUE 'LE'.
+01  REVGE2           PIC X(2) VALUE 'GE'.
+01  REVEQ3           PIC X(2) VALUE 'EQ'.
+01  REVNE3           PIC X(2) VALUE 'NE'.
+01  REVGT3           PIC X(2) VALUE 'GT'.
+01  REVLT3           PIC X(2) VALUE 'LT'.
+01  REVLE3           PIC X(2) VALUE 'LE'.
+01  REVGE3           PIC X(2) VALUE 'GE'.
+01  REVOR1           PIC X(1) VALUE '|'.
+01  REVOR2           PIC X(1) VALUE '+'.
+01  REVAND1          PIC X(1) VALUE '&'.
+01  REVAND2          PIC X(1) VALUE '*'.
+01  REVLP            PIC X(1) VALUE '('.
+01  REVRP            PIC X(1) VALUE ')'.
+01  CL-NULL          POINTER.
+01  ADSO-TWO-STAT-DEF PIC X(4).
+  88  DB-STATUS-OKAY  VALUE '0000'.
+  88  DB-END-OF-SET   VALUE '0307'.
+  88  NO-RECORD       VALUE '0326'.
+  88  MODIFY-PROBLEM  VALUE '0800' THRU '0899'.
+01  ADSO-ONE-STAT-REC.
+  02 CODE-FIELD PIC X(4).
+    88  OKAY      VALUE '0000'.
+    88  NOT-GOOD  VALUE '0001' THRU '9999'.
+01 XDLZDIB.
+    02 XDIB-VARS.
+       05 XDIBVER     PIC X(2) VALUE "01".
+       05 XDIBSTAT    PIC X(2).
+         88 XDIB-STATUS-OK                       VALUE "  ".
+         88 XDIB-STATUS-RESOURCE-DEADLOCK        VALUE "FD".
+         88 XDIB-STATUS-HIGHER-LEVEL-CROSSED     VALUE "GA".
+         88 XDIB-STATUS-END-DB-REACHED           VALUE "GB".
+         88 XDIB-STATUS-SEGMENT-NOT-FOUND        VALUE "GE".
+         88 XDIB-STATUS-CHANGED-SEGMENT-TYPE     VALUE "GK".
+         88 XDIB-STATUS-DUPLICATED-KEY           VALUE "II".
+         88 XDIB-STATUS-ISRT-RULE-VIOLATION      VALUE "IX".
+         88 XDIB-STATUS-INTERNAL-NOT-HANDLED     VALUE "XX".
+         88 XDIB-STATUS-PSB-ALREADY-SCHEDULE     VALUE "TC".
+         88 XDIB-STATUS-PSB-INIT-ERROR           VALUE "TE".
+         88 XDIB-STATUS-NO-PSB-SCHEDULED         VALUE "TG".
+         88 XDIB-STATUS-WRONG-PCB                VALUE "TP".
+       05 XDIBSEGM    PIC X(8).
+       05 XDIBFLAG    PIC X(1).
+       05 XDIBFIL01   PIC X(1).
+       05 XDIBSEGLV   PIC X(2).
+       05 XDIBKFBL    PIC S9(4) COMP-5.
+       05 XDIBLENG    PIC S9(4) COMP-5.
+       05 XDIBFIL02   PIC X(8).
+       05 XDIBKFB     USAGE POINTER.
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\EMCOBCX.cpy
+*>                                COPY DFHRESP.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHRESP.cpy
+*>***************************************************************
+*>   COPY PER DEFINIZIONE TABELLA DFHRESP                       *
+*>***************************************************************
+01  NORMAL                   PIC  S9(8) COMP VALUE ZERO.
+01  DFHRESP-TAB.
+    05  ERROR1               PIC  S9(8) COMP VALUE    1.
+    05  RDATT                PIC  S9(8) COMP VALUE    2.
+    05  WRBRK                PIC  S9(8) COMP VALUE    3.
+    05  EOF                  PIC  S9(8) COMP VALUE    4.
+    05  EODS                 PIC  S9(8) COMP VALUE    5.
+    05  EOC                  PIC  S9(8) COMP VALUE    6.
+    05  INBFMH               PIC  S9(8) COMP VALUE    7.
+    05  ENDINPT              PIC  S9(8) COMP VALUE    8.
+    05  NONVAL               PIC  S9(8) COMP VALUE    9.
+    05  NOSTART              PIC  S9(8) COMP VALUE   10.
+    05  TERMIDERR            PIC  S9(8) COMP VALUE   11.
+    05  DSIDERR              PIC  S9(8) COMP VALUE   12.
+    05  FILENOTFOUND         PIC  S9(8) COMP VALUE   12.
+    05  NOTFND               PIC  S9(8) COMP VALUE   13.
+    05  DUPREC               PIC  S9(8) COMP VALUE   14.
+    05  DUPKEY               PIC  S9(8) COMP VALUE   15.
+    05  INVREC               PIC  S9(8) COMP VALUE   16.
+    05  IOERR                PIC  S9(8) COMP VALUE   17.
+    05  NOSPACE              PIC  S9(8) COMP VALUE   18.
+    05  NOTOPEN              PIC  S9(8) COMP VALUE   19.
+    05  ENDFILE              PIC  S9(8) COMP VALUE   20.
+    05  ILLOGIC              PIC  S9(8) COMP VALUE   21.
+    05  LENGERR              PIC  S9(8) COMP VALUE   22.
+    05  QZERO                PIC  S9(8) COMP VALUE   23.
+    05  SIGNAL               PIC  S9(8) COMP VALUE   24.
+    05  QBUSY                PIC  S9(8) COMP VALUE   25.
+    05  ITEMERR              PIC  S9(8) COMP VALUE   26.
+    05  PGMIDERR             PIC  S9(8) COMP VALUE   27.
+    05  TRANSIDERR           PIC  S9(8) COMP VALUE   28.
+    05  ENDDATA              PIC  S9(8) COMP VALUE   29.
+    05  INVTSREC             PIC  S9(8) COMP VALUE   30.
+    05  EXPIRED              PIC  S9(8) COMP VALUE   31.
+    05  RETPAGE              PIC  S9(8) COMP VALUE   32.
+    05  RTEFILE              PIC  S9(8) COMP VALUE   33.
+    05  RTESOME              PIC  S9(8) COMP VALUE   34.
+    05  TSIOERR              PIC  S9(8) COMP VALUE   35.
+    05  MAPFAIL              PIC  S9(8) COMP VALUE   36.
+    05  INVERRTERM           PIC  S9(8) COMP VALUE   37.
+    05  INVMPSZ              PIC  S9(8) COMP VALUE   38.
+    05  IGREQID              PIC  S9(8) COMP VALUE   39.
+    05  OVERFLOW             PIC  S9(8) COMP VALUE   40.
+    05  INVLDC               PIC  S9(8) COMP VALUE   41.
+    05  NOSTG                PIC  S9(8) COMP VALUE   42.
+    05  JIDERR               PIC  S9(8) COMP VALUE   43.
+    05  QIDERR               PIC  S9(8) COMP VALUE   44.
+    05  NOJBUFSP             PIC  S9(8) COMP VALUE   45.
+    05  DSSTAT               PIC  S9(8) COMP VALUE   46.
+    05  SELNERR              PIC  S9(8) COMP VALUE   47.
+    05  FUNCERR              PIC  S9(8) COMP VALUE   48.
+    05  UNEXPIN              PIC  S9(8) COMP VALUE   49.
+    05  NOPASSBKRD           PIC  S9(8) COMP VALUE   50.
+    05  NOPASSBKWR           PIC  S9(8) COMP VALUE   51.
+    05  FILLER               PIC  S9(8) COMP VALUE   52.
+    05  SYSIDERR             PIC  S9(8) COMP VALUE   53.
+    05  ISCINVREC            PIC  S9(8) COMP VALUE   54.
+    05  ENQBUSY              PIC  S9(8) COMP VALUE   55.
+    05  ENVDEFERR            PIC  S9(8) COMP VALUE   56.
+    05  IGREQCD              PIC  S9(8) COMP VALUE   57.
+    05  SESSIONERR           PIC  S9(8) COMP VALUE   58.
+    05  SYSBUSY              PIC  S9(8) COMP VALUE   59.
+    05  SESSBUSY             PIC  S9(8) COMP VALUE   60.
+    05  NOTALLOC             PIC  S9(8) COMP VALUE   61.
+    05  CBIDERR              PIC  S9(8) COMP VALUE   62.
+    05  INVEXITREQ           PIC  S9(8) COMP VALUE   63.
+    05  INVPARTNSET          PIC  S9(8) COMP VALUE   64.
+    05  INVPARTN             PIC  S9(8) COMP VALUE   65.
+    05  PARTNFAIL            PIC  S9(8) COMP VALUE   66.
+    05  FILLER               PIC  S9(8) COMP VALUE   67.
+    05  FILLER               PIC  S9(8) COMP VALUE   68.
+    05  INVREQ               PIC  S9(8) COMP VALUE   69.
+    05  NOTAUTH              PIC  S9(8) COMP VALUE   70.
+    05  FILLER               PIC  S9(8) COMP VALUE   71.
+    05  FILLER               PIC  S9(8) COMP VALUE   72.
+    05  WRONGSTAT            PIC  S9(8) COMP VALUE   73.
+    05  NAMEERROR            PIC  S9(8) COMP VALUE   74.
+    05  FILLER               PIC  S9(8) COMP VALUE   75.
+    05  CCERROR              PIC  S9(8) COMP VALUE   76.
+    05  MAPERROR             PIC  S9(8) COMP VALUE   77.
+    05  FILLER               PIC  S9(8) COMP VALUE   78.
+    05  FILLER               PIC  S9(8) COMP VALUE   79.
+    05  NOSPOOL              PIC  S9(8) COMP VALUE   80.
+    05  TERMERR              PIC  S9(8) COMP VALUE   81.
+    05  ROLLEDBACK           PIC  S9(8) COMP VALUE   82.
+    05  END1                 PIC  S9(8) COMP VALUE   83.
+    05  DISABLED             PIC  S9(8) COMP VALUE   84.
+    05  CCSIDERR             PIC  S9(8) COMP VALUE   85.
+    05  CHANNELERR           PIC  S9(8) COMP VALUE   86.
+    05  CONTAINERERR         PIC  S9(8) COMP VALUE   87.
+01  DFHRESP-TAB1    REDEFINES  DFHRESP-TAB.
+    05  DFHRESP              PIC  S9(8) COMP OCCURS 84.
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHRESP.cpy
+*>
+*>*****************************************************************
+*> Literals and Constants
+*>*****************************************************************
+01 WS-CONSTANTS.
+  05  LIT-THISPGM             PIC X(8)        VALUE 'COTRTLIC'.
+  05  LIT-THISTRANID          PIC X(4)        VALUE 'CTLI'.
+  05  LIT-THISMAPSET          PIC X(7)        VALUE 'COTRTLI'.
+  05  LIT-THISMAP             PIC X(7)        VALUE 'CTRTLIA'.
+  05  LIT-ADMINPGM             PIC X(8)       VALUE 'COADM01C'.
+  05  LIT-ADMINTRANID          PIC X(4)       VALUE 'CA00'.
+  05  LIT-ADMINMAPSET          PIC X(7)       VALUE 'COADM01'.
+  05  LIT-ADDTPGM             PIC X(8)        VALUE 'COTRTUPC'.
+  05  LIT-ADDTTRANID          PIC X(4)        VALUE 'CTTU'.
+  05  LIT-ADDTMAPSET          PIC X(7)        VALUE 'COTRTUP'.
+  05  LIT-ADDTMAP             PIC X(7)        VALUE 'CTRTUPA'.
+  05  LIT-DSNTIAC             PIC X(7)        VALUE 'DSNTIAC'.
+  05  LIT-ASTERISK            PIC X(7)        VALUE '*'.
+  05  LIT-TRANTYPE-TABLE      PIC X(30)       VALUE
+                                            'TRANSACTION_TYPE '.
+  05  LIT-DELETE-FLAG         PIC X(1)        VALUE 'D'.
+  05  LIT-UPDATE-FLAG         PIC X(1)        VALUE 'U'.
+  05  WS-MAX-SCREEN-LINES     PIC S9(4)      COMP VALUE 7.
+*>
+*>*****************************************************************
+*> Literals for use in INSPECT statements
+*>*****************************************************************
+   05 LIT-ALL-ALPHANUM-FROM-X.
+      10 LIT-ALL-ALPHA-FROM-X.
+         15 LIT-UPPER                       PIC X(26)
+                          VALUE 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
+         15 LIT-LOWER                       PIC X(26)
+                          VALUE 'abcdefghijklmnopqrstuvwxyz'.
+      10 LIT-NUMBERS                        PIC X(10)
+                          VALUE '0123456789'.
+*>
+*>*****************************************************************
+*> Variables for use in INSPECT statements
+*>*****************************************************************
+01  LIT-ALL-ALPHA-FROM     PIC X(52) VALUE SPACES.
+01  LIT-ALL-ALPHANUM-FROM  PIC X(62) VALUE SPACES.
+01  LIT-ALL-NUM-FROM       PIC X(10) VALUE SPACES.
+77  LIT-ALPHA-SPACES-TO    PIC X(52) VALUE SPACES.
+77  LIT-ALPHANUM-SPACES-TO PIC X(62) VALUE SPACES.
+77  LIT-NUM-SPACES-TO      PIC X(10) VALUE SPACES.
+*>
+01  WS-MISC-STORAGE.
+*>*****************************************************************
+*> General CICS related
+*>*****************************************************************
+*>
+  05 WS-CICS-PROCESSNG-VARS.
+     07 WS-RESP-CD            PIC S9(9) COMP VALUE ZEROS.
+     07 WS-REAS-CD            PIC S9(9) COMP VALUE ZEROS.
+     07 WS-TRANID             PIC X(4)       VALUE SPACES.
+*>
+*>
+*>*****************************************************************
+*> Input edits
+*>*****************************************************************
+  05 WS-INPUT-FLAG                          PIC X(1).
+    88  INPUT-OK                            VALUES '0'
+                                                   ' '
+                                            LOW-VALUES.
+    88  INPUT-ERROR                         VALUE '1'.
+  05  WS-EDIT-TYPE-FLAG                     PIC X(1).
+    88  FLG-TYPEFILTER-NOT-OK               VALUE '0'.
+    88  FLG-TYPEFILTER-ISVALID              VALUE '1'.
+    88  FLG-TYPEFILTER-BLANK                VALUE ' '.
+  05  WS-EDIT-DESC-FLAG                     PIC X(1).
+    88  FLG-DESCFILTER-NOT-OK               VALUE '0'.
+    88  FLG-DESCFILTER-ISVALID              VALUE '1'.
+    88  FLG-DESCFILTER-BLANK                VALUE ' '.
+  05 WS-TYPEFILTER-CHANGED                  PIC X(1).
+    88  FLG-TYPEFILTER-CHANGED-NO           VALUE LOW-VALUES.
+    88  FLG-TYPEFILTER-CHANGED-YES          VALUE 'Y'.
+  05 WS-DESCFILTER-CHANGED                  PIC X(1).
+    88  FLG-DESCFILTER-CHANGED-NO           VALUE LOW-VALUES.
+    88  FLG-DESCFILTER-CHANGED-YES          VALUE 'Y'.
+  05 WS-ROW-RECORDS-CHANGED                 PIC X(01)
+                                            OCCURS 7 TIMES.
+    88  FLG-ROW-DESCR-CHANGED-NO            VALUE LOW-VALUES.
+    88  FLG-ROW-DESCR-CHANGED-YES           VALUE 'Y'.
+  05 WS-DELETE-STATUS                       PIC X(1).
+    88  FLG-DELETED-NO                      VALUE LOW-VALUES.
+    88  FLG-DELETED-YES                     VALUE 'Y'.
+  05 WS-UPDATE-STATUS                       PIC X(1).
+    88  FLG-UPDATED-NO                      VALUE LOW-VALUES.
+    88  FLG-UPDATE-COMPLETED                     VALUE 'Y'.
+  05 WS-ROW-SELECTION-CHANGED               PIC X(1).
+    88  FLG-ROW-SELECTION-CHANGED-NO        VALUE LOW-VALUES.
+    88  FLG-ROW-SELECTION-CHANGED-YES       VALUE 'Y'.
+  05 WS-BAD-SELECTION-ACTION                PIC X(1).
+    88  FLG-BAD-ACTIONS-SELECTED-NO         VALUE LOW-VALUES.
+    88  FLG-BAD-ACTIONS-SELECTED-YES        VALUE 'Y'.
+  05 WS-ARRAY-DESCRIPTION-FLGS              PIC X(1).
+    88  FLG-ROW-DESCRIPTION-ISVALID         VALUE LOW-VALUES
+                                                  SPACES.
+    88  FLG-ROW-DESCRIPTION-NOT-OK          VALUE '0'.
+    88  FLG-ROW-DESCRIPTION-BLANK           VALUE 'B'.
+  05  WS-DATACHANGED-FLAG                   PIC X(1).
+    88  NO-CHANGES-FOUND                    VALUE '0'.
+    88  CHANGES-HAVE-OCCURRED               VALUE '1'.
+*>
+*>  Generic Input Edits
+  05  WS-GENERIC-EDITS.
+    10 WS-EDIT-VARIABLE-NAME                PIC X(25).
+*>
+    10 WS-EDIT-ALPHANUM-ONLY                PIC X(256).
+    10 WS-EDIT-ALPHANUM-LENGTH              PIC S9(4) COMP-3.
+*>
+    10 WS-EDIT-ALPHANUM-ONLY-FLAGS          PIC X(1).
+       88  FLG-ALPHNANUM-ISVALID            VALUE LOW-VALUES.
+       88  FLG-ALPHNANUM-NOT-OK             VALUE '0'.
+       88  FLG-ALPHNANUM-BLANK              VALUE 'B'.
+*>
+  05  WS-OTHER-EDIT-VARS.
+    10 WS-RECORDS-COUNT                     PIC S9(4) COMP-3
+                                            VALUE 0.
+*>
+*>*****************************************************************
+*>  Input edits array variables
+*>*****************************************************************
+*>*****************************************************************
+*>  Screen Data Array         52 CHARS X 7 ROWS = 364
+*>*****************************************************************
+*>
+  05 WS-SCREEN-DATA-IN.
+     10 WS-ALL-ROWS-IN                      PIC X(364).
+     10 FILLER REDEFINES WS-ALL-ROWS-IN.
+        15 WS-SCREEN-ROWS-IN OCCURS  7 TIMES.
+           20 WS-EACH-ROW-IN.
+              25 WS-EACH-TTYP-IN.
+                 30 WS-ROW-TR-CODE-IN       PIC X(02).
+                 30 WS-ROW-TR-DESC-IN       PIC X(50).
+*>
+*>
+  05 WS-EDIT-SELECT-COUNTER                 PIC S9(04)
+                                            USAGE COMP-3
+                                            VALUE 0.
+  05 WS-EDIT-SELECT-FLAGS                   PIC X(7)
+                                            VALUE LOW-VALUES.
+  05 FILLER  REDEFINES  WS-EDIT-SELECT-FLAGS.
+     10 WS-EDIT-SELECT                      PIC X(1)
+                                            OCCURS 7 TIMES.
+        88 SELECT-OK                        VALUES 'D', 'U'.
+        88 DELETE-REQUESTED-ON              VALUE 'D'.
+        88 UPDATE-REQUESTED-ON              VALUE 'U'.
+        88 SELECT-BLANK                     VALUES
+                                            ' ',
+                                            LOW-VALUES.
+*>
+  05 WS-EDIT-SELECT-ERROR-FLAGS             PIC X(7)
+                                            VALUE LOW-VALUES.
+  05 FILLER  REDEFINES WS-EDIT-SELECT-ERROR-FLAGS.
+     10 WS-EDIT-SELECT-ERRORS               OCCURS 7 TIMES.
+        20 WS-ROW-TRTSELECT-ERROR           PIC X(1).
+           88 WS-ROW-SELECT-ERROR           VALUE '1'.
+*>
+  05 WS-SUBSCRIPT-VARS.
+     10 I                                  PIC S9(4) COMP
+                                           VALUE 0.
+     10 I-SELECTED                         PIC S9(4) COMP
+                                           VALUE 0.
+  05 WS-ACTIONS-SELECTED.
+     07 WS-ACTIONS-REQUESTED               PIC S9(04)
+                                           USAGE COMP-3
+                                           VALUE 0.
+        88 WS-ONLY-1-ACTION                VALUE 1.
+        88 WS-MORETHAN1ACTION              VALUES 2 THRU 7.
+     07 WS-DELETES-REQUESTED               PIC S9(04)
+                                           USAGE COMP-3
+                                           VALUE 0.
+     07 WS-UPDATES-REQUESTED               PIC S9(04)
+                                           USAGE COMP-3
+                                           VALUE 0.
+     07 WS-NO-ACTIONS-SELECTED             PIC S9(04)
+                                           COMP-3
+                                           VALUE 0.
+  05 WS-VALID-ACTIONS-SELECTED             PIC S9(04)
+                                           USAGE COMP-3
+                                           VALUE 0.
+     88 WS-ONLY-1-VALID-ACTION             VALUE 1.
+*>
+*>*****************************************************************
+*> Output edits
+*>*****************************************************************
+  05 CICS-OUTPUT-EDIT-VARS.
+    10  TRAN-TYPE-CD-X                      PIC X(02).
+    10  TRAN-TYPE-CD-N REDEFINES TRAN-TYPE-CD-X
+                                            PIC 9(02).
+    10  FLG-PROTECT-SELECT-ROWS             PIC X(1).
+    88  FLG-PROTECT-SELECT-ROWS-NO          VALUE '0'.
+    88  FLG-PROTECT-SELECT-ROWS-YES         VALUE '1'.
+*>*****************************************************************
+*> Output Message Construction
+*>*****************************************************************
+  05  WS-LONG-MSG                           PIC X(800).
+  05  WS-INFO-MSG                           PIC X(45).
+    88  WS-NO-INFO-MESSAGE                  VALUES
+                                            SPACES LOW-VALUES.
+    88  WS-INFORM-REC-ACTIONS               VALUE
+        'Type U to update, D to delete any record'.
+    88  WS-INFORM-DELETE                    VALUE
+        'Delete HIGHLIGHTED row ? Press F10 to confirm'.
+    88  WS-INFORM-UPDATE                    VALUE
+        'Update HIGHLIGHTED row. Press F10 to save'.
+    88  WS-INFORM-DELETE-SUCCESS            VALUE
+        'HIGHLIGHTED row deleted.Hit Enter to continue'.
+    88  WS-INFORM-UPDATE-SUCCESS            VALUE
+        'HIGHLIGHTED row was updated'.
+  05  WS-RETURN-MSG                         PIC X(75).
+    88  WS-RETURN-MSG-OFF                   VALUE SPACES.
+    88  WS-EXIT-MESSAGE                     VALUE
+        'PF03 pressed. Exiting'.
+    88  WS-MESG-NO-RECORDS-FOUND            VALUE
+        'No records found for this search condition.'.
+    88  WS-MESG-NO-MORE-RECORDS             VALUE
+        'No more pages for these search conditions'.
+    88  WS-MESG-MORE-THAN-1-ACTION          VALUE
+        'Please select only 1 action'.
+    88  WS-MESG-INVALID-ACTION-CODE         VALUE
+        'Action code selected is invalid'.
+    88  WS-MESG-NO-CHANGES-DETECTED         VALUE
+        'No change detected with respect to database values.'.
+  05  WS-PFK-FLAG                           PIC X(1).
+    88  PFK-VALID                           VALUE '0'.
+    88  PFK-INVALID                         VALUE '1'.
+  05 WS-STRING-FORMAT-VARS.
+     10 WS-STRING-MID                      PIC 9(3) VALUE 0.
+     10 WS-STRING-LEN                      PIC 9(3) VALUE 0.
+     10 WS-STRING-OUT                      PIC X(45).
+*>
+*>*****************************************************************
+*> Data Handling
+*>*****************************************************************
+  05 WS-DATA-FILTERS.
+     10  WS-START-KEY                      PIC X(02).
+     10  WS-TYPE-CD-FILTER                 PIC X(02)
+                                           VALUE SPACES.
+     10  WS-TYPE-DESC-FILTER               PIC X(52).
+     10  WS-TYPE-CD-DELETE-FILTER.
+         15 FILLER                         PIC X(01)
+                                           VALUE '('.
+         15 WS-TYPE-CD-DELETE-FILTER-X.
+            20 WS-TYPE-CD-DELETE-KEYS      OCCURS 7 TIMES.
+               25 FILLER                   PIC X(01)
+                                           VALUE QUOTE.
+               25 WS-TYPE-CD-DELETE-KEY    PIC X(02)
+                                           VALUE SPACES.
+               25 FILLER                   PIC X(01)
+                                           VALUE QUOTE.
+               25 FILLER                   PIC X(01)
+                                           VALUE ','.
+            20 WS-DUMMY.
+               25 FILLER                   PIC X(01)
+                                           VALUE QUOTE.
+               25 FILLER                   PIC X(01)
+                                           VALUE SPACE.
+               25 FILLER                   PIC X(01)
+                                           VALUE QUOTE.
+*>
+         15 FILLER                         PIC X(1)
+                                           VALUE ')'.
+*>
+*>
+*>    EXEC SQL INCLUDE CSDB2RWY END-EXEC
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDB2RWY.cpy
+*>*****************************************************************
+*> CardDemo - Common Working Storage for Db2
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+*>  Db2 Common variables
+*>*****************************************************************
+  05  WS-DB2-COMMON-VARS.
+      10 WS-DISP-SQLCODE                    PIC ----9.
+      10 WS-DUMMY-DB2-INT                   PIC S9(4) COMP-3
+                                            VALUE 0.
+      10 WS-DB2-PROCESSING-FLAG             PIC X(1).
+         88  WS-DB2-OK                      VALUE '0'.
+         88  WS-DB2-ERROR                   VALUE '1'.
+      10 WS-DB2-CURRENT-ACTION              PIC X(72)
+                                            VALUE SPACES.
+*>*****************************************************************
+*>  Db2 DSNTIAC Message Construction
+*>*****************************************************************
+  05  WS-DSNTIAC-FORMATTED.
+      10  WS-DSNTIAC-MESG-LEN   PIC S9(4) USAGE COMP VALUE +720.
+      10  WS-DSNTIAC-FMTD-TEXT.
+          15 WS-DSNTIAC-FMTD-TEXT-LINE
+                                PIC X(72)
+                                OCCURS 10 TIMES
+                                VALUE SPACES.
+
+   05 WS-DSNTIAC-LRECL          PIC S9(4) USAGE COMP VALUE +72.
+   05 WS-DSNTIAC-ERROR.
+      10 WS-DSNTIAC-ERR-MSG     PIC X(10) VALUE 'DSNTIAC CD'.
+      10 WS-DSNTIAC-ERR-CD-X    PIC X(02) VALUE SPACES.
+      10 WS-DSNTIAC-ERR-CD      REDEFINES
+         WS-DSNTIAC-ERR-CD-X    PIC 9(02).
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDB2RWY.cpy
+*>
+*>*****************************************************************
+*> Screen Edit Vars
+*>*****************************************************************
+  05 WS-SCREEN-EDIT-VARS.
+     10 WS-IN-TYPE-CD                      PIC X(02)
+                                           VALUE SPACES.
+     10 WS-IN-TYPE-CD-N    REDEFINES WS-IN-TYPE-CD PIC 9(02).
+     10 WS-IN-TYPE-DESC                    PIC X(50).
+*>
+*>*****************************************************************
+*> Screen Array Vars
+*>*****************************************************************
+  05  WS-ROW-NUMBER               PIC S9(4) COMP VALUE 0.
+*>
+  05  WS-RECORDS-TO-PROCESS-FLAG            PIC X(1).
+    88  READ-LOOP-EXIT                      VALUE '0'.
+    88  MORE-RECORDS-TO-READ                VALUE '1'.
+*>
+*>*****************************************************************
+*>Other common working storage Variables
+*>*****************************************************************
+*>COPY CVCRD01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVCRD01Y.cpy
+01  CC-WORK-AREAS.
+   05 CC-WORK-AREA.
+      10 CCARD-AID                         PIC X(5).
+         88  CCARD-AID-ENTER                VALUE 'ENTER'.
+         88  CCARD-AID-CLEAR                VALUE 'CLEAR'.
+         88  CCARD-AID-PA1                  VALUE 'PA1  '.
+         88  CCARD-AID-PA2                  VALUE 'PA2  '.
+         88  CCARD-AID-PFK01                VALUE 'PFK01'.
+         88  CCARD-AID-PFK02                VALUE 'PFK02'.
+         88  CCARD-AID-PFK03                VALUE 'PFK03'.
+         88  CCARD-AID-PFK04                VALUE 'PFK04'.
+         88  CCARD-AID-PFK05                VALUE 'PFK05'.
+         88  CCARD-AID-PFK06                VALUE 'PFK06'.
+         88  CCARD-AID-PFK07                VALUE 'PFK07'.
+         88  CCARD-AID-PFK08                VALUE 'PFK08'.
+         88  CCARD-AID-PFK09                VALUE 'PFK09'.
+         88  CCARD-AID-PFK10                VALUE 'PFK10'.
+         88  CCARD-AID-PFK11                VALUE 'PFK11'.
+         88  CCARD-AID-PFK12                VALUE 'PFK12'.
+*>      10  CCARD-LAST-PROG                  PIC X(8).
+      10  CCARD-NEXT-PROG                  PIC X(8).
+*>      10  CCARD-RETURN-TO-PROG             PIC X(8).
+      10  CCARD-NEXT-MAPSET                PIC X(7).
+      10  CCARD-NEXT-MAP                   PIC X(7).
+*>      10  CCARD-RETURN-FLAG                PIC X(1).
+*>        88  CCARD-RETURN-FLAG-OFF          VALUE LOW-VALUES.
+*>        88  CCARD-RETURN-FLAG-ON           VALUE '1'.
+      10  CCARD-ERROR-MSG                  PIC X(75).
+      10  CCARD-RETURN-MSG                 PIC X(75).
+        88  CCARD-RETURN-MSG-OFF           VALUE LOW-VALUES.
+*>      10  CCARD-FUNCTION                   PIC X(1).
+*>        88  CCARD-NO-VALUE                  VALUE LOW-VALUES.
+*>        88  CCARD-GET-DATA                  VALUE '1'.
+      10 CC-ACCT-ID                        PIC X(11)
+                                           VALUE SPACES.
+      10 CC-ACCT-ID-N REDEFINES CC-ACCT-ID PIC 9(11).
+      10 CC-CARD-NUM                       PIC X(16)
+                                           VALUE SPACES.
+      10 CC-CARD-NUM-N REDEFINES CC-CARD-NUM PIC 9(16).
+      10 CC-CUST-ID                        PIC X(09)
+                                           VALUE SPACES.
+      10 CC-CUST-ID-N REDEFINES CC-CUST-ID PIC 9(9).
+
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:16:00 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVCRD01Y.cpy
+*>*****************************************************************
+*> Relational Database stuff
+*>*****************************************************************
+*>     EXEC SQL INCLUDE SQLCA    END-EXEC
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\SQLCA.cpy
+ 01 SQLCA.
+    05 SQLCAID     PIC X(8).
+    05 SQLCABC     PIC S9(9) COMP-4.
+    05 SQLCODE     PIC S9(9) COMP-4.
+    05 SQLERRM.
+       49 SQLERRML PIC S9(4) COMP-4.
+       49 SQLERRMC PIC X(70).
+    05 SQLERRP     PIC X(8).
+    05 SQLERRD     OCCURS 6 TIMES
+                   PIC S9(9) COMP-4.
+*>***    05 SQLWARN.
+       05 SQLWARN0 PIC X.
+       05 SQLWARN1 PIC X.
+       05 SQLWARN2 PIC X.
+       05 SQLWARN3 PIC X.
+       05 SQLWARN4 PIC X.
+       05 SQLWARN5 PIC X.
+       05 SQLWARN6 PIC X.
+       05 SQLWARN7 PIC X.
+*>***     05 SQLEXT.
+       05 SQLWARN8 PIC X.
+       05 SQLWARN9 PIC X.
+       05 SQLWARNA PIC X.
+       05 SQLSTATE PIC X(5).
+    05 SQL-INIT-FLAG PIC S9(4) COMP-4.
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\SQLCA.cpy
+*>
+*>     EXEC SQL INCLUDE DCLTRTYP END-EXEC
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\DCLTRTYP.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+*>*****************************************************************
+*> DCLGEN TABLE(CARDDEMO.TRANSACTION_TYPE)                        *
+*>        LIBRARY(SNJARAO.AWS.DCL(DCLTRTYP))                      *
+*>        ACTION(REPLACE)                                         *
+*>        LANGUAGE(COBOL)                                         *
+*>        NAMES(DCL-)                                             *
+*>        QUOTE                                                   *
+*>        LABEL(YES)                                              *
+*>        COLSUFFIX(YES)                                          *
+*> ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+*>*****************************************************************
+    EXEC SQL DECLARE CARDDEMO.TRANSACTION_TYPE TABLE
+    ( TR_TYPE                        CHAR(2) NOT NULL,
+      TR_DESCRIPTION                 VARCHAR(50) NOT NULL
+    ) END-EXEC.
+*>*****************************************************************
+*> COBOL DECLARATION FOR TABLE CARDDEMO.TRANSACTION_TYPE          *
+*>*****************************************************************
+01  DCLTRANSACTION-TYPE.
+*>    *************************************************************
+*>                       TR_TYPE
+    10 DCL-TR-TYPE          PIC X(2).
+*>    *************************************************************
+    10 DCL-TR-DESCRIPTION.
+*>                       TR_DESCRIPTION LENGTH
+       49 DCL-TR-DESCRIPTION-LEN
+          PIC S9(4) USAGE COMP.
+*>                       TR_DESCRIPTION
+       49 DCL-TR-DESCRIPTION-TEXT
+          PIC X(50).
+*>*****************************************************************
+*> THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 2       *
+*>*****************************************************************
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\DCLTRTYP.cpy
+*>
+*>*****************************************************************
+*>Cursor Declarations
+*>*****************************************************************
+     EXEC SQL
+          DECLARE C-TR-TYPE-FORWARD CURSOR FOR
+              SELECT TR_TYPE
+                    ,TR_DESCRIPTION
+            FROM  CARDDEMO.TRANSACTION_TYPE
+               WHERE TR_TYPE >= :WS-START-KEY
+               AND  ((:WS-EDIT-TYPE-FLAG = '1'
+               AND   TR_TYPE = :WS-TYPE-CD-FILTER)
+               OR   (:WS-EDIT-TYPE-FLAG <> '1'))
+               AND  ((:WS-EDIT-DESC-FLAG = '1'
+               AND   TR_DESCRIPTION LIKE
+                          TRIM(:WS-TYPE-DESC-FILTER))
+               OR   (:WS-EDIT-DESC-FLAG <> '1'))
+            ORDER BY TR_TYPE
+     END-EXEC
+*>
+     EXEC SQL
+          DECLARE C-TR-TYPE-BACKWARD CURSOR FOR
+              SELECT TR_TYPE
+                    ,TR_DESCRIPTION
+            FROM  CARDDEMO.TRANSACTION_TYPE
+               WHERE TR_TYPE < :WS-START-KEY
+               and  ((:WS-EDIT-TYPE-FLAG = '1'
+               and   TR_TYPE = :WS-TYPE-CD-FILTER)
+               OR   (:WS-EDIT-TYPE-FLAG <> '1'))
+               AND  ((:WS-EDIT-DESC-FLAG = '1'
+               AND   TR_DESCRIPTION LIKE
+                          TRIM(:WS-TYPE-DESC-FILTER))
+               OR   (:WS-EDIT-DESC-FLAG <> '1'))
+              ORDER BY TR_TYPE DESC
+     END-EXEC
+*>
+*>
+*>*****************************************************************
+*>  Commarea manipulations
+*>*****************************************************************
+*>Application Commmarea Copybook
+*>COPY COCOM01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COCOM01Y.cpy
+*>*****************************************************************
+*> Communication area for CardDemo application programs
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CARDDEMO-COMMAREA.
+   05 CDEMO-GENERAL-INFO.
+      10 CDEMO-FROM-TRANID             PIC X(04).
+      10 CDEMO-FROM-PROGRAM            PIC X(08).
+      10 CDEMO-TO-TRANID               PIC X(04).
+      10 CDEMO-TO-PROGRAM              PIC X(08).
+      10 CDEMO-USER-ID                 PIC X(08).
+      10 CDEMO-USER-TYPE               PIC X(01).
+         88 CDEMO-USRTYP-ADMIN         VALUE 'A'.
+         88 CDEMO-USRTYP-USER          VALUE 'U'.
+      10 CDEMO-PGM-CONTEXT             PIC 9(01).
+         88 CDEMO-PGM-ENTER            VALUE 0.
+         88 CDEMO-PGM-REENTER          VALUE 1.
+   05 CDEMO-CUSTOMER-INFO.
+      10 CDEMO-CUST-ID                 PIC 9(09).
+      10 CDEMO-CUST-FNAME              PIC X(25).
+      10 CDEMO-CUST-MNAME              PIC X(25).
+      10 CDEMO-CUST-LNAME              PIC X(25).
+   05 CDEMO-ACCOUNT-INFO.
+      10 CDEMO-ACCT-ID                 PIC 9(11).
+      10 CDEMO-ACCT-STATUS             PIC X(01).
+   05 CDEMO-CARD-INFO.
+      10 CDEMO-CARD-NUM                PIC 9(16).
+   05 CDEMO-MORE-INFO.
+      10  CDEMO-LAST-MAP               PIC X(7).
+      10  CDEMO-LAST-MAPSET            PIC X(7).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:57 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COCOM01Y.cpy
+*>
+01 WS-THIS-PROGCOMMAREA.
+     10 WS-CA-TYPE-CD                          PIC X(02)
+                                               VALUE SPACES.
+     10 WS-CA-TYPE-CD-N REDEFINES WS-CA-TYPE-CD PIC 9(02).
+     10 WS-CA-TYPE-DESC                        PIC X(50).
+*>
+*>*****************************************************************
+*>  Screen Data Array         52 CHARS X 7 ROWS = 364
+*>*****************************************************************
+      10 FILLER.
+         15 WS-CA-ALL-ROWS-OUT                 PIC X(364).
+         15 FILLER REDEFINES WS-CA-ALL-ROWS-OUT.
+            20 WS-CA-SCREEN-ROWS-OUT   OCCURS  7 TIMES.
+               30 WS-CA-EACH-ROW-OUT.
+                  35 WS-CA-ROW-TR-CODE-OUT     PIC X(02).
+                  35 WS-CA-ROW-TR-DESC-OUT     PIC X(50).
+*>
+*>
+     10 WS-CA-ROW-SELECTED                     PIC S9(4) COMP
+                                               VALUE 0.
+     10 WS-CA-PAGING-VARIABLES.
+        15 WS-CA-LAST-TTYPEKEY.
+           20  WS-CA-LAST-TR-CODE              PIC X(02).
+        15 WS-CA-FIRST-TTYPEKEY.
+           20  WS-CA-FIRST-TR-CODE             PIC X(02).
+*>
+        15 WS-CA-SCREEN-NUM                    PIC 9(1).
+           88 CA-FIRST-PAGE                    VALUE 1.
+        15 WS-CA-LAST-PAGE-DISPLAYED           PIC 9(1).
+           88 CA-LAST-PAGE-SHOWN               VALUE 0.
+           88 CA-LAST-PAGE-NOT-SHOWN           VALUE 9.
+        15 WS-CA-NEXT-PAGE-IND                 PIC X(1).
+           88 CA-NEXT-PAGE-NOT-EXISTS          VALUE LOW-VALUES.
+           88 CA-NEXT-PAGE-EXISTS              VALUE 'Y'.
+      10 WS-CA-DELETE-FLAG                     PIC X.
+           88 CA-DELETE-NOT-REQUESTED          VALUE LOW-VALUES.
+           88 CA-DELETE-REQUESTED              VALUE 'Y'.
+           88 CA-DELETE-SUCCEEDED              VALUE LOW-VALUES.
+      10 WS-CA-UPDATE-FLAG                     PIC X.
+           88 CA-UPDATE-NOT-REQUESTED          VALUE LOW-VALUES.
+           88 CA-UPDATE-REQUESTED              VALUE 'Y'.
+           88 CA-UPDATE-SUCCEEDED              VALUE LOW-VALUES.
+*>
+01  WS-COMMAREA                                PIC X(2000).
+*>
+*>
+*>
+*>IBM SUPPLIED COPYBOOKS
+*>COPY DFHBMSCA.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHBMSCA.cpy
+01 DFHBMSCA.
+    02 DFHBMPEM   PIC X   VALUE " ".
+    02 DFHBMPNL   PIC X   VALUE " ".
+    02 DFHBMASK   PIC X   VALUE "0".
+    02 DFHBMUNP   PIC X   VALUE " ".
+    02 DFHBMUNN   PIC X   VALUE "&".
+    02 DFHBMPRO   PIC X   VALUE "-".
+    02 DFHBMBRY   PIC X   VALUE "H".
+    02 DFHBMDAR   PIC X   VALUE "<".
+    02 DFHBMFSE   PIC X   VALUE "A".
+    02 DFHBMPRF   PIC X   VALUE "/".
+    02 DFHBMASF   PIC X   VALUE "1".
+    02 DFHBMASB   PIC X   VALUE "8".
+    02 DFHBMEOF   PIC X   VALUE "Ø".
+    02 DFHBMDET   PIC X   VALUE "~".
+    02 DFHBMPSO   PIC X   VALUE " ".
+    02 DFHBMPSI   PIC X   VALUE " ".
+    02 DFHSA      PIC X   VALUE " ".
+    02 DFHCOLOR   PIC X   VALUE "â".
+    02 DFHPS      PIC X   VALUE "ä".
+    02 DFHHLT     PIC X   VALUE " ".
+    02 DFH3270    PIC X   VALUE "ù".
+    02 DFHVAL     PIC X   VALUE "A".
+    02 DFHOUTLN   PIC X   VALUE "B".
+    02 DFHBKTRN   PIC X   VALUE "ã".
+    02 DFHALL     PIC X   VALUE " ".
+    02 DFHERROR   PIC X   VALUE " ".
+    02 DFHDFT     PIC X   VALUE "~".
+    02 DFHDFCOL   PIC X   VALUE " ".
+    02 DFHBLUE    PIC X   VALUE "1".
+    02 DFHRED     PIC X   VALUE "2".
+    02 DFHPINK    PIC X   VALUE "3".
+    02 DFHGREEN   PIC X   VALUE "4".
+    02 DFHTURQ    PIC X   VALUE "5".
+    02 DFHYELLO   PIC X   VALUE "6".
+    02 DFHNEUTR   PIC X   VALUE "7".
+    02 DFHBASE    PIC X   VALUE " ".
+    02 DFHDFHI    PIC X   VALUE " ".
+    02 DFHBLINK   PIC X   VALUE "1".
+    02 DFHREVRS   PIC X   VALUE "2".
+    02 DFHUNDLN   PIC X   VALUE "4".
+    02 DFHMFIL    PIC X   VALUE " ".
+    02 DFHMENT    PIC X   VALUE " ".
+    02 DFHMFE     PIC X   VALUE " ".
+    02 DFHUNNOD   PIC X   VALUE "(".
+    02 DFHUNIMD   PIC X   VALUE "I".
+    02 DFHUNNUM   PIC X   VALUE "J".
+    02 DFHUNINT   PIC X   VALUE "R".
+    02 DFHUNNON   PIC X   VALUE ")".
+    02 DFHPROTI   PIC X   VALUE "Y".
+    02 DFHPROTN   PIC X   VALUE "%".
+    02 DFHMT      PIC X   VALUE " ".
+    02 DFHMFT     PIC X   VALUE " ".
+    02 DFHMET     PIC X   VALUE " ".
+    02 DFHMFET    PIC X   VALUE " ".
+    02 DFHDFFR    PIC X   VALUE " ".
+    02 DFHLEFT    PIC X   VALUE " ".
+    02 DFHOVER    PIC X   VALUE " ".
+    02 DFHRIGHT   PIC X   VALUE " ".
+    02 DFHUNDER   PIC X   VALUE " ".
+    02 DFHBOX     PIC X   VALUE " ".
+    02 DFHSOSI    PIC X   VALUE " ".
+    02 DFHTRANS   PIC X   VALUE "0".
+    02 DFHOPAQ    PIC X   VALUE "~".
+    02 DFHBMABF   PIC X   VALUE "X".
+    02 DFHBMADP   PIC X   VALUE "X".
+    02 DFHBMFF    PIC X   VALUE "X".
+    02 DFHBMCR    PIC X   VALUE "X".
+
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHBMSCA.cpy
+*>COPY DFHAID.
+*>vvv-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHAID.cpy
+01    DFHAID.
+  02  DFHNULL   PIC  X  VALUE IS " ".
+  02  DFHENTER  PIC  X  VALUE IS " ".
+  02  DFHCLEAR  PIC  X  VALUE IS "_".
+  02  DFHPEN    PIC  X  VALUE IS "=".
+  02  DFHOPID   PIC  X  VALUE IS "W".
+  02  DFHPA1    PIC  X  VALUE IS "%".
+  02  DFHPA2    PIC  X  VALUE IS ">".
+  02  DFHPA3    PIC  X  VALUE IS ",".
+  02  DFHPF1    PIC  X  VALUE IS "1".
+  02  DFHPF2    PIC  X  VALUE IS "2".
+  02  DFHPF3    PIC  X  VALUE IS "3".
+  02  DFHPF4    PIC  X  VALUE IS "4".
+  02  DFHPF5    PIC  X  VALUE IS "5".
+  02  DFHPF6    PIC  X  VALUE IS "6".
+  02  DFHPF7    PIC  X  VALUE IS "7".
+  02  DFHPF8    PIC  X  VALUE IS "8".
+  02  DFHPF9    PIC  X  VALUE IS "9".
+  02  DFHPF10   PIC  X  VALUE IS ":".
+  02  DFHPF11   PIC  X  VALUE IS "#".
+  02  DFHPF12   PIC  X  VALUE IS "@".
+  02  DFHPF13   PIC  X  VALUE IS "A".
+  02  DFHPF14   PIC  X  VALUE IS "B".
+  02  DFHPF15   PIC  X  VALUE IS "C".
+  02  DFHPF16   PIC  X  VALUE IS "D".
+  02  DFHPF17   PIC  X  VALUE IS "E".
+  02  DFHPF18   PIC  X  VALUE IS "F".
+  02  DFHPF19   PIC  X  VALUE IS "G".
+  02  DFHPF20   PIC  X  VALUE IS "H".
+  02  DFHPF21   PIC  X  VALUE IS "I".
+  02  DFHPF22   PIC  X  VALUE IS "L".
+  02  DFHPF23   PIC  X  VALUE IS "M".
+  02  DFHPF24   PIC  X  VALUE IS "N".
+
+*>^^^-> file: C:\Users\SETHUL~1.PIS\AppData\Local\Temp\DFHAID.cpy
+*>
+*>COMMON COPYBOOKS
+*>Screen Titles
+*>COPY COTTL01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COTTL01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CCDA-SCREEN-TITLE.
+  05 CCDA-TITLE01    PIC X(40) VALUE
+     '      AWS Mainframe Modernization       '.
+  05 CCDA-TITLE02    PIC X(40) VALUE
+*>     '  Credit Card Demo Application (CCDA)   '.
+     '              CardDemo                  '.
+  05 CCDA-THANK-YOU  PIC X(40) VALUE
+     'Thank you for using CCDA application... '.
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\COTTL01Y.cpy
+*>
+*>Credit Card List Screen Layout
+*>COPY COTRTLI.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy-bms\COTRTLI.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01  CTRTLIAI.
+    02  FILLER PIC X(12).
+    02  TRNNAMEL    COMP  PIC  S9(4).
+    02  TRNNAMEF    PICTURE X.
+    02  FILLER REDEFINES TRNNAMEF.
+      03 TRNNAMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRNNAMEI  PIC X(4).
+    02  TITLE01L    COMP  PIC  S9(4).
+    02  TITLE01F    PICTURE X.
+    02  FILLER REDEFINES TITLE01F.
+      03 TITLE01A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TITLE01I  PIC X(40).
+    02  CURDATEL    COMP  PIC  S9(4).
+    02  CURDATEF    PICTURE X.
+    02  FILLER REDEFINES CURDATEF.
+      03 CURDATEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  CURDATEI  PIC X(8).
+    02  PGMNAMEL    COMP  PIC  S9(4).
+    02  PGMNAMEF    PICTURE X.
+    02  FILLER REDEFINES PGMNAMEF.
+      03 PGMNAMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  PGMNAMEI  PIC X(8).
+    02  TITLE02L    COMP  PIC  S9(4).
+    02  TITLE02F    PICTURE X.
+    02  FILLER REDEFINES TITLE02F.
+      03 TITLE02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TITLE02I  PIC X(40).
+    02  CURTIMEL    COMP  PIC  S9(4).
+    02  CURTIMEF    PICTURE X.
+    02  FILLER REDEFINES CURTIMEF.
+      03 CURTIMEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  CURTIMEI  PIC X(8).
+    02  PAGENOL    COMP  PIC  S9(4).
+    02  PAGENOF    PICTURE X.
+    02  FILLER REDEFINES PAGENOF.
+      03 PAGENOA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  PAGENOI  PIC X(3).
+    02  TRTYPEL    COMP  PIC  S9(4).
+    02  TRTYPEF    PICTURE X.
+    02  FILLER REDEFINES TRTYPEF.
+      03 TRTYPEA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPEI  PIC X(2).
+    02  TRDESCL    COMP  PIC  S9(4).
+    02  TRDESCF    PICTURE X.
+    02  FILLER REDEFINES TRDESCF.
+      03 TRDESCA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRDESCI  PIC X(50).
+    02  TRTSEL1L    COMP  PIC  S9(4).
+    02  TRTSEL1F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL1F.
+      03 TRTSEL1A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL1I  PIC X(1).
+    02  TRTTYP1L    COMP  PIC  S9(4).
+    02  TRTTYP1F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP1F.
+      03 TRTTYP1A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP1I  PIC X(2).
+    02  TRTYPD1L    COMP  PIC  S9(4).
+    02  TRTYPD1F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD1F.
+      03 TRTYPD1A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD1I  PIC X(50).
+    02  TRTSEL2L    COMP  PIC  S9(4).
+    02  TRTSEL2F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL2F.
+      03 TRTSEL2A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL2I  PIC X(1).
+    02  TRTTYP2L    COMP  PIC  S9(4).
+    02  TRTTYP2F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP2F.
+      03 TRTTYP2A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP2I  PIC X(2).
+    02  TRTYPD2L    COMP  PIC  S9(4).
+    02  TRTYPD2F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD2F.
+      03 TRTYPD2A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD2I  PIC X(50).
+    02  TRTSEL3L    COMP  PIC  S9(4).
+    02  TRTSEL3F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL3F.
+      03 TRTSEL3A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL3I  PIC X(1).
+    02  TRTTYP3L    COMP  PIC  S9(4).
+    02  TRTTYP3F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP3F.
+      03 TRTTYP3A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP3I  PIC X(2).
+    02  TRTYPD3L    COMP  PIC  S9(4).
+    02  TRTYPD3F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD3F.
+      03 TRTYPD3A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD3I  PIC X(50).
+    02  TRTSEL4L    COMP  PIC  S9(4).
+    02  TRTSEL4F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL4F.
+      03 TRTSEL4A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL4I  PIC X(1).
+    02  TRTTYP4L    COMP  PIC  S9(4).
+    02  TRTTYP4F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP4F.
+      03 TRTTYP4A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP4I  PIC X(2).
+    02  TRTYPD4L    COMP  PIC  S9(4).
+    02  TRTYPD4F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD4F.
+      03 TRTYPD4A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD4I  PIC X(50).
+    02  TRTSEL5L    COMP  PIC  S9(4).
+    02  TRTSEL5F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL5F.
+      03 TRTSEL5A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL5I  PIC X(1).
+    02  TRTTYP5L    COMP  PIC  S9(4).
+    02  TRTTYP5F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP5F.
+      03 TRTTYP5A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP5I  PIC X(2).
+    02  TRTYPD5L    COMP  PIC  S9(4).
+    02  TRTYPD5F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD5F.
+      03 TRTYPD5A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD5I  PIC X(50).
+    02  TRTSEL6L    COMP  PIC  S9(4).
+    02  TRTSEL6F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL6F.
+      03 TRTSEL6A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL6I  PIC X(1).
+    02  TRTTYP6L    COMP  PIC  S9(4).
+    02  TRTTYP6F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP6F.
+      03 TRTTYP6A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP6I  PIC X(2).
+    02  TRTYPD6L    COMP  PIC  S9(4).
+    02  TRTYPD6F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD6F.
+      03 TRTYPD6A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD6I  PIC X(50).
+    02  TRTSEL7L    COMP  PIC  S9(4).
+    02  TRTSEL7F    PICTURE X.
+    02  FILLER REDEFINES TRTSEL7F.
+      03 TRTSEL7A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSEL7I  PIC X(1).
+    02  TRTTYP7L    COMP  PIC  S9(4).
+    02  TRTTYP7F    PICTURE X.
+    02  FILLER REDEFINES TRTTYP7F.
+      03 TRTTYP7A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYP7I  PIC X(2).
+    02  TRTYPD7L    COMP  PIC  S9(4).
+    02  TRTYPD7F    PICTURE X.
+    02  FILLER REDEFINES TRTYPD7F.
+      03 TRTYPD7A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTYPD7I  PIC X(50).
+    02  TRTSELAL    COMP  PIC  S9(4).
+    02  TRTSELAF    PICTURE X.
+    02  FILLER REDEFINES TRTSELAF.
+      03 TRTSELAA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTSELAI  PIC X(1).
+    02  TRTTYPAL    COMP  PIC  S9(4).
+    02  TRTTYPAF    PICTURE X.
+    02  FILLER REDEFINES TRTTYPAF.
+      03 TRTTYPAA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTTYPAI  PIC X(2).
+    02  TRTDSCAL    COMP  PIC  S9(4).
+    02  TRTDSCAF    PICTURE X.
+    02  FILLER REDEFINES TRTDSCAF.
+      03 TRTDSCAA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  TRTDSCAI  PIC X(50).
+    02  INFOMSGL    COMP  PIC  S9(4).
+    02  INFOMSGF    PICTURE X.
+    02  FILLER REDEFINES INFOMSGF.
+      03 INFOMSGA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  INFOMSGI  PIC X(45).
+    02  ERRMSGL    COMP  PIC  S9(4).
+    02  ERRMSGF    PICTURE X.
+    02  FILLER REDEFINES ERRMSGF.
+      03 ERRMSGA    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  ERRMSGI  PIC X(78).
+    02  BUTNF02L    COMP  PIC  S9(4).
+    02  BUTNF02F    PICTURE X.
+    02  FILLER REDEFINES BUTNF02F.
+      03 BUTNF02A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  BUTNF02I  PIC X(7).
+    02  BUTNF03L    COMP  PIC  S9(4).
+    02  BUTNF03F    PICTURE X.
+    02  FILLER REDEFINES BUTNF03F.
+      03 BUTNF03A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  BUTNF03I  PIC X(7).
+    02  BUTNF07L    COMP  PIC  S9(4).
+    02  BUTNF07F    PICTURE X.
+    02  FILLER REDEFINES BUTNF07F.
+      03 BUTNF07A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  BUTNF07I  PIC X(10).
+    02  BUTNF08L    COMP  PIC  S9(4).
+    02  BUTNF08F    PICTURE X.
+    02  FILLER REDEFINES BUTNF08F.
+      03 BUTNF08A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  BUTNF08I  PIC X(10).
+    02  BUTNF10L    COMP  PIC  S9(4).
+    02  BUTNF10F    PICTURE X.
+    02  FILLER REDEFINES BUTNF10F.
+      03 BUTNF10A    PICTURE X.
+    02  FILLER   PICTURE X(4).
+    02  BUTNF10I  PIC X(8).
+01  CTRTLIAO REDEFINES CTRTLIAI.
+    02  FILLER PIC X(12).
+    02  FILLER PICTURE X(3).
+    02  TRNNAMEC    PICTURE X.
+    02  TRNNAMEP    PICTURE X.
+    02  TRNNAMEH    PICTURE X.
+    02  TRNNAMEV    PICTURE X.
+    02  TRNNAMEO  PIC X(4).
+    02  FILLER PICTURE X(3).
+    02  TITLE01C    PICTURE X.
+    02  TITLE01P    PICTURE X.
+    02  TITLE01H    PICTURE X.
+    02  TITLE01V    PICTURE X.
+    02  TITLE01O  PIC X(40).
+    02  FILLER PICTURE X(3).
+    02  CURDATEC    PICTURE X.
+    02  CURDATEP    PICTURE X.
+    02  CURDATEH    PICTURE X.
+    02  CURDATEV    PICTURE X.
+    02  CURDATEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  PGMNAMEC    PICTURE X.
+    02  PGMNAMEP    PICTURE X.
+    02  PGMNAMEH    PICTURE X.
+    02  PGMNAMEV    PICTURE X.
+    02  PGMNAMEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  TITLE02C    PICTURE X.
+    02  TITLE02P    PICTURE X.
+    02  TITLE02H    PICTURE X.
+    02  TITLE02V    PICTURE X.
+    02  TITLE02O  PIC X(40).
+    02  FILLER PICTURE X(3).
+    02  CURTIMEC    PICTURE X.
+    02  CURTIMEP    PICTURE X.
+    02  CURTIMEH    PICTURE X.
+    02  CURTIMEV    PICTURE X.
+    02  CURTIMEO  PIC X(8).
+    02  FILLER PICTURE X(3).
+    02  PAGENOC    PICTURE X.
+    02  PAGENOP    PICTURE X.
+    02  PAGENOH    PICTURE X.
+    02  PAGENOV    PICTURE X.
+    02  PAGENOO  PIC X(3).
+    02  FILLER PICTURE X(3).
+    02  TRTYPEC    PICTURE X.
+    02  TRTYPEP    PICTURE X.
+    02  TRTYPEH    PICTURE X.
+    02  TRTYPEV    PICTURE X.
+    02  TRTYPEO  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRDESCC    PICTURE X.
+    02  TRDESCP    PICTURE X.
+    02  TRDESCH    PICTURE X.
+    02  TRDESCV    PICTURE X.
+    02  TRDESCO  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL1C    PICTURE X.
+    02  TRTSEL1P    PICTURE X.
+    02  TRTSEL1H    PICTURE X.
+    02  TRTSEL1V    PICTURE X.
+    02  TRTSEL1O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP1C    PICTURE X.
+    02  TRTTYP1P    PICTURE X.
+    02  TRTTYP1H    PICTURE X.
+    02  TRTTYP1V    PICTURE X.
+    02  TRTTYP1O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD1C    PICTURE X.
+    02  TRTYPD1P    PICTURE X.
+    02  TRTYPD1H    PICTURE X.
+    02  TRTYPD1V    PICTURE X.
+    02  TRTYPD1O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL2C    PICTURE X.
+    02  TRTSEL2P    PICTURE X.
+    02  TRTSEL2H    PICTURE X.
+    02  TRTSEL2V    PICTURE X.
+    02  TRTSEL2O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP2C    PICTURE X.
+    02  TRTTYP2P    PICTURE X.
+    02  TRTTYP2H    PICTURE X.
+    02  TRTTYP2V    PICTURE X.
+    02  TRTTYP2O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD2C    PICTURE X.
+    02  TRTYPD2P    PICTURE X.
+    02  TRTYPD2H    PICTURE X.
+    02  TRTYPD2V    PICTURE X.
+    02  TRTYPD2O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL3C    PICTURE X.
+    02  TRTSEL3P    PICTURE X.
+    02  TRTSEL3H    PICTURE X.
+    02  TRTSEL3V    PICTURE X.
+    02  TRTSEL3O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP3C    PICTURE X.
+    02  TRTTYP3P    PICTURE X.
+    02  TRTTYP3H    PICTURE X.
+    02  TRTTYP3V    PICTURE X.
+    02  TRTTYP3O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD3C    PICTURE X.
+    02  TRTYPD3P    PICTURE X.
+    02  TRTYPD3H    PICTURE X.
+    02  TRTYPD3V    PICTURE X.
+    02  TRTYPD3O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL4C    PICTURE X.
+    02  TRTSEL4P    PICTURE X.
+    02  TRTSEL4H    PICTURE X.
+    02  TRTSEL4V    PICTURE X.
+    02  TRTSEL4O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP4C    PICTURE X.
+    02  TRTTYP4P    PICTURE X.
+    02  TRTTYP4H    PICTURE X.
+    02  TRTTYP4V    PICTURE X.
+    02  TRTTYP4O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD4C    PICTURE X.
+    02  TRTYPD4P    PICTURE X.
+    02  TRTYPD4H    PICTURE X.
+    02  TRTYPD4V    PICTURE X.
+    02  TRTYPD4O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL5C    PICTURE X.
+    02  TRTSEL5P    PICTURE X.
+    02  TRTSEL5H    PICTURE X.
+    02  TRTSEL5V    PICTURE X.
+    02  TRTSEL5O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP5C    PICTURE X.
+    02  TRTTYP5P    PICTURE X.
+    02  TRTTYP5H    PICTURE X.
+    02  TRTTYP5V    PICTURE X.
+    02  TRTTYP5O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD5C    PICTURE X.
+    02  TRTYPD5P    PICTURE X.
+    02  TRTYPD5H    PICTURE X.
+    02  TRTYPD5V    PICTURE X.
+    02  TRTYPD5O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL6C    PICTURE X.
+    02  TRTSEL6P    PICTURE X.
+    02  TRTSEL6H    PICTURE X.
+    02  TRTSEL6V    PICTURE X.
+    02  TRTSEL6O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP6C    PICTURE X.
+    02  TRTTYP6P    PICTURE X.
+    02  TRTTYP6H    PICTURE X.
+    02  TRTTYP6V    PICTURE X.
+    02  TRTTYP6O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD6C    PICTURE X.
+    02  TRTYPD6P    PICTURE X.
+    02  TRTYPD6H    PICTURE X.
+    02  TRTYPD6V    PICTURE X.
+    02  TRTYPD6O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSEL7C    PICTURE X.
+    02  TRTSEL7P    PICTURE X.
+    02  TRTSEL7H    PICTURE X.
+    02  TRTSEL7V    PICTURE X.
+    02  TRTSEL7O  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYP7C    PICTURE X.
+    02  TRTTYP7P    PICTURE X.
+    02  TRTTYP7H    PICTURE X.
+    02  TRTTYP7V    PICTURE X.
+    02  TRTTYP7O  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTYPD7C    PICTURE X.
+    02  TRTYPD7P    PICTURE X.
+    02  TRTYPD7H    PICTURE X.
+    02  TRTYPD7V    PICTURE X.
+    02  TRTYPD7O  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  TRTSELAC    PICTURE X.
+    02  TRTSELAP    PICTURE X.
+    02  TRTSELAH    PICTURE X.
+    02  TRTSELAV    PICTURE X.
+    02  TRTSELAO  PIC X(1).
+    02  FILLER PICTURE X(3).
+    02  TRTTYPAC    PICTURE X.
+    02  TRTTYPAP    PICTURE X.
+    02  TRTTYPAH    PICTURE X.
+    02  TRTTYPAV    PICTURE X.
+    02  TRTTYPAO  PIC X(2).
+    02  FILLER PICTURE X(3).
+    02  TRTDSCAC    PICTURE X.
+    02  TRTDSCAP    PICTURE X.
+    02  TRTDSCAH    PICTURE X.
+    02  TRTDSCAV    PICTURE X.
+    02  TRTDSCAO  PIC X(50).
+    02  FILLER PICTURE X(3).
+    02  INFOMSGC    PICTURE X.
+    02  INFOMSGP    PICTURE X.
+    02  INFOMSGH    PICTURE X.
+    02  INFOMSGV    PICTURE X.
+    02  INFOMSGO  PIC X(45).
+    02  FILLER PICTURE X(3).
+    02  ERRMSGC    PICTURE X.
+    02  ERRMSGP    PICTURE X.
+    02  ERRMSGH    PICTURE X.
+    02  ERRMSGV    PICTURE X.
+    02  ERRMSGO  PIC X(78).
+    02  FILLER PICTURE X(3).
+    02  BUTNF02C    PICTURE X.
+    02  BUTNF02P    PICTURE X.
+    02  BUTNF02H    PICTURE X.
+    02  BUTNF02V    PICTURE X.
+    02  BUTNF02O  PIC X(7).
+    02  FILLER PICTURE X(3).
+    02  BUTNF03C    PICTURE X.
+    02  BUTNF03P    PICTURE X.
+    02  BUTNF03H    PICTURE X.
+    02  BUTNF03V    PICTURE X.
+    02  BUTNF03O  PIC X(7).
+    02  FILLER PICTURE X(3).
+    02  BUTNF07C    PICTURE X.
+    02  BUTNF07P    PICTURE X.
+    02  BUTNF07H    PICTURE X.
+    02  BUTNF07V    PICTURE X.
+    02  BUTNF07O  PIC X(10).
+    02  FILLER PICTURE X(3).
+    02  BUTNF08C    PICTURE X.
+    02  BUTNF08P    PICTURE X.
+    02  BUTNF08H    PICTURE X.
+    02  BUTNF08V    PICTURE X.
+    02  BUTNF08O  PIC X(10).
+    02  FILLER PICTURE X(3).
+    02  BUTNF10C    PICTURE X.
+    02  BUTNF10P    PICTURE X.
+    02  BUTNF10H    PICTURE X.
+    02  BUTNF10V    PICTURE X.
+    02  BUTNF10O  PIC X(8).
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy-bms\COTRTLI.cpy
+  01 FILLER REDEFINES CTRTLIAI.
+   05 FILLER                           PIC X(238).
+   05 WS-ROW-DATAI.
+        06 EACH-ROWI OCCURS 7 TIMES.
+           07 TRTSELL                  PIC S9(4) COMP.
+           07 TRTSELF                  PIC X.
+           07 FILLER REDEFINES TRTSELF.
+              10 TRTSELA               PIC X.
+           07 FILLER                   PIC X(4).
+           07 TRTSELI                  PIC X(1).
+           07 TRTTYPL                  PIC S9(4) COMP.
+           07 TRTTYPF                  PIC X.
+           07 FILLER REDEFINES TRTTYPF.
+              10 TRTTYPA               PIC X.
+           07 FILLER                   PIC X(4).
+           07 TRTTYPI                  PIC X(2).
+           07 TRTYPDL                  PIC S9(4) COMP.
+           07 TRTYPDF                 PIC X.
+           07 FILLER REDEFINES TRTYPDF.
+              10 TRTYPDA               PIC X.
+           07 FILLER                   PIC X(4).
+           07 TRTYPDI                  PIC X(50).
+   05 FILLER                           PIC X(137).
+  01 FILLER REDEFINES CTRTLIAO.
+   05 FILLER                           PIC X(238).
+   05 EACH-ROWO OCCURS 7 TIMES.
+           07 FILLER                   PIC X(3).
+           07 TRTSELC                  PIC X.
+           07 TRTSELP                  PIC X.
+           07 TRTSELH                  PIC X.
+           07 TRTSELV                  PIC X.
+           07 TRTSELO                  PIC X(1).
+           07 FILLER                   PIC X(3).
+           07 TRTTYPC                  PIC X.
+           07 TRTTYPP                  PIC X.
+           07 TRTTYPH                  PIC X.
+           07 TRTTYPV                  PIC X.
+           07 TRTTYPO                  PIC X(2).
+           07 FILLER                   PIC X(3).
+           07 TRTYPDC                  PIC X.
+           07 TRTYPDP                  PIC X.
+           07 TRTYPDH                  PIC X.
+           07 TRTYPDV                  PIC X.
+           07 TRTYPDO                  PIC X(50).
+   05 FILLER                           PIC X(137).
+*>Current Date
+*>COPY CSDAT01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDAT01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 WS-DATE-TIME.
+  05 WS-CURDATE-DATA.
+    10  WS-CURDATE.
+      15  WS-CURDATE-YEAR         PIC 9(04).
+      15  WS-CURDATE-MONTH        PIC 9(02).
+      15  WS-CURDATE-DAY          PIC 9(02).
+    10 WS-CURDATE-N REDEFINES WS-CURDATE PIC 9(08).
+    10  WS-CURTIME.
+      15  WS-CURTIME-HOURS        PIC 9(02).
+      15  WS-CURTIME-MINUTE       PIC 9(02).
+      15  WS-CURTIME-SECOND       PIC 9(02).
+      15  WS-CURTIME-MILSEC       PIC 9(02).
+    10 WS-CURTIME-N REDEFINES WS-CURTIME PIC 9(08).
+  05 WS-CURDATE-MM-DD-YY.
+    10  WS-CURDATE-MM             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '/'.
+    10  WS-CURDATE-DD             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '/'.
+    10  WS-CURDATE-YY             PIC 9(02).
+  05 WS-CURTIME-HH-MM-SS.
+    10  WS-CURTIME-HH             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-CURTIME-MM             PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-CURTIME-SS             PIC 9(02).
+  05 WS-TIMESTAMP.
+    10  WS-TIMESTAMP-DT-YYYY      PIC 9(04).
+    10  FILLER                    PIC X(01) VALUE '-'.
+    10  WS-TIMESTAMP-DT-MM        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '-'.
+    10  WS-TIMESTAMP-DT-DD        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ' '.
+    10  WS-TIMESTAMP-TM-HH        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-TIMESTAMP-TM-MM        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE ':'.
+    10  WS-TIMESTAMP-TM-SS        PIC 9(02).
+    10  FILLER                    PIC X(01) VALUE '.'.
+    10  WS-TIMESTAMP-TM-MS6       PIC 9(06).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDAT01Y.cpy
+*>Common Messages
+*>COPY CSMSG01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSMSG01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 CCDA-COMMON-MESSAGES.
+  05 CCDA-MSG-THANK-YOU         PIC X(50) VALUE
+       'Thank you for using CardDemo application...      '.
+  05 CCDA-MSG-INVALID-KEY       PIC X(50) VALUE
+       'Invalid key pressed. Please see below...         '.
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:58 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSMSG01Y.cpy
+*>
+*>Signed on user data
+*>COPY CSUSR01Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSUSR01Y.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+01 SEC-USER-DATA.
+  05 SEC-USR-ID                 PIC X(08).
+  05 SEC-USR-FNAME              PIC X(20).
+  05 SEC-USR-LNAME              PIC X(20).
+  05 SEC-USR-PWD                PIC X(08).
+  05 SEC-USR-TYPE               PIC X(01).
+  05 SEC-USR-FILLER             PIC X(23).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:59 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSUSR01Y.cpy
+*>
+*>Dataset layouts
+*>
+*>CARD RECORD LAYOUT
+*>COPY CVACT02Y.
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVACT02Y.cpy
+*>****************************************************************
+*>    Data-structure for card entity (RECLN 150)
+*>****************************************************************
+01  CARD-RECORD.
+    05  CARD-NUM                          PIC X(16).
+    05  CARD-ACCT-ID                      PIC 9(11).
+    05  CARD-CVV-CD                       PIC 9(03).
+    05  CARD-EMBOSSED-NAME                PIC X(50).
+    05  CARD-EXPIRAION-DATE               PIC X(10).
+    05  CARD-ACTIVE-STATUS                PIC X(01).
+    05  FILLER                            PIC X(59).
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:16:00 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CVACT02Y.cpy
+*>
+LINKAGE SECTION.
+01  DFHCOMMAREA.
+  05  FILLER                                PIC X(1)
+      OCCURS 1 TO 32767 TIMES DEPENDING ON EIBCALEN.
+*>
+PROCEDURE DIVISION.
+0000-MAIN.
+*>
+    INITIALIZE CC-WORK-AREA
+               WS-MISC-STORAGE
+               WS-COMMAREA
+*>
+*>****************************************************************
+*> Store our context
+*>****************************************************************
+    MOVE LIT-THISTRANID       TO WS-TRANID
+*>****************************************************************
+*> Ensure error message is cleared                               *
+*>****************************************************************
+    SET WS-RETURN-MSG-OFF  TO TRUE
+*>****************************************************************
+*> Retrieve passed data if  any. Initialize them if first run.
+*>****************************************************************
+    IF EIBCALEN = 0
+       INITIALIZE CARDDEMO-COMMAREA
+                  WS-THIS-PROGCOMMAREA
+       MOVE LIT-THISTRANID        TO CDEMO-FROM-TRANID
+       MOVE LIT-THISPGM           TO CDEMO-FROM-PROGRAM
+       SET CDEMO-USRTYP-ADMIN     TO TRUE
+       SET CDEMO-PGM-ENTER        TO TRUE
+       MOVE LIT-THISMAP           TO CDEMO-LAST-MAP
+       MOVE LIT-THISMAPSET        TO CDEMO-LAST-MAPSET
+       SET CA-FIRST-PAGE          TO TRUE
+       SET CA-LAST-PAGE-NOT-SHOWN TO TRUE
+    ELSE
+       MOVE DFHCOMMAREA (1:LENGTH OF CARDDEMO-COMMAREA) TO
+                         CARDDEMO-COMMAREA
+       MOVE DFHCOMMAREA(LENGTH OF CARDDEMO-COMMAREA + 1:
+                        LENGTH OF WS-THIS-PROGCOMMAREA )TO
+                         WS-THIS-PROGCOMMAREA
+    END-IF
+*>
+*>*****************************************************************
+*> Remap PFkeys as needed.
+*> Store the Mapped PF Key
+*>****************************************************************
+    PERFORM YYYY-STORE-PFKEY
+       THRU YYYY-STORE-PFKEY-EXIT
+*>
+*>****************************************************************
+*> If coming in from menu. Lets forget the past and start afresh *
+*>****************************************************************
+    IF (CDEMO-PGM-ENTER
+    AND CDEMO-FROM-PROGRAM NOT EQUAL LIT-THISPGM)
+    OR ( CCARD-AID-PFK03
+    AND CDEMO-FROM-TRANID  EQUAL LIT-ADDTTRANID)
+        INITIALIZE WS-THIS-PROGCOMMAREA
+        SET CDEMO-PGM-ENTER      TO TRUE
+        SET CCARD-AID-ENTER      TO TRUE
+        MOVE LIT-THISMAP         TO CDEMO-LAST-MAP
+        SET CA-FIRST-PAGE        TO TRUE
+        SET CA-LAST-PAGE-NOT-SHOWN TO TRUE
+    END-IF
+*>
+*>*****************************************************************
+*> If something is present in commarea
+*> and the from program is this program itself,
+*> read and edit the inputs given
+*>****************************************************************
+    IF  EIBCALEN > 0
+    AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM
+        PERFORM 1000-RECEIVE-MAP
+        THRU    1000-RECEIVE-MAP-EXIT
+*>
+    END-IF
+*>****************************************************************
+*> Check the mapped key  to see if its valid at this point       *
+*> F3    - Exit
+*> Enter - List of cards for current start key
+*> F8    - Page down
+*> F7    - Page up
+*>****************************************************************
+    SET PFK-INVALID TO TRUE
+    IF CCARD-AID-ENTER OR
+       CCARD-AID-PFK02 OR
+       CCARD-AID-PFK03 OR
+       CCARD-AID-PFK07 OR
+       CCARD-AID-PFK08 OR
+      (CCARD-AID-PFK10 AND CA-DELETE-REQUESTED) OR
+      (CCARD-AID-PFK10 AND CA-UPDATE-REQUESTED)
+       SET PFK-VALID TO TRUE
+    END-IF
+*>
+    IF PFK-INVALID
+       SET CCARD-AID-ENTER TO TRUE
+    END-IF
+*>****************************************************************
+*> If the user pressed PF3 go back to main menu
+*>****************************************************************
+    IF CCARD-AID-PFK03
+       IF CDEMO-FROM-TRANID     EQUAL LOW-VALUES
+       OR CDEMO-FROM-TRANID     EQUAL SPACES
+       OR CDEMO-FROM-TRANID     EQUAL LIT-THISTRANID
+          MOVE LIT-ADMINTRANID   TO CDEMO-TO-TRANID
+       ELSE
+          MOVE CDEMO-FROM-TRANID TO CDEMO-TO-TRANID
+       END-IF
+*>
+       IF CDEMO-FROM-PROGRAM   EQUAL LOW-VALUES
+       OR CDEMO-FROM-PROGRAM   EQUAL SPACES
+       OR CDEMO-FROM-PROGRAM   EQUAL LIT-THISPGM
+          MOVE LIT-ADMINPGM       TO CDEMO-TO-PROGRAM
+       ELSE
+          MOVE CDEMO-FROM-PROGRAM TO CDEMO-TO-PROGRAM
+       END-IF
+*>
+       MOVE LIT-THISTRANID     TO CDEMO-FROM-TRANID
+       MOVE LIT-THISPGM        TO CDEMO-FROM-PROGRAM
+*>
+       SET  CDEMO-USRTYP-ADMIN TO TRUE
+       SET  CDEMO-PGM-ENTER    TO TRUE
+       MOVE LIT-THISMAPSET     TO CDEMO-LAST-MAPSET
+       MOVE LIT-THISMAP        TO CDEMO-LAST-MAP
+*>
+       EXEC CICS
+            SYNCPOINT
+       END-EXEC
+*>
+       EXEC CICS XCTL
+            PROGRAM (CDEMO-TO-PROGRAM)
+            COMMAREA(CARDDEMO-COMMAREA)
+       END-EXEC
+*>
+    END-IF
+*>
+*>****************************************************************
+*> If the user pressed PF2 transfer to add screen
+*>****************************************************************
+    IF  (CCARD-AID-PFK02
+    AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM)
+       MOVE LIT-THISTRANID   TO CDEMO-FROM-TRANID
+       MOVE LIT-THISPGM      TO CDEMO-FROM-PROGRAM
+       SET  CDEMO-USRTYP-USER TO TRUE
+       SET  CDEMO-PGM-ENTER  TO TRUE
+       MOVE LIT-THISMAPSET   TO CDEMO-LAST-MAPSET
+       MOVE LIT-THISMAP      TO CDEMO-LAST-MAP
+       MOVE LIT-ADDTPGM      TO CDEMO-TO-PROGRAM
+*>
+       MOVE LIT-ADDTMAPSET   TO CCARD-NEXT-MAPSET
+       MOVE LIT-ADDTMAP      TO CCARD-NEXT-MAP
+       SET WS-EXIT-MESSAGE            TO TRUE
+*>
+*>       CALL MENU PROGRAM
+*>
+       SET CDEMO-PGM-ENTER   TO TRUE
+*>
+       EXEC CICS XCTL
+                 PROGRAM (LIT-ADDTPGM)
+                 COMMAREA(CARDDEMO-COMMAREA)
+       END-EXEC
+    END-IF
+*>
+*>****************************************************************
+*> If the user did not press PF8, lets reset the last page flag
+*>****************************************************************
+    IF CCARD-AID-PFK08
+       CONTINUE
+    ELSE
+       SET CA-LAST-PAGE-NOT-SHOWN   TO TRUE
+    END-IF
+*>****************************************************************
+*>    If the user pressed F10 to confirm delete
+*>    But changed some criteria on screen. Treat it as ENTER
+*>****************************************************************
+    IF  CCARD-AID-PFK10
+        IF  (CA-DELETE-REQUESTED
+        OR   CA-UPDATE-REQUESTED)
+        AND FLG-TYPEFILTER-CHANGED-NO
+        AND FLG-DESCFILTER-CHANGED-NO
+        AND FLG-ROW-SELECTION-CHANGED-NO
+            CONTINUE
+        ELSE
+            SET CCARD-AID-ENTER TO TRUE
+        END-IF
+    ELSE
+       CONTINUE
+    END-IF
+*>
+*>
+*>****************************************************************
+*>  Check Db2 connectivity. Quit if no Access.
+*>****************************************************************
+    PERFORM 9998-PRIMING-QUERY
+       THRU 9998-PRIMING-QUERY-EXIT
+*>
+    IF WS-DB2-ERROR
+       PERFORM SEND-LONG-TEXT
+          THRU SEND-LONG-TEXT-EXIT
+       GO TO COMMON-RETURN
+    END-IF
+*>
+*>
+*>
+*>****************************************************************
+*> Now we decide what to do
+*>****************************************************************
+    EVALUATE TRUE
+        WHEN INPUT-ERROR
+*>****************************************************************
+*>        ASK FOR CORRECTIONS TO INPUTS
+*>****************************************************************
+             MOVE WS-RETURN-MSG   TO CCARD-ERROR-MSG
+             MOVE LIT-THISPGM     TO CDEMO-FROM-PROGRAM
+             MOVE LIT-THISMAPSET  TO CDEMO-LAST-MAPSET
+             MOVE LIT-THISMAP     TO CDEMO-LAST-MAP
+*>
+             MOVE LIT-THISPGM     TO CCARD-NEXT-PROG
+             MOVE LIT-THISMAPSET  TO CCARD-NEXT-MAPSET
+             MOVE LIT-THISMAP     TO CCARD-NEXT-MAP
+             MOVE WS-CA-FIRST-TR-CODE
+                                  TO WS-START-KEY
+             IF  NOT FLG-TYPEFILTER-NOT-OK
+             AND NOT FLG-DESCFILTER-NOT-OK
+                PERFORM 8000-READ-FORWARD
+                   THRU 8000-READ-FORWARD-EXIT
+             END-IF
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+        WHEN CCARD-AID-PFK07
+             AND CA-FIRST-PAGE
+*>****************************************************************
+*>        PAGE UP - PF7 - BUT ALREADY ON FIRST PAGE
+*>****************************************************************
+        WHEN CCARD-AID-PFK07
+             AND CA-FIRST-PAGE
+             MOVE WS-CA-FIRST-TR-CODE
+                           TO WS-START-KEY
+             PERFORM 8000-READ-FORWARD
+                THRU 8000-READ-FORWARD-EXIT
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        BACK - PF3 IF WE CAME FROM SOME OTHER PROGRAM
+*>****************************************************************
+        WHEN CCARD-AID-PFK03
+        WHEN CDEMO-PGM-REENTER AND
+             CDEMO-FROM-PROGRAM NOT EQUAL LIT-THISPGM
+*>
+             INITIALIZE CARDDEMO-COMMAREA
+                        WS-THIS-PROGCOMMAREA
+                        WS-MISC-STORAGE
+*>
+             MOVE LIT-THISTRANID      TO CDEMO-FROM-TRANID
+             MOVE LIT-THISPGM         TO CDEMO-FROM-PROGRAM
+             MOVE LIT-THISMAP         TO CDEMO-LAST-MAP
+             MOVE LIT-THISMAPSET      TO CDEMO-LAST-MAPSET
+*>
+             SET CDEMO-USRTYP-ADMIN   TO TRUE
+             SET CDEMO-PGM-ENTER      TO TRUE
+             SET CA-FIRST-PAGE        TO TRUE
+             SET CA-LAST-PAGE-NOT-SHOWN TO TRUE
+*>
+             MOVE WS-CA-FIRST-TR-CODE TO WS-START-KEY
+*>
+             PERFORM 8000-READ-FORWARD
+                THRU 8000-READ-FORWARD-EXIT
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        PAGE DOWN
+*>****************************************************************
+        WHEN CCARD-AID-PFK08
+             AND CA-NEXT-PAGE-EXISTS
+             MOVE WS-CA-LAST-TR-CODE
+                           TO WS-START-KEY
+             ADD   +1      TO WS-CA-SCREEN-NUM
+             PERFORM 8000-READ-FORWARD
+                THRU 8000-READ-FORWARD-EXIT
+             INITIALIZE WS-EDIT-SELECT-FLAGS
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        PAGE UP
+*>****************************************************************
+        WHEN CCARD-AID-PFK07
+             AND NOT CA-FIRST-PAGE
+             MOVE WS-CA-FIRST-TR-CODE
+                           TO WS-START-KEY
+             SUBTRACT 1    FROM WS-CA-SCREEN-NUM
+             PERFORM 8100-READ-BACKWARDS
+                THRU 8100-READ-BACKWARDS-EXIT
+             INITIALIZE WS-EDIT-SELECT-FLAGS
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        ENTER AND DELETE REQUESTED
+*>****************************************************************
+        WHEN CCARD-AID-ENTER
+         AND WS-DELETES-REQUESTED > 0
+         AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM
+             MOVE WS-CA-FIRST-TR-CODE
+                                  TO WS-START-KEY
+             IF  NOT FLG-TYPEFILTER-NOT-OK
+             AND NOT FLG-DESCFILTER-NOT-OK
+                PERFORM 8000-READ-FORWARD
+                   THRU 8000-READ-FORWARD-EXIT
+             END-IF
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        F10  AFTER DELETE CONFIRM REQUESTED
+*>****************************************************************
+        WHEN CCARD-AID-PFK10
+         AND WS-DELETES-REQUESTED > 0
+         AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM
+*>
+             PERFORM 9300-DELETE-RECORD
+                THRU 9300-DELETE-RECORD-EXIT
+*>
+             IF CA-DELETE-SUCCEEDED
+                SET FLG-DELETED-YES   TO TRUE
+             ELSE
+                SET FLG-DELETED-NO    TO TRUE
+             END-IF
+*>
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+*>
+             IF FLG-DELETED-YES
+                INITIALIZE CARDDEMO-COMMAREA
+                        WS-THIS-PROGCOMMAREA
+                        WS-MISC-STORAGE
+                SET CDEMO-PGM-ENTER      TO TRUE
+                SET CA-FIRST-PAGE        TO TRUE
+                SET CA-LAST-PAGE-NOT-SHOWN TO TRUE
+             END-IF
+            GO TO COMMON-RETURN
+*>****************************************************************
+*>        ENTER AND UPDATE REQUESTED
+*>****************************************************************
+        WHEN CCARD-AID-ENTER
+         AND WS-UPDATES-REQUESTED > 0
+         AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM
+             MOVE WS-CA-FIRST-TR-CODE
+                                  TO WS-START-KEY
+             IF  NOT FLG-TYPEFILTER-NOT-OK
+             AND NOT FLG-DESCFILTER-NOT-OK
+                PERFORM 8000-READ-FORWARD
+                   THRU 8000-READ-FORWARD-EXIT
+             END-IF
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+*>****************************************************************
+*>        F10  AFTER UPDATE CONFIRM REQUESTED
+*>****************************************************************
+        WHEN CCARD-AID-PFK10
+         AND WS-UPDATES-REQUESTED > 0
+         AND CDEMO-FROM-PROGRAM  EQUAL LIT-THISPGM
+*>
+             PERFORM 9200-UPDATE-RECORD
+                THRU 9200-UPDATE-RECORD-EXIT
+             IF CA-UPDATE-SUCCEEDED
+                SET FLG-UPDATE-COMPLETED TO TRUE
+             END-IF
+               MOVE WS-CA-FIRST-TR-CODE
+                           TO WS-START-KEY
+             PERFORM 8000-READ-FORWARD
+                THRU 8000-READ-FORWARD-EXIT
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+*>****************************************************************
+        WHEN OTHER
+*>****************************************************************
+             MOVE WS-CA-FIRST-TR-CODE
+                           TO WS-START-KEY
+             PERFORM 8000-READ-FORWARD
+                THRU 8000-READ-FORWARD-EXIT
+             PERFORM 2000-SEND-MAP
+                THRU 2000-SEND-MAP-EXIT
+             GO TO COMMON-RETURN
+    END-EVALUATE
+*>
+*> If we had an error setup error message to display and return
+    IF INPUT-ERROR
+       MOVE WS-RETURN-MSG   TO CCARD-ERROR-MSG
+       MOVE LIT-THISPGM     TO CDEMO-FROM-PROGRAM
+       MOVE LIT-THISMAPSET  TO CDEMO-LAST-MAPSET
+       MOVE LIT-THISMAP     TO CDEMO-LAST-MAP
+*>
+       MOVE LIT-THISPGM     TO CCARD-NEXT-PROG
+       MOVE LIT-THISMAPSET  TO CCARD-NEXT-MAPSET
+       MOVE LIT-THISMAP     TO CCARD-NEXT-MAP
+*>
+       GO TO COMMON-RETURN
+    END-IF
+*>
+    MOVE LIT-THISPGM        TO CCARD-NEXT-PROG
+    GO TO COMMON-RETURN
+    .
+*>
+COMMON-RETURN.
+    MOVE  LIT-THISTRANID  TO CDEMO-FROM-TRANID
+    MOVE  LIT-THISPGM     TO CDEMO-FROM-PROGRAM
+    MOVE  LIT-THISMAPSET  TO CDEMO-LAST-MAPSET
+    MOVE  LIT-THISMAP     TO CDEMO-LAST-MAP
+    MOVE  CARDDEMO-COMMAREA    TO WS-COMMAREA
+    MOVE  WS-THIS-PROGCOMMAREA TO
+           WS-COMMAREA(LENGTH OF CARDDEMO-COMMAREA + 1:
+                        LENGTH OF WS-THIS-PROGCOMMAREA )
+*>
+*>
+    EXEC CICS RETURN
+         TRANSID (LIT-THISTRANID)
+         COMMAREA (WS-COMMAREA)
+         LENGTH(LENGTH OF WS-COMMAREA)
+    END-EXEC
+    .
+0000-MAIN-EXIT.
+    EXIT
+    .
+1000-RECEIVE-MAP.
+    PERFORM 1100-RECEIVE-SCREEN
+       THRU 1100-RECEIVE-SCREEN-EXIT
+*>
+    PERFORM 1200-EDIT-INPUTS
+     THRU   1200-EDIT-INPUTS-EXIT
+    .
+1000-RECEIVE-MAP-EXIT.
+    EXIT
+    .
+*>
+1100-RECEIVE-SCREEN.
+    EXEC CICS RECEIVE MAP(LIT-THISMAP)
+                   MAPSET(LIT-THISMAPSET)
+                   INTO(CTRTLIAI)
+                   RESP(WS-RESP-CD)
+    END-EXEC
+*>
+    MOVE TRTYPEI  OF CTRTLIAI  TO WS-IN-TYPE-CD
+    MOVE TRDESCI  OF CTRTLIAI  TO WS-IN-TYPE-DESC
+*>
+    PERFORM VARYING I FROM 1 BY 1 UNTIL I > WS-MAX-SCREEN-LINES
+        MOVE TRTSELI(I)           TO WS-EDIT-SELECT(I)
+        MOVE TRTTYPI(I)           TO WS-ROW-TR-CODE-IN(I)
+*>
+        MOVE LOW-VALUES           TO WS-ROW-TR-DESC-IN(I)
+        IF   TRTYPDI(I) = LIT-ASTERISK
+        OR   TRTYPDI(I) = SPACES
+            CONTINUE
+        ELSE
+            MOVE FUNCTION TRIM(TRTYPDI(I))
+                                  TO WS-ROW-TR-DESC-IN(I)
+        END-IF
+*>
+    END-PERFORM
+    .
+*>
+1100-RECEIVE-SCREEN-EXIT.
+    EXIT
+    .
+*>
+1200-EDIT-INPUTS.
+*>
+    SET INPUT-OK                   TO TRUE
+    SET FLG-PROTECT-SELECT-ROWS-NO TO TRUE
+*>
+    PERFORM 1210-EDIT-ARRAY
+       THRU 1210-EDIT-ARRAY-EXIT
+*>
+    PERFORM 1230-EDIT-DESC
+       THRU 1230-EDIT-DESC-EXIT
+*>
+    PERFORM 1220-EDIT-TYPECD
+       THRU 1220-EDIT-TYPECD-EXIT
+*>
+    PERFORM 1290-CROSS-EDITS
+       THRU 1290-CROSS-EDITS-EXIT
+    .
+*>
+1200-EDIT-INPUTS-EXIT.
+    EXIT
+    .
+*>
+1210-EDIT-ARRAY.
+*>
+    MOVE ZERO                     TO WS-ACTIONS-REQUESTED
+                                     WS-NO-ACTIONS-SELECTED
+                                     WS-DELETES-REQUESTED
+                                     WS-UPDATES-REQUESTED
+                                     WS-VALID-ACTIONS-SELECTED
+*>
+*>
+    IF  FLG-TYPEFILTER-CHANGED-YES
+    OR  FLG-DESCFILTER-CHANGED-YES
+        INITIALIZE                 WS-EDIT-SELECT-FLAGS
+        GO TO 1210-EDIT-ARRAY-EXIT
+    ELSE
+*>
+    INSPECT  WS-EDIT-SELECT-FLAGS
+    TALLYING WS-NO-ACTIONS-SELECTED FOR ALL SPACES
+                                        LOW-VALUES
+             WS-DELETES-REQUESTED   FOR ALL LIT-DELETE-FLAG
+             WS-UPDATES-REQUESTED   FOR ALL LIT-UPDATE-FLAG
+*>
+    COMPUTE  WS-ACTIONS-REQUESTED
+          =  WS-MAX-SCREEN-LINES
+          -  WS-NO-ACTIONS-SELECTED
+    END-COMPUTE
+*>
+*>
+    COMPUTE WS-VALID-ACTIONS-SELECTED =
+            WS-DELETES-REQUESTED
+          + WS-UPDATES-REQUESTED
+    END-COMPUTE
+*>
+    MOVE ZERO TO I-SELECTED
+    SET FLG-BAD-ACTIONS-SELECTED-NO    TO TRUE
+*>
+    PERFORM VARYING I
+               FROM WS-MAX-SCREEN-LINES
+                 BY -1
+              UNTIL I = 0
+        EVALUATE TRUE
+          WHEN SELECT-OK(I)
+            MOVE I TO I-SELECTED
+            IF WS-MORETHAN1ACTION
+               MOVE '1' TO WS-ROW-TRTSELECT-ERROR(I)
+               SET FLG-BAD-ACTIONS-SELECTED-YES   TO TRUE
+            END-IF
+            IF UPDATE-REQUESTED-ON(I)
+               PERFORM 1211-EDIT-ARRAY-DESC
+                  THRU 1211-EDIT-ARRAY-DESC-EXIT
+            END-IF
+          WHEN SELECT-BLANK(I)
+            CONTINUE
+          WHEN OTHER
+            SET INPUT-ERROR TO TRUE
+            MOVE '1' TO WS-ROW-TRTSELECT-ERROR(I)
+            SET FLG-BAD-ACTIONS-SELECTED-YES     TO TRUE
+            SET WS-MESG-INVALID-ACTION-CODE      TO TRUE
+       END-EVALUATE
+    END-PERFORM
+*>
+    IF I-SELECTED EQUAL  WS-CA-ROW-SELECTED
+       SET FLG-ROW-SELECTION-CHANGED-NO          TO TRUE
+    ELSE
+       SET FLG-ROW-SELECTION-CHANGED-YES         TO TRUE
+       MOVE I-SELECTED TO   WS-CA-ROW-SELECTED
+    END-IF
+*>
+    IF WS-MORETHAN1ACTION
+        SET INPUT-ERROR                          TO TRUE
+        SET WS-MESG-MORE-THAN-1-ACTION           TO TRUE
+    END-IF
+    .
+*>
+1210-EDIT-ARRAY-EXIT.
+     EXIT
+     .
+*>
+*>
+1211-EDIT-ARRAY-DESC.
+*>
+     SET NO-CHANGES-FOUND           TO TRUE
+*>
+    IF  FUNCTION UPPER-CASE (
+        FUNCTION TRIM (WS-ROW-TR-DESC-IN(I)))=
+        FUNCTION UPPER-CASE (
+        FUNCTION TRIM (WS-CA-ROW-TR-DESC-OUT(I)))
+    AND FUNCTION LENGTH (
+        FUNCTION TRIM (WS-ROW-TR-DESC-IN(I)))=
+        FUNCTION LENGTH (
+        FUNCTION TRIM (WS-CA-ROW-TR-DESC-OUT(I)))
+        SET WS-MESG-NO-CHANGES-DETECTED   TO TRUE
+        GO TO 1211-EDIT-ARRAY-DESC-EXIT
+    ELSE
+        SET CHANGES-HAVE-OCCURRED    TO TRUE
+    END-IF
+*>
+    SET FLG-ROW-DESCRIPTION-NOT-OK  TO TRUE
+*>
+*>*****************************************************************
+*>    Edit Description
+*>*****************************************************************
+    MOVE 'Transaction Desc'       TO WS-EDIT-VARIABLE-NAME
+    MOVE WS-ROW-TR-DESC-IN(I)     TO WS-EDIT-ALPHANUM-ONLY
+    MOVE 50                       TO WS-EDIT-ALPHANUM-LENGTH
+    PERFORM 1240-EDIT-ALPHANUM-REQD
+       THRU 1240-EDIT-ALPHANUM-REQD-EXIT
+    MOVE WS-EDIT-ALPHANUM-ONLY-FLAGS
+                                  TO WS-ARRAY-DESCRIPTION-FLGS
+    .
+*>
+1211-EDIT-ARRAY-DESC-EXIT.
+    EXIT
+    .
+*>
+1220-EDIT-TYPECD.
+*>
+    SET FLG-TYPEFILTER-BLANK TO TRUE
+*>
+*>    Not supplied
+    IF WS-IN-TYPE-CD   EQUAL LOW-VALUES
+    OR WS-IN-TYPE-CD   EQUAL SPACES
+    OR WS-IN-TYPE-CD   EQUAL ZEROS
+       SET FLG-TYPEFILTER-BLANK  TO TRUE
+       MOVE ZEROES       TO WS-TYPE-CD-FILTER
+       GO TO  1220-EDIT-TYPECD-EXIT
+    END-IF
+*>
+*>    Not numeric
+*>    Not 2 characters
+    IF WS-IN-TYPE-CD  IS NOT NUMERIC
+       SET INPUT-ERROR TO TRUE
+       SET FLG-TYPEFILTER-NOT-OK TO TRUE
+       SET FLG-PROTECT-SELECT-ROWS-YES TO TRUE
+       MOVE
+       'TYPE CODE FILTER,IF SUPPLIED MUST BE A 2 DIGIT NUMBER'
+                       TO WS-RETURN-MSG
+       GO TO 1220-EDIT-TYPECD-EXIT
+    ELSE
+       MOVE WS-IN-TYPE-CD TO WS-TYPE-CD-FILTER
+       SET FLG-TYPEFILTER-ISVALID TO TRUE
+    END-IF
+    .
+*>
+1220-EDIT-TYPECD-EXIT.
+*>
+    IF WS-IN-TYPE-CD EQUAL WS-CA-TYPE-CD
+    OR FLG-TYPEFILTER-BLANK
+                     AND  (WS-CA-TYPE-CD EQUAL ZEROES
+                      OR   WS-CA-TYPE-CD EQUAL LOW-VALUES
+                      OR   WS-CA-TYPE-CD EQUAL SPACES)
+       SET FLG-TYPEFILTER-CHANGED-NO  TO TRUE
+    ELSE
+       INITIALIZE WS-CA-PAGING-VARIABLES
+       MOVE WS-IN-TYPE-CD             TO WS-CA-TYPE-CD
+       SET FLG-TYPEFILTER-CHANGED-YES TO TRUE
+    END-IF
+*>
+    EXIT
+    .
+*>
+1230-EDIT-DESC.
+*>
+    SET FLG-DESCFILTER-BLANK TO TRUE
+*>
+*>    Not supplied
+    IF WS-IN-TYPE-DESC   EQUAL LOW-VALUES
+    OR WS-IN-TYPE-DESC   EQUAL SPACES
+       SET FLG-DESCFILTER-BLANK  TO TRUE
+       GO TO 1230-EDIT-DESC-EXIT
+    ELSE
+       SET FLG-DESCFILTER-ISVALID TO TRUE
+    END-IF
+*>
+    IF FLG-DESCFILTER-ISVALID
+       STRING '%'
+              FUNCTION TRIM(WS-IN-TYPE-DESC)
+              '%'
+        DELIMITED BY SIZE
+        INTO
+        WS-TYPE-DESC-FILTER
+       END-STRING
+    END-IF
+    .
+1230-EDIT-DESC-EXIT.
+    IF WS-IN-TYPE-DESC EQUAL WS-CA-TYPE-DESC
+    OR FLG-DESCFILTER-BLANK
+                     AND  (WS-CA-TYPE-DESC EQUAL LOW-VALUES
+                      OR   WS-CA-TYPE-DESC EQUAL SPACES)
+       SET FLG-DESCFILTER-CHANGED-NO   TO TRUE
+    ELSE
+       INITIALIZE WS-CA-PAGING-VARIABLES
+       MOVE WS-IN-TYPE-DESC            TO WS-CA-TYPE-DESC
+       SET FLG-DESCFILTER-CHANGED-YES  TO TRUE
+    END-IF
+*>
+    EXIT
+    .
+*>
+*>
+1240-EDIT-ALPHANUM-REQD.
+*>    Initialize
+    SET FLG-ALPHNANUM-NOT-OK          TO TRUE
+*>
+*>    Not supplied
+    IF WS-EDIT-ALPHANUM-ONLY(1:WS-EDIT-ALPHANUM-LENGTH)
+                                      EQUAL LOW-VALUES
+    OR WS-EDIT-ALPHANUM-ONLY(1:WS-EDIT-ALPHANUM-LENGTH)
+        EQUAL SPACES
+    OR FUNCTION LENGTH(FUNCTION TRIM(
+       WS-EDIT-ALPHANUM-ONLY(1:WS-EDIT-ALPHANUM-LENGTH))) = 0
+*>
+       SET INPUT-ERROR                TO TRUE
+       SET FLG-ALPHNANUM-BLANK        TO TRUE
+       IF WS-RETURN-MSG-OFF
+          STRING
+            FUNCTION TRIM(WS-EDIT-VARIABLE-NAME)
+            ' must be supplied.'
+            DELIMITED BY SIZE
+            INTO WS-RETURN-MSG
+          END-STRING
+       END-IF
+*>
+       GO TO  1240-EDIT-ALPHANUM-REQD-EXIT
+    END-IF
+*>
+*>    Only Alphabets,numbers and space allowed
+    MOVE LIT-ALL-ALPHANUM-FROM-X TO LIT-ALL-ALPHANUM-FROM
+*>
+    INSPECT WS-EDIT-ALPHANUM-ONLY(1:WS-EDIT-ALPHANUM-LENGTH)
+      CONVERTING LIT-ALL-ALPHANUM-FROM
+              TO LIT-ALPHANUM-SPACES-TO
+*>
+    IF FUNCTION LENGTH(
+            FUNCTION TRIM(
+            WS-EDIT-ALPHANUM-ONLY(1:WS-EDIT-ALPHANUM-LENGTH)
+                           )) = 0
+       CONTINUE
+    ELSE
+       SET INPUT-ERROR           TO TRUE
+       SET FLG-ALPHNANUM-NOT-OK  TO TRUE
+       IF WS-RETURN-MSG-OFF
+          STRING
+            FUNCTION TRIM(WS-EDIT-VARIABLE-NAME)
+            ' can have numbers or alphabets only.'
+            DELIMITED BY SIZE
+            INTO WS-RETURN-MSG
+          END-STRING
+       END-IF
+       GO TO  1240-EDIT-ALPHANUM-REQD-EXIT
+    END-IF
+*>
+    SET FLG-ALPHNANUM-ISVALID    TO TRUE
+    .
+1240-EDIT-ALPHANUM-REQD-EXIT.
+    EXIT
+    .
+*>
+1290-CROSS-EDITS.
+*>
+    IF FLG-TYPEFILTER-ISVALID
+    OR FLG-DESCFILTER-ISVALID
+       CONTINUE
+    ELSE
+        GO TO 1290-CROSS-EDITS-EXIT
+    END-IF
+*>
+    PERFORM 9100-CHECK-FILTERS
+       THRU 9100-CHECK-FILTERS-EXIT
+*>
+    IF WS-RECORDS-COUNT = 0
+       SET INPUT-ERROR TO TRUE
+       IF FLG-TYPEFILTER-ISVALID
+          SET FLG-TYPEFILTER-NOT-OK TO TRUE
+       END-IF
+*>
+       IF FLG-DESCFILTER-ISVALID
+          SET FLG-DESCFILTER-NOT-OK TO TRUE
+       END-IF
+*>
+*>
+       SET FLG-PROTECT-SELECT-ROWS-YES TO TRUE
+       MOVE
+       'No Records found for these filter conditions'
+                       TO WS-RETURN-MSG
+       GO TO 1290-CROSS-EDITS-EXIT
+    END-IF
+    .
+1290-CROSS-EDITS-EXIT.
+    EXIT
+    .
+*>
+*>
+2000-SEND-MAP
+     .
+    PERFORM 2100-SCREEN-INIT
+       THRU 2100-SCREEN-INIT-EXIT
+    PERFORM 2200-SETUP-ARRAY-ATTRIBS
+       THRU 2200-SETUP-ARRAY-ATTRIBS-EXIT
+    PERFORM 2300-SCREEN-ARRAY-INIT
+       THRU 2300-SCREEN-ARRAY-INIT-EXIT
+    PERFORM 2400-SETUP-SCREEN-ATTRS
+       THRU 2400-SETUP-SCREEN-ATTRS-EXIT
+    PERFORM 2500-SETUP-MESSAGE
+       THRU 2500-SETUP-MESSAGE-EXIT
+    PERFORM 2600-SEND-SCREEN
+       THRU 2600-SEND-SCREEN-EXIT
+    .
+*>
+2000-SEND-MAP-EXIT.
+    EXIT
+    .
+2100-SCREEN-INIT.
+    MOVE LOW-VALUES             TO CTRTLIAO
+*>
+    MOVE FUNCTION CURRENT-DATE  TO WS-CURDATE-DATA
+*>
+    MOVE CCDA-TITLE01           TO TITLE01O OF CTRTLIAO
+    MOVE CCDA-TITLE02           TO TITLE02O OF CTRTLIAO
+    MOVE LIT-THISTRANID         TO TRNNAMEO OF CTRTLIAO
+    MOVE LIT-THISPGM            TO PGMNAMEO OF CTRTLIAO
+*>
+    MOVE FUNCTION CURRENT-DATE  TO WS-CURDATE-DATA
+*>
+    MOVE WS-CURDATE-MONTH       TO WS-CURDATE-MM
+    MOVE WS-CURDATE-DAY         TO WS-CURDATE-DD
+    MOVE WS-CURDATE-YEAR(3:2)   TO WS-CURDATE-YY
+*>
+    MOVE WS-CURDATE-MM-DD-YY    TO CURDATEO OF CTRTLIAO
+*>
+    MOVE WS-CURTIME-HOURS       TO WS-CURTIME-HH
+    MOVE WS-CURTIME-MINUTE      TO WS-CURTIME-MM
+    MOVE WS-CURTIME-SECOND      TO WS-CURTIME-SS
+*>
+    MOVE WS-CURTIME-HH-MM-SS    TO CURTIMEO OF CTRTLIAO
+*>    PAGE NUMBER
+*>
+    MOVE WS-CA-SCREEN-NUM       TO PAGENOO  OF CTRTLIAO
+*>
+    SET WS-NO-INFO-MESSAGE      TO TRUE
+    MOVE WS-INFO-MSG            TO INFOMSGO OF CTRTLIAO
+    MOVE DFHBMDAR               TO INFOMSGC OF CTRTLIAO
+    .
+*>
+2100-SCREEN-INIT-EXIT.
+    EXIT
+    .
+*>
+2200-SETUP-ARRAY-ATTRIBS.
+*>    REPLACE BMS GENERATED MAP WITH PROVIDED COPYBOOK
+*>    AND CLEAN UP REPETITIVE CODE !!
+*>
+    PERFORM VARYING I
+               FROM WS-MAX-SCREEN-LINES
+                 BY -1
+              UNTIL I = 0
+       MOVE DFHBMPRF                 TO TRTYPDA(I)
+*>
+       IF   WS-CA-EACH-ROW-OUT(I)    EQUAL LOW-VALUES
+       OR   FLG-PROTECT-SELECT-ROWS-YES
+          MOVE DFHBMPRO              TO TRTSELA (I)
+       ELSE
+          IF WS-ROW-TRTSELECT-ERROR(I) = '1'
+             MOVE DFHRED             TO TRTSELC(I)
+             MOVE -1                 TO TRTSELL(I)
+          END-IF
+*>
+          IF DELETE-REQUESTED-ON(I)
+          AND WS-ONLY-1-VALID-ACTION
+          AND FLG-BAD-ACTIONS-SELECTED-NO
+             MOVE DFHNEUTR           TO TRTTYPC(I)
+                                        TRTYPDC(I)
+             MOVE -1                 TO TRTSELL(I)
+          END-IF
+*>
+          IF UPDATE-REQUESTED-ON(I)
+          AND WS-ONLY-1-VALID-ACTION
+          AND FLG-BAD-ACTIONS-SELECTED-NO
+             MOVE DFHNEUTR           TO TRTTYPC(I)
+             IF  FLG-UPDATE-COMPLETED
+                 MOVE -1             TO TRTSELL(I)
+                 MOVE DFHNEUTR       TO TRTYPDC(I)
+             ELSE
+                 MOVE -1             TO TRTYPDL(I)
+                 MOVE DFHBMFSE       TO TRTYPDA(I)
+                 IF NOT FLG-ROW-DESCRIPTION-ISVALID
+                    MOVE DFHRED      TO TRTYPDC(I)
+                 END-IF
+             END-IF
+          END-IF
+          MOVE DFHBMFSE              TO TRTSELA(I)
+       END-IF
+    END-PERFORM
+    .
+*>
+*>
+2200-SETUP-ARRAY-ATTRIBS-EXIT.
+    EXIT
+    .
+*>
+*>
+*>
+2300-SCREEN-ARRAY-INIT.
+*>    USING REDEFINES TO AVOID UP REPETITIVE CODE !!
+*>
+    PERFORM VARYING I FROM 1 BY 1 UNTIL I > WS-MAX-SCREEN-LINES
+*>
+       IF   WS-CA-EACH-ROW-OUT(I)         EQUAL LOW-VALUES
+          CONTINUE
+       ELSE
+          IF  DELETE-REQUESTED-ON(I)
+          AND WS-ONLY-1-VALID-ACTION
+          AND FLG-BAD-ACTIONS-SELECTED-NO
+              IF  FLG-DELETED-YES
+                  SET SELECT-BLANK(I)          TO TRUE
+              ELSE
+                  SET CA-DELETE-REQUESTED      TO TRUE
+              END-IF
+          END-IF
+*>
+*>          Type code
+          MOVE WS-CA-ROW-TR-CODE-OUT(I)        TO TRTTYPO(I)
+*>          Type Description
+          IF UPDATE-REQUESTED-ON(I)
+          AND WS-ONLY-1-VALID-ACTION
+          AND FLG-BAD-ACTIONS-SELECTED-NO
+              IF  FLG-UPDATE-COMPLETED
+                  SET SELECT-BLANK(I)          TO TRUE
+              ELSE
+                  SET CA-UPDATE-REQUESTED      TO TRUE
+              END-IF
+              IF CHANGES-HAVE-OCCURRED
+                 EVALUATE TRUE
+                     WHEN FLG-ROW-DESCRIPTION-BLANK
+                          MOVE LIT-ASTERISK    TO TRTYPDO(I)
+                     WHEN OTHER
+                          MOVE WS-ROW-TR-DESC-IN(I)
+                                               TO TRTYPDO(I)
+                 END-EVALUATE
+              ELSE
+                 MOVE WS-CA-ROW-TR-DESC-OUT(I) TO TRTYPDO(I)
+              END-IF
+          ELSE
+              MOVE WS-CA-ROW-TR-DESC-OUT(I)    TO TRTYPDO(I)
+          END-IF
+*>
+*>          Select flag because we may update it above
+          MOVE WS-EDIT-SELECT(I)               TO TRTSELO(I)
+       END-IF
+    END-PERFORM
+    .
+*>
+2300-SCREEN-ARRAY-INIT-EXIT.
+    EXIT
+    .
+*>
+*>
+2400-SETUP-SCREEN-ATTRS.
+*>    INITIALIZE SEARCH CRITERIA
+    IF EIBCALEN = 0
+    OR (CDEMO-PGM-ENTER
+    AND CDEMO-FROM-PROGRAM = LIT-ADMINPGM)
+       CONTINUE
+    ELSE
+       EVALUATE TRUE
+           WHEN  WS-ACTIONS-REQUESTED > 0
+              MOVE WS-IN-TYPE-CD    TO TRTYPEO OF CTRTLIAO
+              MOVE DFHBMASF         TO TRTYPEA OF CTRTLIAI
+              MOVE DFHBLUE          TO TRTYPEC OF CTRTLIAO
+           WHEN FLG-TYPEFILTER-ISVALID
+           WHEN FLG-TYPEFILTER-NOT-OK
+              MOVE WS-IN-TYPE-CD    TO TRTYPEO OF CTRTLIAO
+              MOVE DFHBMFSE         TO TRTYPEA OF CTRTLIAI
+           WHEN WS-IN-TYPE-CD = 0
+              MOVE LOW-VALUES       TO TRTYPEO OF CTRTLIAO
+           WHEN OTHER
+             MOVE LOW-VALUES        TO TRTYPEO OF CTRTLIAO
+             MOVE DFHBMFSE          TO TRTYPEA OF CTRTLIAI
+       END-EVALUATE
+*>
+       EVALUATE TRUE
+           WHEN WS-ACTIONS-REQUESTED > 0
+              MOVE WS-IN-TYPE-DESC  TO TRDESCO OF CTRTLIAO
+              MOVE DFHBMASF         TO TRDESCA OF CTRTLIAI
+              MOVE DFHBLUE          TO TRDESCC OF CTRTLIAO
+           WHEN FLG-DESCFILTER-ISVALID
+           WHEN FLG-DESCFILTER-NOT-OK
+              MOVE WS-IN-TYPE-DESC  TO TRDESCO OF CTRTLIAO
+              MOVE DFHBMFSE         TO TRDESCA OF CTRTLIAI
+           WHEN OTHER
+             MOVE DFHBMFSE          TO TRDESCA OF CTRTLIAI
+       END-EVALUATE
+    END-IF
+*>
+*>    POSITION CURSOR
+*>
+    IF FLG-TYPEFILTER-NOT-OK
+       MOVE  DFHRED                 TO TRTYPEC OF CTRTLIAO
+       MOVE  -1                     TO TRTYPEL OF CTRTLIAI
+    END-IF
+*>
+    IF FLG-DESCFILTER-NOT-OK
+       MOVE  DFHRED                 TO TRDESCC OF CTRTLIAO
+       MOVE  -1                     TO TRDESCL OF CTRTLIAI
+    END-IF
+*>
+*>
+*>    IF NO ERRORS POSITION CURSOR
+    IF INPUT-OK
+       IF WS-ACTIONS-REQUESTED > 0
+       AND NOT CCARD-AID-PFK07
+       AND NOT CCARD-AID-PFK08
+           CONTINUE
+       ELSE
+           MOVE   -1                 TO TRTYPEL OF CTRTLIAI
+       END-IF
+    END-IF
+    .
+2400-SETUP-SCREEN-ATTRS-EXIT.
+    EXIT
+    .
+*>
+*>
+2500-SETUP-MESSAGE.
+*>    SETUP MESSAGE
+    EVALUATE TRUE
+         WHEN FLG-DELETED-YES
+              SET WS-INFORM-DELETE-SUCCESS TO TRUE
+         WHEN FLG-UPDATE-COMPLETED
+              SET WS-INFORM-UPDATE-SUCCESS TO TRUE
+         WHEN FLG-TYPEFILTER-NOT-OK
+         WHEN FLG-DESCFILTER-NOT-OK
+           CONTINUE
+         WHEN CCARD-AID-ENTER
+         AND WS-DELETES-REQUESTED > 0
+         AND WS-ONLY-1-ACTION
+         AND WS-ONLY-1-VALID-ACTION
+            IF  WS-NO-INFO-MESSAGE
+            AND FLG-TYPEFILTER-CHANGED-NO
+            AND FLG-DESCFILTER-CHANGED-NO
+               SET WS-INFORM-DELETE        TO TRUE
+            END-IF
+         WHEN CCARD-AID-ENTER
+         AND WS-UPDATES-REQUESTED > 0
+         AND WS-ONLY-1-ACTION
+         AND WS-ONLY-1-VALID-ACTION
+            IF  WS-NO-INFO-MESSAGE
+            AND FLG-TYPEFILTER-CHANGED-NO
+            AND FLG-DESCFILTER-CHANGED-NO
+               SET WS-INFORM-UPDATE        TO TRUE
+            END-IF
+         WHEN CCARD-AID-PFK07
+             AND CA-FIRST-PAGE
+           MOVE 'No previous pages to display'
+           TO WS-RETURN-MSG
+         WHEN CCARD-AID-PFK08
+          AND CA-NEXT-PAGE-NOT-EXISTS
+          AND CA-LAST-PAGE-SHOWN
+           MOVE 'No more pages to display'
+           TO WS-RETURN-MSG
+         WHEN CCARD-AID-PFK08
+          AND CA-NEXT-PAGE-NOT-EXISTS
+           IF WS-NO-INFO-MESSAGE
+              SET WS-INFORM-REC-ACTIONS    TO TRUE
+           END-IF
+           IF  CA-LAST-PAGE-NOT-SHOWN
+           AND CA-NEXT-PAGE-NOT-EXISTS
+               SET CA-LAST-PAGE-SHOWN      TO TRUE
+           END-IF
+         WHEN WS-NO-INFO-MESSAGE
+         WHEN CA-NEXT-PAGE-EXISTS
+           SET WS-INFORM-REC-ACTIONS       TO TRUE
+         WHEN OTHER
+            SET WS-NO-INFO-MESSAGE         TO TRUE
+    END-EVALUATE
+*>
+    MOVE WS-RETURN-MSG          TO ERRMSGO OF CTRTLIAO
+*>
+*>
+*> Center justify the text
+*>
+    COMPUTE WS-STRING-LEN =
+            FUNCTION LENGTH(
+                     FUNCTION TRIM(WS-INFO-MSG)
+                           )
+    COMPUTE WS-STRING-MID =
+           (FUNCTION LENGTH(WS-INFO-MSG)
+                         - WS-STRING-LEN) / 2 + 1
+    MOVE WS-INFO-MSG(1:WS-STRING-LEN)
+      TO WS-STRING-OUT(WS-STRING-MID:
+                       WS-STRING-LEN)
+*>
+*>
+*>
+    IF  NOT WS-NO-INFO-MESSAGE
+    AND NOT WS-MESG-NO-RECORDS-FOUND
+       MOVE WS-STRING-OUT      TO INFOMSGO OF CTRTLIAO
+       MOVE DFHNEUTR           TO INFOMSGC OF CTRTLIAO
+    END-IF
+*>
+    .
+2500-SETUP-MESSAGE-EXIT.
+    EXIT
+    .
+*>
+*>
+2600-SEND-SCREEN.
+    EXEC CICS SEND MAP(LIT-THISMAP)
+                   MAPSET(LIT-THISMAPSET)
+                   FROM(CTRTLIAO)
+                   CURSOR
+                   ERASE
+                   RESP(WS-RESP-CD)
+                   FREEKB
+    END-EXEC
+    .
+2600-SEND-SCREEN-EXIT.
+    EXIT
+    .
+*>
+*>
+*>
+8000-READ-FORWARD.
+    MOVE LOW-VALUES           TO WS-CA-ALL-ROWS-OUT
+*>
+*>****************************************************************
+*>    Start Reading
+*>****************************************************************
+    PERFORM 9400-OPEN-FORWARD-CURSOR
+       THRU 9400-OPEN-FORWARD-CURSOR-EXIT
+*>
+    IF WS-DB2-ERROR
+       GO TO 8000-READ-FORWARD-EXIT
+    END-IF
+*>****************************************************************
+*>    Loop through records and fetch max screen records
+*>****************************************************************
+    MOVE ZEROES TO WS-ROW-NUMBER
+    SET CA-NEXT-PAGE-EXISTS    TO TRUE
+    SET MORE-RECORDS-TO-READ   TO TRUE
+*>
+    PERFORM UNTIL READ-LOOP-EXIT
+*>
+    INITIALIZE DCLTRANSACTION-TYPE
+*>
+    EXEC SQL
+         FETCH C-TR-TYPE-FORWARD
+         INTO :DCL-TR-TYPE
+             ,:DCL-TR-DESCRIPTION
+    END-EXEC
+*>
+    MOVE SQLCODE               TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+        WHEN SQLCODE = ZERO
+            ADD 1              TO WS-ROW-NUMBER
+*>
+            MOVE DCL-TR-TYPE   TO WS-CA-ROW-TR-CODE-OUT(
+            WS-ROW-NUMBER)
+*>
+            MOVE DCL-TR-DESCRIPTION-TEXT
+                               TO WS-CA-ROW-TR-DESC-OUT(
+                               WS-ROW-NUMBER)
+            IF WS-ROW-NUMBER = 1
+               MOVE DCL-TR-TYPE  TO WS-CA-FIRST-TR-CODE
+               IF   WS-CA-SCREEN-NUM = 0
+                    ADD   +1     TO WS-CA-SCREEN-NUM
+               ELSE
+                   CONTINUE
+               END-IF
+            ELSE
+               CONTINUE
+            END-IF
+*>*****************************************************************
+*>            Max Screen size
+*>*****************************************************************
+            IF WS-ROW-NUMBER = WS-MAX-SCREEN-LINES
+               SET READ-LOOP-EXIT  TO TRUE
+               MOVE DCL-TR-TYPE    TO WS-CA-LAST-TR-CODE
+*>
+               EXEC SQL
+                        FETCH C-TR-TYPE-FORWARD
+                        INTO :DCL-TR-TYPE
+                            ,:DCL-TR-DESCRIPTION
+               END-EXEC
+*>
+               MOVE SQLCODE        TO WS-DISP-SQLCODE
+*>
+               EVALUATE TRUE
+                  WHEN SQLCODE = ZERO
+                       SET CA-NEXT-PAGE-EXISTS
+                                         TO TRUE
+                       MOVE DCL-TR-TYPE  TO WS-CA-LAST-TR-CODE
+                  WHEN SQLCODE = +100
+                     SET CA-NEXT-PAGE-NOT-EXISTS     TO TRUE
+*>
+                     IF WS-RETURN-MSG-OFF
+                     AND CCARD-AID-PFK08
+                         SET WS-MESG-NO-MORE-RECORDS TO TRUE
+                     END-IF
+                  WHEN OTHER
+*>                     This is some kind of error. Close Cursor
+*>                     And exit
+                     SET READ-LOOP-EXIT      TO TRUE
+                     IF WS-RETURN-MSG-OFF
+                        MOVE 'C-TR-TYPE-FORWARD fetch'
+                                             TO
+                                           WS-DB2-CURRENT-ACTION
+                        PERFORM 9999-FORMAT-DB2-MESSAGE
+                           THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+                     END-IF
+               END-EVALUATE
+           END-IF
+       WHEN SQLCODE = +100
+           SET READ-LOOP-EXIT              TO TRUE
+           SET CA-NEXT-PAGE-NOT-EXISTS     TO TRUE
+           MOVE DCL-TR-TYPE                TO WS-CA-LAST-TR-CODE
+           IF WS-RETURN-MSG-OFF
+           AND CCARD-AID-PFK08
+              SET  WS-MESG-NO-MORE-RECORDS     TO TRUE
+           END-IF
+           IF WS-CA-SCREEN-NUM = 1
+           AND WS-ROW-NUMBER = 0
+               SET WS-MESG-NO-RECORDS-FOUND    TO TRUE
+           END-IF
+        WHEN OTHER
+*>           This is some kind of error. Change to END BR
+*>           And exit
+           SET READ-LOOP-EXIT             TO TRUE
+           SET WS-DB2-ERROR               TO TRUE
+           IF WS-RETURN-MSG-OFF
+             MOVE 'C-TR-TYPE-FORWARD close'
+                             TO WS-DB2-CURRENT-ACTION
+*>
+             PERFORM 9999-FORMAT-DB2-MESSAGE
+                THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+            END-IF
+    END-EVALUATE
+    END-PERFORM
+*>
+    PERFORM 9450-CLOSE-FORWARD-CURSOR
+       THRU 9450-CLOSE-FORWARD-CURSOR-EXIT
+    .
+8000-READ-FORWARD-EXIT.
+    EXIT
+    .
+8100-READ-BACKWARDS.
+*>
+    MOVE LOW-VALUES           TO WS-CA-ALL-ROWS-OUT
+*>
+    MOVE WS-CA-FIRST-TTYPEKEY TO WS-CA-LAST-TTYPEKEY
+*>****************************************************************
+*>    Loop through records and fetch max screen records
+*>****************************************************************
+    COMPUTE WS-ROW-NUMBER =
+                            WS-MAX-SCREEN-LINES
+    END-COMPUTE
+    SET CA-NEXT-PAGE-EXISTS    TO TRUE
+    SET MORE-RECORDS-TO-READ   TO TRUE
+*>
+*>****************************************************************
+*>    Now we show the records from previous set.
+*>****************************************************************
+*>    Start Reading Backwards
+*>****************************************************************
+    PERFORM 9500-OPEN-BACKWARD-CURSOR
+       THRU 9500-OPEN-BACKWARD-CURSOR-EXIT
+*>
+    PERFORM UNTIL READ-LOOP-EXIT
+*>
+    INITIALIZE DCLTRANSACTION-TYPE
+*>
+    EXEC SQL
+         FETCH C-TR-TYPE-BACKWARD
+         INTO :DCL-TR-TYPE
+             ,:DCL-TR-DESCRIPTION
+    END-EXEC
+*>
+    MOVE SQLCODE               TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+        WHEN SQLCODE = ZERO
+             MOVE DCL-TR-TYPE
+                         TO WS-CA-ROW-TR-CODE-OUT(WS-ROW-NUMBER)
+             MOVE DCL-TR-DESCRIPTION-TEXT
+                         TO
+                         WS-CA-ROW-TR-DESC-OUT(WS-ROW-NUMBER)
+*>
+             SUBTRACT 1  FROM WS-ROW-NUMBER
+             IF WS-ROW-NUMBER = 0
+                SET READ-LOOP-EXIT  TO TRUE
+                MOVE DCL-TR-TYPE
+                         TO WS-CA-FIRST-TR-CODE
+             ELSE
+                CONTINUE
+             END-IF
+        WHEN OTHER
+*>           This is some kind of error. Change to END BR
+*>           And exit
+           SET READ-LOOP-EXIT             TO TRUE
+           SET WS-DB2-ERROR               TO TRUE
+*>
+           IF WS-RETURN-MSG-OFF
+              MOVE 'Error on fetch Cursor C-TR-TYPE-BACKWARD'
+                                       TO WS-DB2-CURRENT-ACTION
+              PERFORM 9999-FORMAT-DB2-MESSAGE
+                 THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+*>
+            END-IF
+    END-EVALUATE
+    END-PERFORM
+    .
+*>
+8100-READ-BACKWARDS-EXIT.
+    PERFORM 9550-CLOSE-BACK-CURSOR
+       THRU 9550-CLOSE-BACK-CURSOR-EXIT
+*>
+    EXIT
+    .
+*>
+9100-CHECK-FILTERS.
+*>
+    EXEC SQL
+         SELECT COUNT(1)
+           INTO :WS-RECORDS-COUNT
+           FROM CARDDEMO.TRANSACTION_TYPE
+          WHERE ((:WS-EDIT-TYPE-FLAG = '1'
+                AND  TR_TYPE = :WS-TYPE-CD-FILTER)
+                OR  :WS-EDIT-TYPE-FLAG <> '1')
+            AND
+               ((:WS-EDIT-DESC-FLAG = '1'
+                 AND TR_DESCRIPTION LIKE
+                       TRIM(:WS-TYPE-DESC-FILTER))
+                 OR :WS-EDIT-DESC-FLAG <> '1')
+    END-EXEC
+*>
+    MOVE SQLCODE                             TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+        WHEN SQLCODE = ZERO
+            CONTINUE
+        WHEN OTHER
+           SET INPUT-ERROR                   TO TRUE
+*>
+           IF WS-RETURN-MSG-OFF
+               MOVE 'Error reading TRANSACTION_TYPE table '
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+           GO TO 9100-CHECK-FILTERS-EXIT
+    END-EVALUATE
+    .
+9100-CHECK-FILTERS-EXIT.
+    EXIT
+    .
+9200-UPDATE-RECORD.
+*>
+    MOVE WS-ROW-TR-CODE-IN (I-SELECTED)
+                            TO DCL-TR-TYPE
+    MOVE FUNCTION TRIM(WS-ROW-TR-DESC-IN (I-SELECTED))
+                            TO DCL-TR-DESCRIPTION-TEXT
+    COMPUTE DCL-TR-DESCRIPTION-LEN
+     = FUNCTION LENGTH(WS-ROW-TR-DESC-IN (I-SELECTED))
+*>
+    EXEC SQL
+         UPDATE CARDDEMO.TRANSACTION_TYPE
+            SET TR_DESCRIPTION = :DCL-TR-DESCRIPTION
+          WHERE TR_TYPE = :DCL-TR-TYPE
+    END-EXEC
+*>
+    MOVE SQLCODE                             TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+        WHEN SQLCODE = ZERO
+           EXEC CICS SYNCPOINT END-EXEC
+           SET CA-UPDATE-SUCCEEDED           TO TRUE
+           IF WS-NO-INFO-MESSAGE
+              SET WS-INFORM-UPDATE-SUCCESS   TO TRUE
+           END-IF
+        WHEN SQLCODE = +100
+           SET CA-UPDATE-REQUESTED           TO TRUE
+           IF WS-RETURN-MSG-OFF
+               MOVE 'Record not found. Deleted by others ? '
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+           GO TO 9200-UPDATE-RECORD-EXIT
+        WHEN SQLCODE = -911
+           SET CA-UPDATE-REQUESTED           TO TRUE
+           SET INPUT-ERROR                   TO TRUE
+           IF WS-RETURN-MSG-OFF
+               MOVE 'Deadlock. Someone else updating ?'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+           GO TO 9200-UPDATE-RECORD-EXIT
+        WHEN SQLCODE < 0
+           SET CA-UPDATE-REQUESTED           TO TRUE
+           IF WS-RETURN-MSG-OFF
+               MOVE 'Update failed with'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+           GO TO 9200-UPDATE-RECORD-EXIT
+    END-EVALUATE
+    .
+*>
+9200-UPDATE-RECORD-EXIT.
+    EXIT
+    .
+*>
+9300-DELETE-RECORD.
+*>
+    MOVE WS-ROW-TR-CODE-IN (I-SELECTED)      TO  DCL-TR-TYPE
+*>
+    EXEC SQL
+         DELETE FROM CARDDEMO.TRANSACTION_TYPE
+          WHERE TR_TYPE = :DCL-TR-TYPE
+    END-EXEC
+*>
+    MOVE SQLCODE                             TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+        WHEN SQLCODE = ZERO
+           EXEC CICS SYNCPOINT END-EXEC
+           SET CA-DELETE-SUCCEEDED           TO TRUE
+           IF WS-NO-INFO-MESSAGE
+              SET WS-INFORM-DELETE-SUCCESS   TO TRUE
+           END-IF
+        WHEN SQLCODE = -532
+           SET CA-DELETE-REQUESTED           TO TRUE
+*>
+           IF WS-RETURN-MSG-OFF
+               MOVE
+               'Please delete associated child records first:'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+*>
+           GO TO 9300-DELETE-RECORD-EXIT
+        WHEN OTHER
+           IF WS-RETURN-MSG-OFF
+               MOVE
+               'Delete failed with message:'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+           END-IF
+           GO TO 9300-DELETE-RECORD-EXIT
+    END-EVALUATE
+    .
+*>
+9300-DELETE-RECORD-EXIT.
+    EXIT
+    .
+*>
+9400-OPEN-FORWARD-CURSOR.
+    EXEC SQL
+         OPEN C-TR-TYPE-FORWARD
+    END-EXEC
+*>
+    MOVE SQLCODE        TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+       WHEN SQLCODE = ZERO
+          CONTINUE
+       WHEN OTHER
+*>          This is some kind of error. Close Cursor
+*>          And exit
+          SET WS-DB2-ERROR        TO TRUE
+          IF WS-RETURN-MSG-OFF
+               MOVE
+               'C-TR-TYPE-FORWARD Open'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+          END-IF
+     END-EVALUATE
+     .
+9400-OPEN-FORWARD-CURSOR-EXIT.
+    EXIT
+    .
+*>
+*>
+9450-CLOSE-FORWARD-CURSOR.
+    EXEC SQL
+         CLOSE C-TR-TYPE-FORWARD
+    END-EXEC
+*>
+    MOVE SQLCODE        TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+       WHEN SQLCODE = ZERO
+          CONTINUE
+       WHEN OTHER
+*>          This is some kind of error. Close Cursor
+*>          And exit
+          SET WS-DB2-ERROR        TO TRUE
+          IF WS-RETURN-MSG-OFF
+               MOVE
+               'C-TR-TYPE-FORWARD close'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+          END-IF
+     END-EVALUATE
+     .
+9450-CLOSE-FORWARD-CURSOR-EXIT.
+    EXIT
+    .
+*>
+9500-OPEN-BACKWARD-CURSOR.
+    EXEC SQL
+         OPEN C-TR-TYPE-BACKWARD
+    END-EXEC
+*>
+    MOVE SQLCODE        TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+       WHEN SQLCODE = ZERO
+          CONTINUE
+       WHEN OTHER
+*>          This is some kind of error. Close Cursor
+*>          And exit
+          SET WS-DB2-ERROR        TO TRUE
+          IF WS-RETURN-MSG-OFF
+               MOVE
+               'C-TR-TYPE-BACKWARD Open'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+          END-IF
+*>
+     END-EVALUATE
+     .
+9500-OPEN-BACKWARD-CURSOR-EXIT.
+    EXIT
+    .
+*>
+*>
+9550-CLOSE-BACK-CURSOR.
+    EXEC SQL
+         CLOSE C-TR-TYPE-BACKWARD
+    END-EXEC
+*>
+    MOVE SQLCODE        TO WS-DISP-SQLCODE
+*>
+    EVALUATE TRUE
+       WHEN SQLCODE = ZERO
+          CONTINUE
+       WHEN OTHER
+*>          This is some kind of error. Close Cursor
+*>          And exit
+          SET WS-DB2-ERROR        TO TRUE
+          IF WS-RETURN-MSG-OFF
+               MOVE
+               'C-TR-TYPE-BACKWARD close'
+                                        TO WS-DB2-CURRENT-ACTION
+               PERFORM 9999-FORMAT-DB2-MESSAGE
+                  THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+          END-IF
+     END-EVALUATE
+     .
+9550-CLOSE-BACK-CURSOR-EXIT.
+    EXIT
+    .
+*>****************************************************************
+*>Common Db2 routines
+*>****************************************************************
+*>    EXEC SQL INCLUDE CSDB2RPY END-EXEC
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDB2RPY.cpy
+*>*****************************************************************
+*> CardDemo - Common Procedures for Db2
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>****************************************************************
+*> Dummy call to verify connectivity to Db2                      *
+*>****************************************************************
+9998-PRIMING-QUERY.
+
+    EXEC SQL
+         SELECT 1
+           INTO :WS-DUMMY-DB2-INT
+           FROM SYSIBM.SYSDUMMY1
+           FETCH FIRST 1 ROW ONLY
+    END-EXEC
+
+
+    MOVE SQLCODE        TO WS-DISP-SQLCODE
+
+    EVALUATE TRUE
+       WHEN SQLCODE = ZERO
+          CONTINUE
+       WHEN OTHER
+*>          This is some kind of error. Format message and exit
+          SET WS-DB2-ERROR        TO TRUE
+
+          MOVE 'Db2 access failure. '
+                                       TO WS-DB2-CURRENT-ACTION
+          PERFORM 9999-FORMAT-DB2-MESSAGE
+             THRU 9999-FORMAT-DB2-MESSAGE-EXIT
+     END-EVALUATE
+    .
+9998-PRIMING-QUERY-EXIT.
+    EXIT
+    .
+*>****************************************************************
+*> Construct formatted message using DSNTIAC utility             *
+*> This is for Db2                                               *
+*>****************************************************************
+9999-FORMAT-DB2-MESSAGE.
+
+    MOVE +72                 TO WS-DSNTIAC-LRECL
+
+    CALL LIT-DSNTIAC  USING  DFHEIBLK,
+                             DFHCOMMAREA,
+                             SQLCA,
+                             WS-DSNTIAC-FORMATTED,
+                             WS-DSNTIAC-LRECL
+    END-CALL
+
+    COMPUTE WS-DSNTIAC-ERR-CD = RETURN-CODE
+
+
+    IF WS-DSNTIAC-ERR-CD = ZEROES
+       CONTINUE
+    ELSE
+       MOVE 'DSNTIAC CD: '       TO WS-DSNTIAC-ERR-MSG
+       MOVE WS-DSNTIAC-ERROR     TO WS-DSNTIAC-FMTD-TEXT
+    END-IF
+
+    STRING
+         FUNCTION TRIM(WS-DB2-CURRENT-ACTION)
+                  ' SQLCODE:'
+                  WS-DISP-SQLCODE
+                  ' '
+*>                  SQLERRM OF SQLCA
+                  WS-DSNTIAC-FMTD-TEXT
+         DELIMITED BY SIZE
+    INTO WS-LONG-MSG
+    END-STRING
+    MOVE WS-LONG-MSG       TO WS-RETURN-MSG
+    .
+
+9999-FORMAT-DB2-MESSAGE-EXIT.
+    EXIT
+    .
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSDB2RPY.cpy
+*>
+*>****************************************************************
+*>Common code to store PFKey
+*>****************************************************************
+*>COPY 'CSSTRPFY'
+*>    .
+*>vvv-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSSTRPFY.cpy
+*>*****************************************************************
+*> Copyright Amazon.com, Inc. or its affiliates.
+*> All Rights Reserved.
+*>
+*> Licensed under the Apache License, Version 2.0 (the "License").
+*> You may not use this file except in compliance with the License.
+*> You may obtain a copy of the License at
+*>
+*>    http://www.apache.org/licenses/LICENSE-2.0
+*>
+*> Unless required by applicable law or agreed to in writing,
+*> software distributed under the License is distributed on an
+*> "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+*> either express or implied. See the License for the specific
+*> language governing permissions and limitations under the License
+*>*****************************************************************
+YYYY-STORE-PFKEY.
+*>****************************************************************
+*> Map AID to PFKey in COMMON Area
+*>****************************************************************
+    EVALUATE TRUE
+      WHEN EIBAID IS EQUAL TO DFHENTER
+        SET CCARD-AID-ENTER TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHCLEAR
+        SET CCARD-AID-CLEAR TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPA1
+        SET CCARD-AID-PA1  TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPA2
+        SET CCARD-AID-PA2  TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF1
+        SET CCARD-AID-PFK01 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF2
+        SET CCARD-AID-PFK02 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF3
+        SET CCARD-AID-PFK03 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF4
+        SET CCARD-AID-PFK04 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF5
+        SET CCARD-AID-PFK05 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF6
+        SET CCARD-AID-PFK06 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF7
+        SET CCARD-AID-PFK07 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF8
+        SET CCARD-AID-PFK08 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF9
+        SET CCARD-AID-PFK09 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF10
+        SET CCARD-AID-PFK10 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF11
+        SET CCARD-AID-PFK11 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF12
+        SET CCARD-AID-PFK12 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF13
+        SET CCARD-AID-PFK01 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF14
+        SET CCARD-AID-PFK02 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF15
+        SET CCARD-AID-PFK03 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF16
+        SET CCARD-AID-PFK04 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF17
+        SET CCARD-AID-PFK05 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF18
+        SET CCARD-AID-PFK06 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF19
+        SET CCARD-AID-PFK07 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF20
+        SET CCARD-AID-PFK08 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF21
+        SET CCARD-AID-PFK09 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF22
+        SET CCARD-AID-PFK10 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF23
+        SET CCARD-AID-PFK11 TO TRUE
+      WHEN EIBAID IS EQUAL TO DFHPF24
+        SET CCARD-AID-PFK12 TO TRUE
+    END-EVALUATE
+    .
+YYYY-STORE-PFKEY-EXIT.
+    EXIT
+    .
+*>
+*> Ver: CardDemo_v1.0-15-g27d6c6f-68 Date: 2022-07-19 23:15:59 CDT
+*>
+*>^^^-> file: C:\Users\Sethulekshmi.Pishara\Work\LiberTools\CLERITY\Converter\aws_cards_demo\sources\cpy\CSSTRPFY.cpy
+*>
+*>****************************************************************
+*> Plain text exit - Dont use in production                      *
+*>****************************************************************
+SEND-PLAIN-TEXT.
+    EXEC CICS SEND TEXT
+              FROM(WS-RETURN-MSG)
+              LENGTH(LENGTH OF WS-RETURN-MSG)
+              ERASE
+              FREEKB
+    END-EXEC
+*>
+    EXEC CICS RETURN
+    END-EXEC
+    .
+SEND-PLAIN-TEXT-EXIT.
+    EXIT
+    .
+*>****************************************************************
+*> Display Long text and exit                                    *
+*> This is primarily for debugging and should not be used in     *
+*> regular course                                                *
+*>****************************************************************
+SEND-LONG-TEXT.
+    EXEC CICS SEND TEXT
+              FROM(WS-LONG-MSG)
+              LENGTH(LENGTH OF WS-LONG-MSG)
+              ERASE
+              FREEKB
+    END-EXEC
+*>
+    EXEC CICS RETURN
+    END-EXEC
+    .
+SEND-LONG-TEXT-EXIT.
+    EXIT
+    .

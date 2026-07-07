@@ -1,0 +1,25 @@
+{
+  "objectName" : "READXREF",
+  "objectType" : "JOB/SCRIPT",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:42:26.957",
+    "endTime" : "2026-07-03 21:42:26.957",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\READXREF.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-07-03 21:42:26.960",
+    "endTime" : "2026-07-03 21:42:26.960",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\READXREF.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

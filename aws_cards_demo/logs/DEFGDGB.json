@@ -1,0 +1,25 @@
+{
+  "objectName" : "DEFGDGB",
+  "objectType" : "JOB/SCRIPT",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:42:26.772",
+    "endTime" : "2026-07-03 21:42:26.772",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\DEFGDGB.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-07-03 21:42:26.774",
+    "endTime" : "2026-07-03 21:42:26.774",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\DEFGDGB.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

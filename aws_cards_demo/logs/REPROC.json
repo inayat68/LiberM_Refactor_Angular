@@ -1,0 +1,25 @@
+{
+  "objectName" : "REPROC",
+  "objectType" : "JOB/SCRIPT PROC",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-19 17:45:49.994",
+    "endTime" : "2026-04-19 17:45:49.994",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\proc\\REPROC.prc",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-04-19 17:45:49.999",
+    "endTime" : "2026-04-19 17:45:49.999",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\proc\\REPROC.prc",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

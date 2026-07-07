@@ -1,0 +1,25 @@
+{
+  "objectName" : "COBTUPDT",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-07-03 21:40:33.684",
+    "endTime" : "2026-07-03 21:40:33.716",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\cbl-batch\\COBTUPDT.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:40:33.723",
+    "endTime" : "2026-07-03 21:40:33.748",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\cbl-batch\\COBTUPDT.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

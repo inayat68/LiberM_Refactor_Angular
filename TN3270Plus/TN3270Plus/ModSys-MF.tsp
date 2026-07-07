@@ -1,0 +1,23 @@
+[Session Profile]
+Name=ModSys-MF
+Host=192.86.33.85,623
+TerminalType=3279,43,80,IBM-3278-4-E
+LogFile=D:\Data\amit.katekar\Documents\ModSys-MF.log
+KeyboardMapName=3270 Default
+ColorSchemeName=3270 Default
+KeypadToolbarName=3270 Default
+ScreenFont=21,24,-15,0,0,0,400,0,0,0,0,3,2,1,49,Courier New
+PrinterFont=15,8,0,15,8,0,0,400,0,0,0,0,1,2,2,49,Courier New
+PrinterFile=D:\Data\amit.katekar\Documents\TN3270.txt
+SessionOptions=0
+HostOptions=0
+TerminalOptions=0
+FontOptions=1
+PrintOptions=10
+DisplayOptions=2864
+KeyboardOptions=2
+EditOptions=1
+SessionNumber=-1
+TypeAheadBufferSize=512
+ReconnectDelay=0
+FileTransfer=D:\Data\amit.katekar\projects\goeqfx\PSREFMAT.list,ASM.SYSPRINT.PSREFMAT,,,IND$FILE,96,1,0,2,240,27998

@@ -1,0 +1,24 @@
+[Session Profile]
+Name=z/OS 1.5 (43x24)
+Host=16.138.44.41,3270
+TerminalType=3279,43,80,IBM-3278-4-E
+LUname=0701
+LogFile=z OS 1.5 (43x24).log
+KeyboardMapName=3270 Default
+ColorSchemeName=3270 Default
+KeypadToolbarName=3270 Default
+ScreenFont=21,17,15,8,0,0,400,0,0,0,0,1,2,2,49,Courier New
+PrinterFont=15,8,0,15,8,0,0,400,0,0,0,0,1,2,2,49,Courier New
+PrinterFile=C:\Documents and Settings\katekark\My Documents\TN3270.txt
+SessionOptions=0
+HostOptions=0
+TerminalOptions=0
+FontOptions=1
+PrintOptions=10
+DisplayOptions=2864
+KeyboardOptions=2
+EditOptions=1
+SessionNumber=-1
+TypeAheadBufferSize=512
+ReconnectDelay=0
+FileTransfer=C:\Documents and Settings\katekark\Desktop\qeevtftp.cob,KATEKAR.COBOL.SOURCE(TEST3),,,IND$FILE,0,1,0,0,0,0

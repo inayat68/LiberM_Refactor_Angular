@@ -1,0 +1,13 @@
+nav:
+  - index.md
+  - Configuration: configuration
+  - Deployment: deployment
+  - REST API: api
+  - command-line.md
+  - scripting.md
+  - monitoring.md
+  - security.md
+
+
+
+

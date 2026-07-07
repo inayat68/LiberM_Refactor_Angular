@@ -1,0 +1,31 @@
+{
+  "objectName" : "COADM01C",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-04-20 16:22:53.058",
+    "endTime" : "2026-04-20 16:22:53.081",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\COADM01C.cbl",
+    "executionStatus" : "ENDED_WITH_WARNINGS",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "WARNING",
+      "detail" : "CDEMO-ADMIN-OPTIONS",
+      "line" : 44,
+      "container" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cpy\\COADM02Y.cpy",
+      "messageError" : "REDEFINES too long"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-20 16:22:53.083",
+    "endTime" : "2026-04-20 16:22:53.112",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\COADM01C.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

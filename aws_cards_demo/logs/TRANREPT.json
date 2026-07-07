@@ -1,0 +1,31 @@
+{
+  "objectName" : "TRANREPT",
+  "objectType" : "JOB/SCRIPT",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:42:27.078",
+    "endTime" : "2026-07-03 21:42:27.080",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\TRANREPT.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "INFO",
+      "detail" : "Included PROC: REPROC",
+      "line" : 23,
+      "container" : "",
+      "messageError" : "No errors"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-07-03 21:42:27.080",
+    "endTime" : "2026-07-03 21:42:27.082",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\TRANREPT.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

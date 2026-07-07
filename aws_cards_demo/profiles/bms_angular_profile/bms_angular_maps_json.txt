@@ -1,0 +1,58 @@
+@[LOOP_START_BMS_MAPS_COUNT:@IDX_MAP]>>@[OUTPRINT_JSON]
+@[COND_START_IS_FIRST_MAP](@IDX_MAP)
+     {
+@[COND_END_IS_FIRST_MAP]
+@[COND_START_IS_NOT_FIRST_MAP](@IDX_MAP)
+     },
+     {
+@[COND_END_IS_NOT_FIRST_MAP]
+        "name": "@[METHOD_BMS_MAP_NAME](@IDX_MAP)",
+        "freeKb": @[METHOD_BOOL_PROP_MAP_FREEKB](@IDX_MAP),
+        "resetMdt": @[METHOD_BOOL_PROP_MAP_FRSET](@IDX_MAP),
+        "sync": false,
+        "row": @[METHOD_PROP_MAP_LINE](@IDX_MAP),
+        "column": @[METHOD_PROP_MAP_COLUMN](@IDX_MAP),
+        "width": @[METHOD_PROP_MAP_COLUMNS](@IDX_MAP),
+        "height": @[METHOD_PROP_MAP_LINES](@IDX_MAP),
+        "accum": "Detail",
+        "basename": @[METHOD_PROP_MAP_BASE](@IDX_MAP),
+        "justified": @[METHOD_PROPS_MAP_JUSTIFY](@IDX_MAP),
+        "eaColor": @[METHOD_BOOL_PROP_MAP_EACOLOR](@IDX_MAP),
+        "eaPs": @[METHOD_BOOL_PROP_MAP_EAPS](@IDX_MAP),
+        "eaHilight": @[METHOD_BOOL_PROP_MAP_EAHILIGHT](@IDX_MAP),
+        "eaValidn": @[METHOD_BOOL_PROP_MAP_EAVALIDN](@IDX_MAP),
+        "eaOutline": @[METHOD_PROPS_MAP_EAOUTLINE](@IDX_MAP),
+        "eaSosi": @[METHOD_PROP_MAP_EASOSI](@IDX_MAP),
+        "eaBkgTrans": @[METHOD_PROP_MAP_EATRANSP](@IDX_MAP),
+         "fields" : [
+@[LOOP_START_BMS_MAP_FIELDS_COUNT_FOR_JSON:@IDX_FLD](@IDX_MAP)
+       {
+          "name": "@[METHOD_BMS_FIELD_NAME](@IDX_MAP, @IDX_FLD)",
+          "type": "@[METHOD_BMS_FIELD_TYPE_JSON](@IDX_MAP, @IDX_FLD)",
+          "numeric": @[METHOD_BMS_FIELD_NUMERIC](@IDX_MAP, @IDX_FLD),
+          "length": @[METHOD_BMS_FIELD_LENGTH](@IDX_MAP, @IDX_FLD),
+          "row": @[METHOD_BMS_FIELD_LINE](@IDX_MAP, @IDX_FLD),
+          "column": @[METHOD_BMS_FIELD_COLUMN](@IDX_MAP, @IDX_FLD),
+          "attribute": "@[METHOD_BMS_FIELD_ATTRIBUTE](@IDX_MAP, @IDX_FLD)",
+          "inputAlign": "@[METHOD_BMS_FIELD_IN_JUSTIFY](@IDX_MAP, @IDX_FLD)",
+          "outputAlign": "@[METHOD_BMS_FIELD_OUT_JUSTIFY](@IDX_MAP, @IDX_FLD)",
+          "cursor": @[METHOD_BMS_FIELD_CURSOR](@IDX_MAP, @IDX_FLD),
+          "hilight": "@[METHOD_BMS_FIELD_HILIGHT](@IDX_MAP, @IDX_FLD)",
+          "validation": "@[METHOD_BMS_FIELD_VALIDN](@IDX_MAP, @IDX_FLD)",
+          "color": "@[METHOD_BMS_FIELD_COLOR](@IDX_MAP, @IDX_FLD)",
+          "outline": "@[METHOD_BMS_FIELD_OUTLINE](@IDX_MAP, @IDX_FLD)",
+          "sosi": @[METHOD_BMS_FIELD_SOSI](@IDX_MAP, @IDX_FLD),
+          "filler": "@[METHOD_BMS_FIELD_FILLER](@IDX_MAP, @IDX_FLD)",
+          "initial": "@[METHOD_BMS_FIELD_INITIAL](@IDX_MAP, @IDX_FLD)",
+          "dbcsOpts": "@[METHOD_BMS_FIELD_DBCSOPTS](@IDX_MAP, @IDX_FLD)",
+          "ps": "00"
+@[COND_START_IS_NOT_LAST_FIELD](@IDX_MAP, @IDX_FLD)
+          },
+@[COND_END_IS_NOT_LAST_FIELD]
+@[COND_START_IS_LAST_FIELD](@IDX_MAP, @IDX_FLD)
+          }
+@[COND_END_IS_LAST_FIELD]
+@[LOOP_END_BMS_MAP_FIELDS_COUNT_FOR_JSON]
+         ]
+    }
+@[LOOP_END_BMS_MAPS_COUNT]

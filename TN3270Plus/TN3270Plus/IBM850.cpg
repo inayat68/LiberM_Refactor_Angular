@@ -1,0 +1,29 @@
+*-------------------------------------------------*
+*                                                 *
+*            TN3270 Plus  (c) SDI 1997            *
+*                                                 *
+*    Host Code Page IBM 850 (IBM Multilingual)    *
+*                                                 *
+*-------------------------------------------------*
+
+CodePage
+Name "Host Code Page IBM 850 (IBM Multilingual)"
+BEGIN
+*    0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+00: 00 01 02 03 dc 09 c3 7f ca b2 d5 0b 0c 0d 0e 0f
+10: 10 11 12 13 db da 08 c1 18 19 c8 f2 1c 1d 1e 1f
+20: c4 b3 c0 d9 bf 0a 17 1b b4 c2 c5 b0 b1 05 06 07
+30: cd ba 16 bc bb c9 cc 04 b9 cb ce df 14 15 fe 1a
+40: 20 ff  É  Ñ  Ö  †  ∆  Ü  á  §  Ω  .  <  (  +  |
+50:  &  Ç  à  â  ä  °  å  ã  ç  ·  !  $  *  )  ;  ™
+60:  -  /  ∂  é  ∑  µ  «  è  Ä  •  ›  ,  %  _  >  ?
+70:  õ  ê  “  ”  ‘  ÷  ◊  ÿ  ﬁ  `  :  #  @  '  =  "
+80:  ù  a  b  c  d  e  f  g  h  i  Æ  Ø  –  Ï  Á  Ò
+90:  ¯  j  k  l  m  n  o  p  q  r  ¶  ß  ë  ˜  í  œ
+A0:  Ê  ~  s  t  u  v  w  x  y  z  ≠  ®  —  Ì  Ë  ©
+B0:  ^  ú  æ  ˙  ∏  ı  Ù  ¨  ´  Û  [  ]  Ó  ˘  Ô  û
+C0:  {  A  B  C  D  E  F  G  H  I    ì  î  ï  ¢  ‰
+D0:  }  J  K  L  M  N  O  P  Q  R  ˚  ñ  Å  ó  £  ò
+E0:  \  ˆ  S  T  U  V  W  X  Y  Z  ˝  ‚  ô  „  ‡  Â
+F0:  0  1  2  3  4  5  6  7  8  9  ¸  Í  ö  Î  È 9f
+END

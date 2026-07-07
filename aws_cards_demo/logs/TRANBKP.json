@@ -1,0 +1,31 @@
+{
+  "objectName" : "TRANBKP",
+  "objectType" : "JOB/SCRIPT",
+  "objectLanguage" : "MVS/Z-OS SYNTAX",
+  "analysis" : {
+    "title" : "JOB z/OS parser",
+    "version" : "1.0.0",
+    "startTime" : "2026-07-03 21:42:27.000",
+    "endTime" : "2026-07-03 21:42:27.010",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\TRANBKP.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "INFO",
+      "detail" : "Included PROC: REPROC",
+      "line" : 23,
+      "container" : "",
+      "messageError" : "No errors"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "JclConverter",
+    "version" : "1.4.18",
+    "startTime" : "2026-07-03 21:42:27.011",
+    "endTime" : "2026-07-03 21:42:27.013",
+    "fileName" : "D:\\Data\\Inayat Rehman\\mCloud\\Java\\LiberM_Refactor\\aws_cards_demo\\sources\\jcl\\TRANBKP.jcl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

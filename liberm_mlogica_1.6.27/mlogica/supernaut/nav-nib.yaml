@@ -1,0 +1,12 @@
+nav:
+  - index.md
+  - configuration
+  - interfaces
+  - programming
+  - deployment
+  - security
+  - REST API: rest-api
+  - monitoring.md
+  - node-apps
+  - supported-cics-commands.md
+

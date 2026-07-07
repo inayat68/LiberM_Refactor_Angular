@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<divergeek_converter xmlns="https://www.mlogica.com">
+	<properties>
+		<property name="create_date" value="2026-04-16 11:08:33.872"/>
+		<property name="project_name" value="AWS_CARDS_DEMO"/>
+		<property name="rights" value="mLogica"/>
+		<!--
+			One of the following values:
+			jcl
+			proc
+			cobol
+			bms
+		-->
+		<property name="converter" value="bms"/>
+		<property name="workspace" value="ENV{DG_CONV_WORKSPACE_IN}"/>
+		<property name="delivery_project_root" value="ENV{DG_CONV_WORKSPACE_OUT}"/>
+		<property name="profile" value="bms_angular_profile"/>
+		<property name="skeleton" value="skeleton_bms_angular.txt"/>
+	</properties>
+	<resources>
+		<resource pattern="*" location="sources\bms" output="${delivery_project_root}\src\main\resources" />
+	</resources>
+	<converter_settings>
+		<setting name="target_syntax" value="ANGULAR" />
+		<setting name="target_os" value="windows" />
+		<setting name="target_db" value="PGSQL" />
+		<setting name="includes_location" value="${workspace}\sources\asm-macro" />
+		<setting name="angular_location" value="${delivery_project_root}\src\main\resources\angular\src\app\templates" />
+		<setting name="ignore_severe_errors" value="false" />
+	</converter_settings>
+</divergeek_converter>

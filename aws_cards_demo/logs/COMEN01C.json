@@ -1,0 +1,31 @@
+{
+  "objectName" : "COMEN01C",
+  "objectType" : "PROGRAM",
+  "objectLanguage" : "COBOL",
+  "analysis" : {
+    "title" : "COBOL parser",
+    "version" : "3.1.3",
+    "startTime" : "2026-04-20 16:22:54.160",
+    "endTime" : "2026-04-20 16:22:54.188",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\COMEN01C.cbl",
+    "executionStatus" : "ENDED_WITH_WARNINGS",
+    "exceptions" : [ ],
+    "messages" : [ {
+      "messageLevel" : "WARNING",
+      "detail" : "CDEMO-MENU-OPTIONS",
+      "line" : 87,
+      "container" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cpy\\COMEN02Y.cpy",
+      "messageError" : "REDEFINES too long"
+    } ]
+  },
+  "refactoring" : {
+    "title" : "Cobol_Converter",
+    "version" : "1.0.0",
+    "startTime" : "2026-04-20 16:22:54.188",
+    "endTime" : "2026-04-20 16:22:54.236",
+    "fileName" : "C:\\Users\\Sethulekshmi.Pishara\\Work\\LiberTools\\CLERITY\\Converter\\aws_cards_demo\\sources\\cbl\\COMEN01C.cbl",
+    "executionStatus" : "OK",
+    "exceptions" : [ ],
+    "messages" : [ ]
+  }
+}

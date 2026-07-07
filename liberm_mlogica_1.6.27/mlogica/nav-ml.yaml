@@ -1,0 +1,14 @@
+nav:
+  - index.md
+  - commons
+  - scripting
+  - Liber*TP: supernaut
+  - Liber*Batch: motorhead
+  - Container images: images
+  - maven.md
+  - Compatibility: compatibility.md
+  - Working with COBOL: cobol
+  - The migration project: migration
+  - API docs: apidocs/index.html
+
+

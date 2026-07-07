@@ -1,0 +1,52 @@
+:Base TN3270.hlp
+1 Overview
+2 Introduction=INTRODUCTION
+2 Features=FEATURES
+2 System Requirements=SYSTEM_REQUIREMENTS
+2 Evaluation and License Agreements=LICENSE_EVALUATION
+2 Maintenance and Technical Support Agreements=MAINTENANCE_AGREEMENT
+2 TN3270 Plus Pricing=TN3270_PLUS_PRICING
+2 TN3270 Plus Registration Instructions=REGISTERING_TN3270
+2 TN3270 Plus Registration Form=HID_REGISTRATION_FORM
+2 Support/Questions/Suggestions=SUPPORT_QUESTIONS_SUGGESTIONS
+2 Version History=VERSION_HISTORY
+1 How to...
+2 Changing Terminal Emulation Session Colors=CHANGING_3270_SESSION_COLORS
+2 Changing Screen Fonts=CHANGING_FONTS
+2 Changing Keypad Toolbar Button Text=CHANGING_KEYPAD_TOOLBAR_BUTTON_TEXT
+2 Changing PC Keyboard and Mouse Mapping=CHANGE_PC_KEYBOARD_MAPPING
+2 Connecting to a Host Computer=CONNECTING_TO_A_HOST_COMPUTER
+2 Positioning the Cursor=POSITIONING_THE_CURSOR
+2 Specifying Parameters on the Command Line=SPECIFYING_THE_SESSION_NAME_ON_THE_COMMAND_LINE
+2 Defining TN3270 Plus as a Supporting Application for your Web Brower=DEFINING_TN3270_PLUS_IN_WEB_BROWSER
+2 Transferring Files from the Host Computer to Your PC=TRANSFERRING_FILES_FROM_THE_HOST_COMPUTER
+2 Transferring Files from Your PC to the Host Computer=TRANSFERRING_FILES_FROM_YOUR_PC_TO_THE_HOST
+2 Working with Multiple Sessions=WORKING_WITH_MULTIPLE_SESSIONS
+2 Using Hotspots=USING_HOTSPOTS
+2 Using the Macro Recorder=USING_THE_MACRO_RECORDER
+2 Using the Scripting Language=USING_THE_SCRIPTING_LANGUAGE
+2 Creating a Logon Script=Sample_Logon_Script
+2 Comparing the Macro Recorder and the Scripting Language=MACRO_AND_SCRIPT_COMPARISON
+2 Using TN3270 Plus on an Intranet (Network)=HID_USING_TN3270_PLUS_ON_AN_INTRANET
+1 Reference
+2 Restrictions=RESTRICTIONS
+2 Script Commands=SCRIPT_COMMANDS
+2 Default Keyboard Maps
+3 Default 3270 Keyboard Map=HID_KEYBOARD_DEFAULT_3270
+3 Default 5250 Keyboard Map=HID_KEYBOARD_DEFAULT_5250
+3 Default VT100 Keyboard Map=HID_KEYBOARD_DEFAULT_VT100
+2 Menus
+3 Host menu=menu_host
+3 Edit menu=menu_edit
+3 View menu=menu_view
+3 Setup menu=menu_setup
+3 Macros menu=menu_macros
+3 Internet menu=menu_internet
+3 Help menu=menu_help
+2 Tool and Status Bars
+3 Standard Toolbar=AFX_HIDW_TOOLBAR
+3 Keypad Toolbar=HID_KEYPAD_TOOLBAR
+3 Status Bar=AFX_HIDW_STATUS_BAR
+3 Operator Information Area=HID_OPERATOR_INFORMATION_AREA
+1 Glossary
+2 Glossary=GLOSSARY

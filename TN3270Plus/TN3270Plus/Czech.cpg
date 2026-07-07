@@ -1,0 +1,31 @@
+*-------------------------------------------------*
+*                                                 *
+*            TN3270 Plus  (c) SDI 1997            *
+*                                                 *
+*            Host Code Page 02975 Czech           *
+*                                                 *
+*       Kindly provided by Alexander Tolstov      *
+*                                                 *
+*-------------------------------------------------*
+
+CodePage
+Name "Host Code Page 02975 Czech"
+BEGIN
+*    0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+00: 00 01 02 03 9c 09 86 7f 97 8d bd 0b 0c 0d 0e 0f
+10: 10 11 12 13 e5 85 08 87 18 19 92 8f 1c 1d 1e 1f
+20: 80 81 82 a3 84 0a 17 1b 88 89 af 8b 8c 05 06 07
+30: 90 91 16 93 94 95 96 04 98 99 e6 9b 14 15 b6 1a
+40: 20 a0  â  {  à e1  ã e8  ç  ñ  Ä  .  <  (  +  !
+50:  &  é  ê  ë f9  í  î b2 ff  ~  Ü  $  *  )  ;  ^
+60:  -  /  Â  [  À  Á  Ã c8  Ç  Ñ  ö  ,  %  _  >  ?
+70: fe  É  Ê  Ë d9  Í  Î  Ï b9  `  :  #  §  '  =  "
+80: de  a  b  c  d  e  f  g  h  i  « f2  ð  ý f8  ±
+90:  °  j  k  l  m  n  o  p  q  r  ª  º 9a  ¸  Æ  ¤
+A0:  µ  ß  s  t  u  v  w  x  y  z  ¡ d2  Ð  Ý d8  ®
+B0:  ¢ 83  ¥  ·  ©  @ 9e  ¼ 8e  ¾  ¬  | 8a  ¨  ´  ×
+C0:  ä  A  B  C  D  E  F  G  H  I ad  ô  ¦ bb  ó  õ
+D0:  ü  J  K  L  M  N  O  P  Q  R cc  û  } 9d  ú ec
+E0:  Ö  ÷  S  T  U  V  W  X  Y  Z ef  Ô  \ bf  Ó  Õ
+F0:  0  1  2  3  4  5  6  7  8  9  ³  Û  ] c5  Ú 9f
+END

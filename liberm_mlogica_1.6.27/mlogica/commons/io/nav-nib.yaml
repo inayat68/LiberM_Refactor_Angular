@@ -1,0 +1,11 @@
+nav:
+  - index.md
+  - catalog.md
+  - Sequential Files: sequential-files.md
+  - pds.md
+  - gdg.md
+  - VSAM Files: vsam
+  - customization.md
+  - file-status.md
+  - nibvsam.md
+
