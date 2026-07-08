@@ -117,7 +117,9 @@
                                 </goals>
                                 <configuration>
                                     <workingDirectory>${project.basedir}/app-angular</workingDirectory>
-                                    <arguments>install zone.js ngx-spinner@21.0.0 --save</arguments>
+                                    <arguments>
+                                        install zone.js @angular/animations@21.2.17 ngx-spinner@21.0.0 --save
+                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>

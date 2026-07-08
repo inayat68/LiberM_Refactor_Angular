@@ -123,6 +123,33 @@ The foundational `mLogica` framework artifacts are securely hosted on a private 
 5. Click **Generate new token**. Define a descriptive name, set an expiration window, and assign read-only access to packages.
 6. Copy the generated token string immediately (`github_pat_...`).
 
+```TODO -> GIT Repo - Create a new repository
+    Login GIT Portal 
+    Goto Home
+    Click NEW Repo Button to Create a New Repo
+    Make it PRIVATE 
+```
+
+```TODO -> GIT Repo - PUSH Code to Repo using command line
+
+echo "# LiberM_Refactor_Angular" >> README.md
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/inayat68/LiberM_Refactor_Angular.git
+git push -u origin main
+
+```
+
+```TODO -> GIT Repo Push an existing repository from the command line
+
+git remote add origin https://github.com/inayat68/LiberM_Refactor_Angular.git
+git branch -M main
+git push -u origin main
+
+```
+
 ### Step 3.2: Configure `settings.xml`
 
 ```TODO -> open directory
@@ -141,6 +168,11 @@ notepad %USERPROFILE%\.m2\settings.xml
 Navigate to your local machine’s Maven home profile folder (typically `C:\Users\<your-user>\.m2\`) and add your credentials inside the `<servers>` block of your `settings.xml` file:
 
 ```xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 <servers>
     <server>
         <id>github</id>
@@ -148,6 +180,8 @@ Navigate to your local machine’s Maven home profile folder (typically `C:\User
         <password>YOUR_GITHUB_PERSONAL_ACCESS_TOKEN</password>
     </server>
 </servers>
+ 
+</settings>
 
 ```
 
@@ -265,10 +299,20 @@ Convert.bat
 * **JSON Map** (Transferred data fields variable block)
 
 
+## 6. Dockerized Runtime Infrastructure
 
----
+The runtime platform requires isolated background support services (databases, metric logs, data proxies). Ensure **Docker Desktop** is open and active before running container routines.
 
-## 6. Building the Converted Project
+```TODO -> bash
+# Navigate directly to the deployment orchestrator directory
+cd D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\deployment\docker-compose
+
+# Build, create, and launch all cluster engines in background detached mode
+docker compose up --force-recreate --build -d
+
+```
+
+## 7. Building the Converted Project
 
 Once the structural source files have been refactored into clean Java code, compile the application using Apache Maven:
 
@@ -288,18 +332,6 @@ Confirm the compilation output ends with a green **`BUILD SUCCESS`** notificatio
 
 ---
 
-## 7. Dockerized Runtime Infrastructure
-
-The runtime platform requires isolated background support services (databases, metric logs, data proxies). Ensure **Docker Desktop** is open and active before running container routines.
-
-```TODO -> bash
-# Navigate directly to the deployment orchestrator directory
-cd D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\deployment\docker-compose
-
-# Build, create, and launch all cluster engines in background detached mode
-docker compose up --force-recreate --build -d
-
-```
 
 ### Infrastructure Cluster Verification
 
