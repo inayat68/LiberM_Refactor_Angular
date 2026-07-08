@@ -4,8 +4,9 @@ LiberM Refactor Environment Setup & Execution Guide.
 # Preface
 
 This comprehensive guide walks you through the step-by-step installation, configuration, and runtime execution of the **LiberM Refactor Environment** using the **AWS Card Demo** sample project. 
+```
 
----
+```Table of Contents
 
 ## 📋 Table of Contents
 1. [Prerequisites](#1-prerequisites)
@@ -19,7 +20,7 @@ This comprehensive guide walks you through the step-by-step installation, config
 9. [Running Batch Jobs (Liber Batch / Motorhead)](#9-running-batch-jobs-liber-batch--motorhead)
 10. [Troubleshooting & Log Analysis](#10-troubleshooting--log-analysis)
 
----
+```
 
 ## 1. Prerequisites
 
@@ -72,8 +73,6 @@ echo %JAVA_HOME%
 echo %PATH%
 
 ```
-
----
 
 ## 2. Environment Variables Setup
 
