@@ -83,7 +83,7 @@ On Windows, execute the following commands in an Administrative PowerShell sessi
 
 ```TODO -> powershell
 # Set the valid enterprise operational license key for LiberM
-[Environment]::SetEnvironmentVariable("NIB_JAVA_LICENSE_KEY", "rxg1bu9TBifBg9UpiL1CHNBwMrkQUkiCntvR7jzu91O/jFLtueTcaUV41rUNhY0V/GDD0PKvmrdqc3t346bRLETlH1GRE/v9N2jSSpEFafhwHRfCQHhwnGoSuHl9SAzxTN+JFyzEMTy4MVF2cD/ZH5nenPSlDc5eDn59cz9Y6PI/6m2Y1SICXEKfBXU7IbX0xs2Hm175wdS2HE5VcLxz8ut4wNBu2VY120Ru2BFn4iPvAqbsyaQ6dnXbBx0CNK0KaDYmow0u4Wl94+Ga2hzjOWtHo3msVo+rjzswKJQJ39SIUeNXZPWs1gL4rQ/Fcw99X0rOrP1dI5g9CRuQL+ybeqV3Tlq47pNMKdTvOp6z+1rKAsffdYcX8VBmY/sdVdcR9gXQvGgeuwNXiwuapFDwj/Rn+PUgsFNSo1WyR7nl3kSBQ1Oqd/flUh7pOMBZ3XvL", "User")
+[Environment]::SetEnvironmentVariable("NIB_JAVA_LICENSE_KEY", "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j", "User")
 $env:NIB_JAVA_LICENSE_KEY
 
 # Set the home variable to the target path of your root project
@@ -97,7 +97,7 @@ $env:NIB_JAVA_DEMO_HOME
 ```
 
 ```windows command-prompt
-setx NIB_JAVA_LICENSE_KEY "rxg1bu9TBifBg9UpiL1CHNBwMrkQUkiCntvR7jzu91O/jFLtueTcaUV41rUNhY0V/GDD0PKvmrdqc3t346bRLETlH1GRE/v9N2jSSpEFafhwHRfCQHhwnGoSuHl9SAzxTN+JFyzEMTy4MVF2cD/ZH5nenPSlDc5eDn59cz9Y6PI/6m2Y1SICXEKfBXU7IbX0xs2Hm175wdS2HE5VcLxz8ut4wNBu2VY120Ru2BFn4iPvAqbsyaQ6dnXbBx0CNK0KaDYmow0u4Wl94+Ga2hzjOWtHo3msVo+rjzswKJQJ39SIUeNXZPWs1gL4rQ/Fcw99X0rOrP1dI5g9CRuQL+ybeqV3Tlq47pNMKdTvOp6z+1rKAsffdYcX8VBmY/sdVdcR9gXQvGgeuwNXiwuapFDwj/Rn+PUgsFNSo1WyR7nl3kSBQ1Oqd/flUh7pOMBZ3XvL"
+setx NIB_JAVA_LICENSE_KEY "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j"
 
 setx NIB_JAVA_DEMO_HOME "D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps"   
 ```
@@ -122,27 +122,27 @@ The foundational `mLogica` framework artifacts are securely hosted on a private 
 6. Copy the generated token string immediately (`github_pat_...`).
 
 ```TODO -> GIT Repo - Create a new repository
-    Login GIT Portal 
-    Goto Home
-    Click NEW Repo Button to Create a New Repo
-    Make it PRIVATE 
+    * Login GIT Portal 
+    * Goto Home
+    * Click NEW Repo Button to Create a New Repo
+    * Make it PRIVATE 
 ```
 
 ```TODO -> GIT Repo - PUSH Code to Repo using command line
 
-echo "# LiberM_Refactor_Angular" >> README.md
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/inayat68/LiberM_Refactor_Angular.git
-git push -u origin main
+    * echo "# LiberM_Refactor_Angular" >> README.md
+    * git init
+    * git add .
+    * git commit -m "first commit"
+    * git branch -M main
+    * git remote add origin https://github.com/gituser/LiberM_Refactor_Angular.git
+    * git push -u origin main
 
 ```
 
 ```TODO -> GIT Repo Push an existing repository from the command line
 
-git remote add origin https://github.com/inayat68/LiberM_Refactor_Angular.git
+git remote add origin https://github.com/gituser/LiberM_Refactor_Angular.git
 git branch -M main
 git push -u origin main
 
@@ -171,14 +171,13 @@ Navigate to your local machine’s Maven home profile folder (typically `C:\User
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-<servers>
-    <server>
-        <id>github</id>
-        <username>YOUR_GITHUB_USERNAME</username>
-        <password>YOUR_GITHUB_PERSONAL_ACCESS_TOKEN</password>
-    </server>
-</servers>
- 
+    <servers>
+        <server>
+            <id>github</id>
+            <username>YOUR_GITHUB_USERNAME</username>
+            <password>YOUR_GITHUB_PERSONAL_ACCESS_TOKEN</password>
+        </server>
+    </servers>
 </settings>
 
 ```
@@ -191,7 +190,7 @@ The framework lookup endpoint must be declared inside the project's foundational
 <repositories>
     <repository>
         <id>github</id>
-        <url>[https://maven.pkg.github.com/nib-labs/nib-java](https://maven.pkg.github.com/nib-labs/nib-java)</url>
+        <url>https://maven.pkg.github.com/nib-labs/nib-java</url>
     </repository>
 </repositories>
 
@@ -212,9 +211,9 @@ Download the structural source archives and emulator assets from the designated 
 https://mlogicainc.sharepoint.com/sites/MlogicaExternalProjectsManagementTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FMlogicaExternalProjectsManagementTeam%2FShared%20Documents%2FGeneral%2FAll%20Projects%2FLIBERm%20Roadmap%2FTransition%20Discovery%2FDocuments%2F05%5FLIBERM%5FRefactor%2F02%5FTechnical%2FInstallation%20and%20Configuration&viewid=02f53069%2D2726%2D4cc2%2D9487%2D92795452288a&sharingv2=true&fromShare=true&at=9&CID=c0a10614%2Dd607%2D43ec%2D88f2%2D22604dfe7c7f&FolderCTID=0x012000A0D05FFEA9BC064FA384346FC5479C7B&TeamsCID=93e1d208%2De7e8%2D4930%2D8a6d%2Dd84e8e516ab9&OR=Teams%2DHL&CT=1782987786378
 
 # CREATE drectories:
-      Java > LiberM_Refactor > 
-      Here extract these 3 ZIP Projects and
-      Delete their ZIP version in the end
+      * Java > LiberM_Refactor > 
+      * Here extract these 3 ZIP Projects and
+      * Delete their ZIP version in the end
  
 ```
 
@@ -337,9 +336,9 @@ Once the structural source files have been refactored into clean Java code, comp
 ------------------------------------------------
 
     Click one by one:
-        Clean
-        Package
-        Install
+        * Clean
+        * Package
+        * Install
 ```
 
 ```
