@@ -38,10 +38,14 @@ Ensure your workstation has the following mandatory software and toolchains inst
 | 9 | **API Client (Optional)**| Postman |
 
 ```TODO -> install checking
+
+Installed Software Checklist
+-----------------------------
+
 javac -version
 javac 24.0.1
 
-mvn -version        # winget install Apache.Maven     OR    # powershell: choco install maven
+mvn -version        # winget install Apache.Maven     OR    # choco install maven
 Apache Maven 3.9.9 
 
 git --version       # winget install Git.Git
@@ -62,7 +66,7 @@ docker compose version
 Docker Compose version v2.30.3-desktop.1
 
 # Verify IntelliJ Installed
-winget install dbeaver.dbeaver    # powershell
+winget install dbeaver.dbeaver
 
 # Install DBeaver
 winget install --id JetBrains.IntelliJIDEA.Community -e
@@ -78,7 +82,6 @@ echo %PATH%
 Before invoking build scripts or operating your IDE, you must register the required system or user environment variables. 
 
 On Windows, execute the following commands in an Administrative PowerShell session or configure them via System Properties:
-
 
 
 ```TODO -> powershell
@@ -97,7 +100,7 @@ $env:NIB_JAVA_DEMO_HOME
 ```
 
 ```
-#                    OR
+#               ---     OR     ---
 ```
 
 ```windows command-prompt
@@ -111,7 +114,7 @@ setx NIB_JAVA_DEMO_HOME "D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps"
 ```
 
 ```
-#                    OR
+#               ---     OR     ---
 ```
 
 ```windows-search
@@ -373,7 +376,7 @@ Once the structural source files have been refactored into clean Java code, comp
 ```
 
 ```
-#                    OR
+#               ---     OR     ---
 ```
 
 
