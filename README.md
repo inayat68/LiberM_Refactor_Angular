@@ -65,7 +65,7 @@ Docker Compose version v2.30.3-desktop.1
 winget install dbeaver.dbeaver    # powershell
 
 # Install DBeaver
-winget install dbeaver.dbeaver
+winget install --id JetBrains.IntelliJIDEA.Community -e
 
 # check JAVA Home env var
 echo %JAVA_HOME%
@@ -82,6 +82,10 @@ On Windows, execute the following commands in an Administrative PowerShell sessi
 
 
 ```TODO -> powershell
+
+using powershell
+-----------------
+
 # Set the valid enterprise operational license key for LiberM
 [Environment]::SetEnvironmentVariable("NIB_JAVA_LICENSE_KEY", "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j", "User")
 $env:NIB_JAVA_LICENSE_KEY
@@ -97,10 +101,31 @@ $env:NIB_JAVA_DEMO_HOME
 ```
 
 ```windows command-prompt
+
+windows command-prompt
+-----------------------
+
 setx NIB_JAVA_LICENSE_KEY "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j"
 
 setx NIB_JAVA_DEMO_HOME "D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps"   
 ```
+
+```
+#                    OR
+```
+
+```windows-search
+
+windows Environment Varabile search in start
+----------------------------------------------
+
+# NIB_JAVA_LICENSE_KEY 
+rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j
+
+# NIB_JAVA_DEMO_HOME 
+D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps
+```
+
 
 ----------
 
@@ -122,13 +147,16 @@ The foundational `mLogica` framework artifacts are securely hosted on a private 
 6. Copy the generated token string immediately (`github_pat_...`).
 
 ```TODO -> GIT Repo - Create a new repository
-    * Login GIT Portal 
-    * Goto Home
-    * Click NEW Repo Button to Create a New Repo
-    * Make it PRIVATE 
+    - Login GIT Portal 
+    - Goto Home
+    - Click NEW Repo Button to Create a New Repo
+    - Make it PRIVATE 
 ```
 
-```TODO -> GIT Repo - PUSH Code to Repo using command line
+```TODO -> GIT Repo - PUSH New
+
+# GIT Repo - PUSH Code to Repo using command line
+----------------------------------------------------
 
     * echo "# LiberM_Refactor_Angular" >> README.md
     * git init
@@ -140,11 +168,14 @@ The foundational `mLogica` framework artifacts are securely hosted on a private 
 
 ```
 
-```TODO -> GIT Repo Push an existing repository from the command line
+```TODO -> GIT Repo - Push Existing
 
-git remote add origin https://github.com/gituser/LiberM_Refactor_Angular.git
-git branch -M main
-git push -u origin main
+# GIT Repo Push an existing repository from the command line
+--------------------------------------------------------------
+
+    * git remote add origin https://github.com/gituser/LiberM_Refactor_Angular.git
+    * git branch -M main
+    * git push -u origin main
 
 ```
 
