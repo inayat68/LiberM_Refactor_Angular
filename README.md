@@ -7,8 +7,8 @@ This comprehensive guide walks you through the step-by-step installation, config
 ```
 
 ```Table of Contents
+# 📋 Table of Contents
 
-## 📋 Table of Contents
 1. [Prerequisites](#1-prerequisites)
 2. [Environment Variables Setup](#2-environment-variables-setup)
 3. [Maven & GitHub Authentication Configuration](#3-maven--github-authentication-configuration)
@@ -21,7 +21,6 @@ This comprehensive guide walks you through the step-by-step installation, config
 10. [Troubleshooting & Log Analysis](#10-troubleshooting--log-analysis)
 
 ```
-
 ## 1. Prerequisites
 
 Ensure your workstation has the following mandatory software and toolchains installed before proceeding:
@@ -232,8 +231,15 @@ D:\Technical\LiberM\COBOLtoJAVA\
 │   └── logs\                     # Direct extraction error logs
 └── nib-java-demo-apps\           # Modernized Target Java/Angular Ecosystem
     ├── aws-carddemo-angular\     # Converted frontend/backend components
+    │   ├── app-angular\
+    │   ├── app-angular_sources\
+    │   ├── src\
+    ├── aws-carddemo-app\         # Card demo app
+    ├── boot-batch\               # Supernaut transactional batch module
     ├── boot-online\              # Supernaut transactional online module
-    └── config\                   # Configuration profiles (.yaml, .conf)
+    ├── config\                   # Configuration profiles (.yaml, .conf)
+    ├── deployement\              # Deployment
+    └── http\                     # HTTP
 
 ```
 
@@ -297,12 +303,7 @@ Convert.bat
 * **TypeScript (TS)** (Reactive interface component controller)
 * **JSON Map** (Transferred data fields variable block)
 
-
-## 6. Dockerized Runtime Infrastructure
-
-The runtime platform requires isolated background support services (databases, metric logs, data proxies). Ensure **Docker Desktop** is open and active before running container routines.
-
-```TODO -> bash
+```TODO -> Angular Packages
 # Navigate directly to the deployment orchestrator directory
 cd D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps\deployment\docker-compose
 
@@ -311,12 +312,47 @@ docker compose up --force-recreate --build -d
 
 ```
 
+## 6. Dockerized Runtime Infrastructure
+
+The runtime platform requires isolated background support services (databases, metric logs, data proxies). Ensure **Docker Desktop** is open and active before running container routines.
+
+```TODO -> Replace in app-angular pom.xml
+# Replace in app-angular pom.xml
+--------------------------------
+
+<arguments>
+    install zone.js @angular/animations@21.2.17 ngx-spinner@21.0.0 --save
+</arguments>
+
+```
+
 ## 7. Building the Converted Project
 
 Once the structural source files have been refactored into clean Java code, compile the application using Apache Maven:
 
-```TODO -> bash
+
+```TODO -> Install Packages using MAVEN Lifecycle
+
+# Build using IntelliJ Idea under MAVEN Lifecycle
+------------------------------------------------
+
+    Click one by one:
+        Clean
+        Package
+        Install
+```
+
+```
+#                    OR
+```
+
+
+```TODO -> commands
+
 # Navigate to the target demo application directory
+----------------------------------------------------
+
+# Change Directory
 cd D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps
 
 # Execute clean install to build executable JARs and resolve dependencies
