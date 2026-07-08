@@ -513,7 +513,6 @@ docker logs <container-id_or_name> --tail 100 -f
 3. To simplify transaction log streaming during testing, open **Docker Desktop**, navigate to the **`nib-java-demo-cluster`** stack layout, and inspect the runtime output trace logs inside **`supernaut-1`**.
    *(Pro-tip: Temporarily stop clusters `supernaut-2` and `supernaut-3` while testing to isolate all active execution traces onto this single node container).*
 
-```
 
 ***
 
@@ -525,6 +524,3 @@ docker logs <container-id_or_name> --tail 100 -f
 5. **Compilation:** Open a terminal window inside `nib-java-demo-apps` and run `mvn clean install`.
 6. **Infrastructure:** Start your containers by running `docker compose up -d` within the project deployment folder.
 7. **Execution:** Launch your transaction processes using either your browser or your TN3270 terminal client.
-
-```"# JAVA_LiberM_Refactor_Angular" 
-"# JAVA_LiberM_Refactor_Angular" 
