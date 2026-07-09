@@ -14,8 +14,8 @@ This comprehensive guide walks you through the step-by-step installation, config
 3. [Maven & GitHub Authentication Configuration](#3-maven--github-authentication-configuration)
 4. [Project Packages & Directory Layout](#4-project-packages--directory-layout)
 5. [The LiberM Refactor Process (Code Conversion)](#5-the-liberm-refactor-process-code-conversion)
-6. [Building the Converted Project](#6-building-the-converted-project)
-7. [Dockerized Runtime Infrastructure](#7-dockerized-runtime-infrastructure)
+6. [Dockerized Runtime Infrastructure and Angular Package Setting in pom.xml](#7-dockerized-runtime-infrastructure)
+7. [Building the Converted Project](#6-building-the-converted-project)
 8. [Running the Application (Online Transactions)](#8-running-the-application-online-transactions)
 9. [Running Batch Jobs (Liber Batch / Motorhead)](#9-running-batch-jobs-liber-batch--motorhead)
 10. [Troubleshooting & Log Analysis](#10-troubleshooting--log-analysis)
@@ -90,7 +90,7 @@ using powershell
 -----------------
 
 # Set the valid enterprise operational license key for LiberM
-[Environment]::SetEnvironmentVariable("NIB_JAVA_LICENSE_KEY", "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j", "User")
+[Environment]::SetEnvironmentVariable("NIB_JAVA_LICENSE_KEY", "rxg1bu9TBifBg9UpiL1CHNBwMrkQUkiCntvR7jzu91O/jFLtueTcaUV41rUNhY0V/GDD0PKvmrdqc3t346bRLETlH1GRE/v9N2jSSpEFafhwHRfCQHhwnGoSuHl9SAzxTN+JFyzEMTy4MVF2cD/ZH5nenPSlDc5eDn59cz9Y6PI/6m2Y1SICXEKfBXU7IbX0xs2Hm175wdS2HE5VcLxz8ut4wNBu2VY120Ru2BFn4iPvAqbsyaQ6dnXbBx0CNK0KaDYmow0u4Wl94+Ga2hzjOWtHo3msVo+rjzswKJQJ39SIUeNXZPWs1gL4rQ/Fcw99X0rOrP1dI5g9CRuQL+ybeqV3Tlq47pNMKdTvOp6z+1rKAsffdYcX8VBmY/sdVdcR9gXQvGgeuwNXiwuapFDwj/Rn+PUgsFNSo1WyR7nl3kSBQ1Oqd/flUh7pOMBZ3XvL", "User")
 $env:NIB_JAVA_LICENSE_KEY
 
 # Set the home variable to the target path of your root project
@@ -108,7 +108,7 @@ $env:NIB_JAVA_DEMO_HOME
 windows command-prompt
 -----------------------
 
-setx NIB_JAVA_LICENSE_KEY "rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j"
+setx NIB_JAVA_LICENSE_KEY "rxg1bu9TBifBg9UpiL1CHNBwMrkQUkiCntvR7jzu91O/jFLtueTcaUV41rUNhY0V/GDD0PKvmrdqc3t346bRLETlH1GRE/v9N2jSSpEFafhwHRfCQHhwnGoSuHl9SAzxTN+JFyzEMTy4MVF2cD/ZH5nenPSlDc5eDn59cz9Y6PI/6m2Y1SICXEKfBXU7IbX0xs2Hm175wdS2HE5VcLxz8ut4wNBu2VY120Ru2BFn4iPvAqbsyaQ6dnXbBx0CNK0KaDYmow0u4Wl94+Ga2hzjOWtHo3msVo+rjzswKJQJ39SIUeNXZPWs1gL4rQ/Fcw99X0rOrP1dI5g9CRuQL+ybeqV3Tlq47pNMKdTvOp6z+1rKAsffdYcX8VBmY/sdVdcR9gXQvGgeuwNXiwuapFDwj/Rn+PUgsFNSo1WyR7nl3kSBQ1Oqd/flUh7pOMBZ3XvL"
 
 setx NIB_JAVA_DEMO_HOME "D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps"   
 ```
@@ -123,7 +123,7 @@ windows Environment Varabile search in start
 ----------------------------------------------
 
 # NIB_JAVA_LICENSE_KEY 
-rxg1bu9TBifBg9zuGDD0PKvmrdqcNIB_JAVA_LICENSE_KEYUpiL1CHNBwMrkQUkiCntvR7j
+rxrxg1bu9TBifBg9UpiL1CHNBwMrkQUkiCntvR7jzu91O/jFLtueTcaUV41rUNhY0V/GDD0PKvmrdqc3t346bRLETlH1GRE/v9N2jSSpEFafhwHRfCQHhwnGoSuHl9SAzxTN+JFyzEMTy4MVF2cD/ZH5nenPSlDc5eDn59cz9Y6PI/6m2Y1SICXEKfBXU7IbX0xs2Hm175wdS2HE5VcLxz8ut4wNBu2VY120Ru2BFn4iPvAqbsyaQ6dnXbBx0CNK0KaDYmow0u4Wl94+Ga2hzjOWtHo3msVo+rjzswKJQJ39SIUeNXZPWs1gL4rQ/Fcw99X0rOrP1dI5g9CRuQL+ybeqV3Tlq47pNMKdTvOp6z+1rKAsffdYcX8VBmY/sdVdcR9gXQvGgeuwNXiwuapFDwj/Rn+PUgsFNSo1WyR7nl3kSBQ1Oqd/flUh7pOMBZ3XvL
 
 # NIB_JAVA_DEMO_HOME 
 D:\Technical\LiberM\COBOLtoJAVA\nib-java-demo-apps
@@ -244,10 +244,10 @@ Download the structural source archives and emulator assets from the designated 
 
 https://mlogicainc.sharepoint.com/sites/MlogicaExternalProjectsManagementTeam/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FMlogicaExternalProjectsManagementTeam%2FShared%20Documents%2FGeneral%2FAll%20Projects%2FLIBERm%20Roadmap%2FTransition%20Discovery%2FDocuments%2F05%5FLIBERM%5FRefactor%2F02%5FTechnical%2FInstallation%20and%20Configuration&viewid=02f53069%2D2726%2D4cc2%2D9487%2D92795452288a&sharingv2=true&fromShare=true&at=9&CID=c0a10614%2Dd607%2D43ec%2D88f2%2D22604dfe7c7f&FolderCTID=0x012000A0D05FFEA9BC064FA384346FC5479C7B&TeamsCID=93e1d208%2De7e8%2D4930%2D8a6d%2Dd84e8e516ab9&OR=Teams%2DHL&CT=1782987786378
 
-# CREATE drectories:
-      * Java > LiberM_Refactor > 
-      * Here extract these 3 ZIP Projects and
-      * Delete their ZIP version in the end
+# CREATE drectory in your local D: drive like 
+      * At Folder Path: D:/Java/LiberM_Refactor/
+      * Download and Extract these 3 ZIP files using above URL
+      * After the extraction, Delete all ZIP files
  
 ```
 
@@ -345,11 +345,12 @@ docker compose up --force-recreate --build -d
 
 ```
 
-## 6. Dockerized Runtime Infrastructure
+## 6. Dockerized Runtime Infrastructure and Angular Package Setting in pom.xml
 
 The runtime platform requires isolated background support services (databases, metric logs, data proxies). Ensure **Docker Desktop** is open and active before running container routines.
 
 ```TODO -> Replace in app-angular pom.xml
+
 # Replace in app-angular pom.xml
 --------------------------------
 
